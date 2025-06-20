@@ -12,10 +12,7 @@ use App\Http\Requests\RehomingRequest;
 
 class RehomingController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index', 'howItWorks', 'tips']);
-    }
+
 
     public function index()
     {
@@ -27,9 +24,9 @@ class RehomingController extends Controller
         return view('rehoming.how-it-works');
     }
 
-    public function tips()
+    public function faqRehomers()
     {
-        return view('rehoming.tips');
+        return view('rehoming.faq-rehomers');
     }
 
     public function start()

@@ -34,20 +34,13 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/care-guide', [HomeController::class, 'careGuide'])->name('care-guide');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
-Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
 Route::get('/care-guide/cats', [HomeController::class, 'catGuides'])->name('care-guide.cats');
 Route::get('/care-guide/dogs', [HomeController::class, 'dogGuides'])->name('care-guide.dogs');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
 Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
 
 // Adopt Routes
-Route::get('/adopt/how-it-works', [AdoptController::class, 'howItWorks'])->name('adopt.how-it-works');
-
-// Rehoming Routes
-Route::get('/rehoming', [RehomingController::class, 'index'])->name('rehoming.index');
-Route::get('/rehoming/create', [RehomingController::class, 'create'])->name('rehoming.create');
-Route::get('/rehoming/how-it-works', [RehomingController::class, 'howItWorks'])->name('rehome.how-it-works');
-
+Route::get('/adopt/how-it-works', [HomeController::class, 'howItWorks'])->name('adopt.how-it-works');
 
 
 // Authentication Routes
@@ -75,9 +68,10 @@ Route::prefix('pets')->name('pets.')->group(function () {
     Route::get('/location/{location}', [PetController::class, 'byLocation'])->name('location');
 });
 
+
 // Adoption Routes (Public - can view, but need auth for requests)
 Route::prefix('adoption')->name('adoption.')->group(function () {
-    Route::get('/', [AdoptionController::class, 'index'])->name('index');
+    Route::get('/', [PetController::class, 'index'])->name('index');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
     
@@ -91,11 +85,13 @@ Route::prefix('adoption')->name('adoption.')->group(function () {
     });
 });
 
+
+
 // Rehoming Routes
 Route::prefix('rehoming')->name('rehoming.')->group(function () {
     Route::get('/', [RehomingController::class, 'index'])->name('index');
     Route::get('/how-it-works', [RehomingController::class, 'howItWorks'])->name('how-it-works');
-    Route::get('/tips', [RehomingController::class, 'tips'])->name('tips');
+    Route::get('/faq/rehomers', [RehomingController::class, 'faqRehomers'])->name('faq');
     
     // Protected rehoming routes
     Route::middleware('auth')->group(function () {
@@ -115,6 +111,7 @@ Route::prefix('rehoming')->name('rehoming.')->group(function () {
     });
 });
 
+
 // User Dashboard Routes (Protected)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
@@ -127,6 +124,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', [UserController::class, 'settings'])->name('settings');
         Route::put('/settings', [UserController::class, 'updateSettings'])->name('settings.update');
         Route::delete('/account', [UserController::class, 'deleteAccount'])->name('account.delete');
+        Route::put('/password-update', [UserController::class, 'update'])->name('password-update');
+        Route::get('/notifications', [UserController::class, 'notifications'])->name('settings.notifications');
+        Route::get('/settings.privacy', [UserController::class, 'privacy'])->name('settings.privacy');
+        Route::get('/export', [UserController::class, 'export'])->name('export');
+
+
+
+
         
         // Favorites
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');

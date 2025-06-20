@@ -15,7 +15,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
+    
 
     /**
      * Where to redirect users after login.
@@ -25,10 +25,6 @@ class LoginController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
 
     /**
      * Show the application's login form.

@@ -36,6 +36,8 @@ class AdoptionController extends Controller
         return view('adoption.how-it-works');
     }
 
+    
+
     public function requirements()
     {
         return view('adoption.requirements');
