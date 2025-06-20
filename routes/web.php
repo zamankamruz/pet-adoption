@@ -155,6 +155,9 @@ Route::middleware('auth')->group(function () {
     });
 });
 
+
+
+
 // Admin Routes (Protected)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');

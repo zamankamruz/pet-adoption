@@ -31,14 +31,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('pets.index') }}" 
+                                <a href="{{ route('user.adoptions') }}" 
                                    class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200">
                                     <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-3 text-sm">🐾</div>
                                     <span class="font-medium">Adopt</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('rehoming.index') }}" 
+                                <a href="{{ route('user.rehomed') }}" 
                                    class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200">
                                     <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-3 text-sm">🏠</div>
                                     <span class="font-medium">Rehome</span>

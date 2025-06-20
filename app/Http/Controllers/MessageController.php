@@ -13,10 +13,6 @@ use App\Notifications\NewMessageNotification;
 
 class MessageController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     public function index()
     {
@@ -41,7 +37,7 @@ class MessageController extends Controller
             ->where('is_read', false)
             ->count();
 
-        return view('user.messages.index', compact('conversations', 'unreadCount'));
+        return view('user.messages', compact('conversations', 'unreadCount'));
     }
 
     public function show($conversationId)

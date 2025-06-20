@@ -31,14 +31,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('pets.index') }}" 
+                                <a href="{{ route('user.adoptions') }}" 
                                    class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200">
                                     <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-3 text-sm">🐾</div>
                                     <span class="font-medium">Adopt</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('rehoming.index') }}" 
+                                <a href="{{ route('user.rehomed') }}" 
                                    class="flex items-center px-4 py-3 rounded-xl text-gray-600 hover:bg-purple-50 hover:text-purple-600 transition-all duration-200">
                                     <div class="w-8 h-8 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-3 text-sm">🏠</div>
                                     <span class="font-medium">Rehome</span>
@@ -65,6 +65,37 @@
                             </li>
                         </ul>
                     </nav>
+
+                     <!-- Charity Widget -->
+                    <div class="p-4">
+                        <div class="relative bg-white border-2 border-gray-100 rounded-2xl p-4 text-center">
+                            <button class="absolute top-2 right-2 w-6 h-6 text-gray-400 hover:text-gray-600">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                            <div class="flex justify-center mb-3">
+                                <div class="flex -space-x-1">
+                                    <img src="/api/placeholder/32/32" alt="Pet 1" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="/api/placeholder/32/32" alt="Pet 2" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="/api/placeholder/32/32" alt="Pet 3" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="/api/placeholder/32/32" alt="Pet 4" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="/api/placeholder/32/32" alt="Pet 5" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="/api/placeholder/32/32" alt="Pet 6" class="w-8 h-8 rounded-full border-2 border-white">
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 font-medium mb-3">Join Furry Friends Charity</p>
+                            <button class="flex items-center justify-center space-x-1 bg-purple-100 text-purple-600 px-4 py-2 rounded-lg text-sm font-medium w-full hover:bg-purple-200 transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span>Donate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    
+
                 </div>
             </div>
 
