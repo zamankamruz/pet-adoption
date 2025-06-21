@@ -3,7 +3,7 @@
 // Path: /resources/views/admin/adoptions/show.blade.php
 ?>
 
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Adoption Request Details')
 

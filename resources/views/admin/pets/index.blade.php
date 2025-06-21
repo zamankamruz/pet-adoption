@@ -3,7 +3,7 @@
 // Path: /resources/views/admin/pets/index.blade.php
 ?>
 
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Manage Pets')
 

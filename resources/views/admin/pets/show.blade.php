@@ -3,7 +3,7 @@
 // Path: /resources/views/admin/pets/show.blade.php
 ?>
 
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Pet Details - ' . $pet->name)
 

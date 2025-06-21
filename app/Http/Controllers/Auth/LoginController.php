@@ -226,13 +226,23 @@ class LoginController extends Controller
      */
     public function redirectPath()
     {
-        // Redirect admin users to admin dashboard
-        if (Auth::check() && Auth::user()->is_admin) {
-            return '/admin';
+        // Check if user is authenticated and get their role
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            // Redirect admin users to admin dashboard
+            if ($user->is_admin) {
+                return route('admin.dashboard');
+            }
+            
+            // Redirect regular users to user dashboard
+            return route('dashboard');
         }
 
-        return $this->redirectTo;
+        // Default fallback
+        return '/';
     }
+
 
     /**
      * Show forgot password form.

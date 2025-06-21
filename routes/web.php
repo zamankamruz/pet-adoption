@@ -161,10 +161,13 @@ Route::middleware('auth')->group(function () {
 
 
 // Admin Routes (Protected)
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/analytics', [AdminController::class, 'analytics'])->name('analytics');
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    Route::get('/contacts', [AdminController::class, 'contacts'])->name('contacts.index');
+    Route::get('/data', [AdminController::class, 'data'])->name('dashboard.data');
+
     
     // Admin Pet Management
     Route::prefix('pets')->name('pets.')->group(function () {
