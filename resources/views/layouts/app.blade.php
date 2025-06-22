@@ -51,7 +51,7 @@
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <a href="{{ route('rehoming.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome a Pet</a>
                             <a href="{{ route('rehoming.how-it-works') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
-                            <a href="{{ route('rehoming.faq') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome FAQ's</a>
+                            <a href="{{ route('rehoming.faq-rehomers') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome FAQ's</a>
                         </div>
                     </li>
                     

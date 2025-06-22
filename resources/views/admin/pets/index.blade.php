@@ -300,7 +300,7 @@
                     @if($pets->count() > 0)
                         <div class="bg-white rounded-lg shadow mb-6">
                             <div class="p-4">
-                                <form id="bulkActionForm" method="POST" action="{{ route('admin.pets.bulk-action') }}">
+                                <form id="bulkActionForm" method="POST" action="">
                                     @csrf
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center space-x-4">

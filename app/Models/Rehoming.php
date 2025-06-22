@@ -1,5 +1,5 @@
 <?php
-// File: Rehoming.php
+// File: Rehoming.php  
 // Path: /app/Models/Rehoming.php
 
 namespace App\Models;
@@ -16,32 +16,51 @@ class Rehoming extends Model
         'pet_name',
         'species',
         'breed',
-        'age',
+        'age_years',
         'gender',
         'size',
+        'color',
         'description',
         'reason_for_rehoming',
+        'how_long_keep',
         'good_with_kids',
         'good_with_pets',
-        'vaccination_status',
+        'good_with_dogs',
+        'good_with_cats',
         'spayed_neutered',
+        'shots_up_to_date',
+        'microchipped',
         'house_trained',
-        'special_needs',
-        'contact_preferences',
+        'purebred',
+        'has_special_needs',
+        'has_behavioral_issues',
+        'postcode',
+        'address_line_1',
+        'address_line_2',
+        'city',
+        'images',
+        'documents',
         'status',
-        'admin_notes',
         'step_completed',
         'submitted_at',
         'approved_at',
         'published_at',
+        'admin_notes',
     ];
 
     protected $casts = [
         'good_with_kids' => 'boolean',
-        'good_with_pets' => 'boolean',
+        'good_with_pets' => 'boolean', 
+        'good_with_dogs' => 'boolean',
+        'good_with_cats' => 'boolean',
         'spayed_neutered' => 'boolean',
         'house_trained' => 'boolean',
-        'contact_preferences' => 'array',
+        'purebred' => 'boolean',
+        'has_special_needs' => 'boolean',
+        'has_behavioral_issues' => 'boolean',
+        'microchipped' => 'boolean',
+        'images' => 'array',
+        'documents' => 'array',
         'submitted_at' => 'datetime',
         'approved_at' => 'datetime',
         'published_at' => 'datetime',
@@ -72,11 +91,16 @@ class Rehoming extends Model
     // Methods
     public function isComplete()
     {
-        return $this->step_completed >= 3;
+        return $this->step_completed >= 9;
     }
 
     public function canSubmit()
     {
         return $this->isComplete() && $this->status === 'draft';
+    }
+
+    public function getProgressPercentage()
+    {
+        return ($this->step_completed / 9) * 100;
     }
 }

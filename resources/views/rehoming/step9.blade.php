@@ -1,6 +1,6 @@
 <?php
-// File: step1.blade.php
-// Path: /resources/views/rehoming/step1.blade.php
+// File: step9.blade.php
+// Path: /resources/views/rehoming/step9.blade.php
 ?>
 
 @extends('layouts.app')
@@ -25,20 +25,20 @@
 
             <!-- Progress Steps -->
             <div class="flex items-center justify-between">
+                @for($i = 1; $i <= 8; $i++)
                 <div class="flex items-center">
-                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                        <span class="text-white text-sm font-bold">1</span>
-                    </div>
-                    <span class="ml-2 text-sm font-medium text-purple-600">Start</span>
-                </div>
-                
-                @for($i = 2; $i <= 9; $i++)
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span class="text-gray-600 text-sm">{{ $i }}</span>
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-check text-white text-xs"></i>
                     </div>
                 </div>
                 @endfor
+                
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-bold">9</span>
+                    </div>
+                    <span class="ml-2 text-sm font-medium text-purple-600">Confirm</span>
+                </div>
             </div>
         </div>
     </div>
@@ -67,17 +67,69 @@
                 </div>
             </div>
 
+            <!-- Pet Summary -->
+            <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Pet Summary</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <span class="text-sm text-gray-600">Pet Name:</span>
+                        <span class="ml-2 font-medium">{{ $rehoming->pet_name }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Species:</span>
+                        <span class="ml-2 font-medium">{{ ucfirst($rehoming->species) }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Breed:</span>
+                        <span class="ml-2 font-medium">{{ $rehoming->breed }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Age:</span>
+                        <span class="ml-2 font-medium">{{ $rehoming->age_years }} years</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Gender:</span>
+                        <span class="ml-2 font-medium">{{ ucfirst($rehoming->gender) }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Size:</span>
+                        <span class="ml-2 font-medium">{{ ucfirst($rehoming->size) }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Color:</span>
+                        <span class="ml-2 font-medium">{{ ucfirst($rehoming->color) }}</span>
+                    </div>
+                    <div>
+                        <span class="text-sm text-gray-600">Spayed/Neutered:</span>
+                        <span class="ml-2 font-medium">{{ ucfirst($rehoming->spayed_neutered) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Summary -->
+            <div class="bg-gray-50 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Location</h3>
+                <div class="text-gray-700">
+                    <div>{{ $rehoming->address_line_1 }}</div>
+                    @if($rehoming->address_line_2)
+                        <div>{{ $rehoming->address_line_2 }}</div>
+                    @endif
+                    <div>{{ $rehoming->city }}, {{ $rehoming->postcode }}</div>
+                </div>
+            </div>
+
             <!-- Terms and Conditions -->
-            <form method="POST" action="{{ route('rehoming.step1.store') }}">
+            <form method="POST" action="{{ route('rehoming.step9.store') }}">
                 @csrf
+                
                 <div class="mb-6">
                     <label class="flex items-start">
-                        <input type="checkbox" name="agree_terms" value="1" class="mt-1 mr-3 text-purple-600 focus:ring-purple-500" required>
+                        <input type="checkbox" name="final_terms" value="1" class="mt-1 mr-3 text-purple-600 focus:ring-purple-500" required>
                         <span class="text-sm text-gray-700">
                             I have read and agree to the <a href="#" class="text-purple-600 hover:underline">Terms and Privacy Policy</a>
                         </span>
                     </label>
-                    @error('agree_terms')
+                    @error('final_terms')
                         <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                     @enderror
                 </div>
@@ -88,11 +140,11 @@
 
                 <!-- Action Buttons -->
                 <div class="flex justify-between">
-                    <a href="{{ route('rehoming.index') }}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    <a href="{{ route('rehoming.step8') }}" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                         <i class="fas fa-arrow-left mr-2"></i> Back
                     </a>
                     <button type="submit" class="px-8 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                        Start
+                        Submit Application
                     </button>
                 </div>
             </form>

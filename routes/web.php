@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\AdminPetController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminAdoptionController;
 use App\Http\Controllers\Admin\AdminMessageController;
+use App\Http\Controllers\Admin\AdminSetupController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -89,27 +91,51 @@ Route::prefix('adoption')->name('adoption.')->group(function () {
 
 
 
-// Rehoming Routes
+// Add these routes to the existing rehoming routes in web.php
+
 Route::prefix('rehoming')->name('rehoming.')->group(function () {
     Route::get('/', [RehomingController::class, 'index'])->name('index');
     Route::get('/how-it-works', [RehomingController::class, 'howItWorks'])->name('how-it-works');
-    Route::get('/faq/rehomers', [RehomingController::class, 'faqRehomers'])->name('faq');
+    Route::get('/faq-rehomers', [RehomingController::class, 'faqRehomers'])->name('faq-rehomers');
     
     // Protected rehoming routes
     Route::middleware('auth')->group(function () {
         Route::get('/start', [RehomingController::class, 'start'])->name('start');
+        
+        // All 9 steps
         Route::get('/step1', [RehomingController::class, 'step1'])->name('step1');
         Route::post('/step1', [RehomingController::class, 'storeStep1'])->name('step1.store');
+        
         Route::get('/step2', [RehomingController::class, 'step2'])->name('step2');
         Route::post('/step2', [RehomingController::class, 'storeStep2'])->name('step2.store');
+        
         Route::get('/step3', [RehomingController::class, 'step3'])->name('step3');
         Route::post('/step3', [RehomingController::class, 'storeStep3'])->name('step3.store');
+        
+        Route::get('/step4', [RehomingController::class, 'step4'])->name('step4');
+        Route::post('/step4', [RehomingController::class, 'storeStep4'])->name('step4.store');
+        
+        Route::get('/step5', [RehomingController::class, 'step5'])->name('step5');
+        Route::post('/step5', [RehomingController::class, 'storeStep5'])->name('step5.store');
+        
+        Route::get('/step6', [RehomingController::class, 'step6'])->name('step6');
+        Route::post('/step6', [RehomingController::class, 'storeStep6'])->name('step6.store');
+        
+        Route::get('/step7', [RehomingController::class, 'step7'])->name('step7');
+        Route::post('/step7', [RehomingController::class, 'storeStep7'])->name('step7.store');
+        
+        Route::get('/step8', [RehomingController::class, 'step8'])->name('step8');
+        Route::post('/step8', [RehomingController::class, 'storeStep8'])->name('step8.store');
+        
+        Route::get('/step9', [RehomingController::class, 'step9'])->name('step9');
+        Route::post('/step9', [RehomingController::class, 'storeStep9'])->name('step9.store');
+        
         Route::get('/complete', [RehomingController::class, 'complete'])->name('complete');
         Route::get('/my-pets', [RehomingController::class, 'myPets'])->name('my-pets');
-        Route::get('/my-pets/{pet}', [RehomingController::class, 'showMyPet'])->name('my-pets.show');
-        Route::get('/my-pets/{pet}/edit', [RehomingController::class, 'editMyPet'])->name('my-pets.edit');
-        Route::put('/my-pets/{pet}', [RehomingController::class, 'updateMyPet'])->name('my-pets.update');
-        Route::delete('/my-pets/{pet}', [RehomingController::class, 'deleteMyPet'])->name('my-pets.delete');
+        Route::get('/my-pets/{rehoming}', [RehomingController::class, 'showMyPet'])->name('my-pets.show');
+        Route::get('/my-pets/{rehoming}/edit', [RehomingController::class, 'editMyPet'])->name('my-pets.edit');
+        Route::put('/my-pets/{rehoming}', [RehomingController::class, 'updateMyPet'])->name('my-pets.update');
+        Route::delete('/my-pets/{rehoming}', [RehomingController::class, 'deleteMyPet'])->name('my-pets.delete');
     });
 });
 
@@ -152,8 +178,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/adoptions', [UserController::class, 'adoptions'])->name('adoptions');
         Route::get('/adoptions/{adoption}', [UserController::class, 'showAdoption'])->name('adoptions.show');
         
-        // Rehomed Pets
-        Route::get('/rehomed', [UserController::class, 'rehomedPets'])->name('rehomed');
+
     });
 });
 
@@ -211,7 +236,14 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::get('/{adoption}/documents', [AdminAdoptionController::class, 'documents'])->name('documents');
         Route::post('/{adoption}/notes', [AdminAdoptionController::class, 'addNote'])->name('notes');
     });
-    
+
+
+        Route::get('/admin/setup-data', [AdminSetupController::class, 'index'])->name('setup.index');
+        Route::post('/admin/setup-category', [AdminSetupController::class, 'storeCategory'])->name('setup.category');
+        Route::post('/admin/setup-breed', [AdminSetupController::class, 'storeBreed'])->name('setup.breed');
+        Route::post('/admin/setup-location', [AdminSetupController::class, 'storeLocation'])->name('setup.location');
+
+        
     // Admin Message Management
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [AdminMessageController::class, 'index'])->name('index');

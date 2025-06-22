@@ -386,7 +386,7 @@
                 We're here to help you through this difficult process with care and compassion.
             </p>
             <div class="hero-buttons">
-                <a href="{{ route('rehoming.start') }}" class="btn btn-primary">
+                <a href="{{ route('rehoming.step1') }}" class="btn btn-primary">
                     <i class="fas fa-paw"></i>
                     Start Rehoming Process
                 </a>

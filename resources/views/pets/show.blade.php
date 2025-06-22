@@ -614,12 +614,6 @@
                         @endif
                     </button>
                 @endif
-                
-                <a href="{{ route('user.messages.create', ['user' => $pet->owner_id, 'pet' => $pet->id]) }}" 
-                   class="contact-btn">
-                    <i class="fas fa-envelope"></i>
-                    Contact Owner
-                </a>
             </div>
 
             <!-- Vaccination Schedule -->

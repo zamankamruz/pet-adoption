@@ -99,8 +99,8 @@ class AdminPetController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'species' => 'required|string',
-            'breed_id' => 'required|exists:breeds,id',
-            'category_id' => 'required|exists:categories,id',
+            'breed_id' => '|exists:breeds,id',
+            'category_id' => '|exists:categories,id',
             'age_years' => 'required|integer|min:0|max:30',
             'age_months' => 'required|integer|min:0|max:11',
             'gender' => 'required|in:male,female',
@@ -114,10 +114,11 @@ class AdminPetController extends Controller
             'good_with_strangers' => 'boolean',
             'energy_level' => 'required|in:low,moderate,high',
             'training_level' => 'required|in:none,basic,intermediate,advanced',
+            
             'health_status' => 'required|string',
             'special_needs' => 'nullable|string',
             'adoption_fee' => 'required|numeric|min:0',
-            'location_id' => 'required|exists:locations,id',
+            'location_id' => '|exists:locations,id',
             'vaccination_status' => 'required|in:up_to_date,partial,none,unknown',
             'spayed_neutered' => 'boolean',
             'house_trained' => 'boolean',
