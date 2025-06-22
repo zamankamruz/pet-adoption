@@ -218,6 +218,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::get('/{conversation}', [AdminMessageController::class, 'show'])->name('show');
         Route::delete('/{message}', [AdminMessageController::class, 'delete'])->name('delete');
         Route::post('/broadcast', [AdminMessageController::class, 'broadcast'])->name('broadcast');
+        Route::get('/conversations', [AdminMessageController::class, 'conversations'])->name('conversations');
+
     });
     
     // Admin Settings

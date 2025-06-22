@@ -1,5 +1,5 @@
 <?php
-// File: dashboard.blade.php
+// File: dashboard.blade.php  
 // Path: /resources/views/admin/dashboard.blade.php
 ?>
 
@@ -11,7 +11,7 @@
 <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
     <div class="hidden md:flex md:flex-shrink-0">
-        <div class="flex flex-col w-64">
+        <div class="flex flex-col w-50">
             <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0 px-4">
@@ -149,7 +149,7 @@
             <!-- Page title and user menu -->
             <div class="flex-1 px-4 flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                    <h1 class="text-sm font-bold text-gray-900">Dashboard</h1>
                 </div>
                 
                 <!-- User Menu -->
@@ -207,19 +207,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                         <!-- Total Pets -->
                         <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-blue-500">
-                            <div class="p-6">
+                            <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12C3.12 12 2 13.12 2 14.5S3.12 17 4.5 17 7 15.88 7 14.5 5.88 12 4.5 12M19.5 12C18.12 12 17 13.12 17 14.5S18.12 17 19.5 17 22 15.88 22 14.5 20.88 12 19.5 12M12 3.5C10.62 3.5 9.5 4.62 9.5 6S10.62 8.5 12 8.5 14.5 7.38 14.5 6 13.38 3.5 12 3.5M12 20.5C10.9 20.5 10 19.6 10 18.5S10.9 16.5 12 16.5 14 17.4 14 18.5 13.1 20.5 12 20.5Z"/>
                                             </svg>
                                         </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <h3 class="text-lg font-semibold text-gray-900">Total Pets</h3>
-                                        <p class="text-3xl font-bold text-blue-600">{{ number_format($stats['total_pets']) }}</p>
-                                        <p class="text-sm text-gray-600">{{ $stats['available_pets'] }} available</p>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Total Pets</h3>
+                                        <p class="text-xl font-bold text-blue-600">{{ number_format($stats['total_pets']) }}</p>
+                                        <p class="text-xs text-gray-600">{{ $stats['available_pets'] }} available</p>
                                     </div>
                                 </div>
                             </div>
@@ -227,19 +227,19 @@
 
                         <!-- Total Users -->
                         <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-green-500">
-                            <div class="p-6">
+                            <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
                                             </svg>
                                         </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <h3 class="text-lg font-semibold text-gray-900">Total Users</h3>
-                                        <p class="text-3xl font-bold text-green-600">{{ number_format($stats['total_users']) }}</p>
-                                        <p class="text-sm text-gray-600">{{ $stats['verified_users'] }} verified</p>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Total Users</h3>
+                                        <p class="text-xl font-bold text-green-600">{{ number_format($stats['total_users']) }}</p>
+                                        <p class="text-xs text-gray-600">{{ $stats['verified_users'] }} verified</p>
                                     </div>
                                 </div>
                             </div>
@@ -247,19 +247,19 @@
 
                         <!-- Pending Adoptions -->
                         <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-yellow-500">
-                            <div class="p-6">
+                            <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                         </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <h3 class="text-lg font-semibold text-gray-900">Pending Adoptions</h3>
-                                        <p class="text-3xl font-bold text-yellow-600">{{ number_format($stats['pending_adoptions']) }}</p>
-                                        <p class="text-sm text-gray-600">Need review</p>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Pending Adoptions</h3>
+                                        <p class="text-xl font-bold text-yellow-600">{{ number_format($stats['pending_adoptions']) }}</p>
+                                        <p class="text-xs text-gray-600">Need review</p>
                                     </div>
                                 </div>
                             </div>
@@ -267,19 +267,19 @@
 
                         <!-- Completed Adoptions -->
                         <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-purple-500">
-                            <div class="p-6">
+                            <div class="p-5">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0">
-                                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                                             </svg>
                                         </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <h3 class="text-lg font-semibold text-gray-900">Successful Adoptions</h3>
-                                        <p class="text-3xl font-bold text-purple-600">{{ number_format($stats['completed_adoptions']) }}</p>
-                                        <p class="text-sm text-gray-600">Happy families created</p>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Successful Adoptions</h3>
+                                        <p class="text-xl font-bold text-purple-600">{{ number_format($stats['completed_adoptions']) }}</p>
+                                        <p class="text-xs text-gray-600">Happy families created</p>
                                     </div>
                                 </div>
                             </div>
