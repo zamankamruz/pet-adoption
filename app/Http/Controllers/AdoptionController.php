@@ -6,6 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Pet;
 use App\Models\Adoption;
+use App\Models\Breed;
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\PetImage;
 use App\Http\Requests\AdoptionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -14,22 +18,104 @@ use App\Notifications\AdoptionRequestNotification;
 
 class AdoptionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $featuredPets = Pet::with(['breed', 'location'])
-            ->available()
-            ->featured()
-            ->take(6)
-            ->get();
+        $query = Pet::with(['breed', 'category', 'location', 'images'])
+            ->available();
 
-        $recentPets = Pet::with(['breed', 'location'])
-            ->available()
-            ->latest()
-            ->take(8)
-            ->get();
+        // Apply filters
+        if ($request->filled('species')) {
+            $query->where('species', $request->species);
+        }
 
-        return view('adoption.index', compact('featuredPets', 'recentPets'));
+        if ($request->filled('breed_id')) {
+            $query->where('breed_id', $request->breed_id);
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('size')) {
+            $query->whereIn('size', (array) $request->size);
+        }
+
+        if ($request->filled('age_min') && $request->filled('age_max')) {
+            $query->whereBetween('age_years', [$request->age_min, $request->age_max]);
+        }
+
+        if ($request->filled('location_id')) {
+            $query->where('location_id', $request->location_id);
+        }
+
+        if ($request->filled('good_with_kids')) {
+            $query->where('good_with_kids', true);
+        }
+
+        if ($request->filled('good_with_pets')) {
+            $query->where('good_with_pets', true);
+        }
+
+        if ($request->filled('gender')) {
+            $query->whereIn('gender', (array) $request->gender);
+        }
+
+        if ($request->filled('color')) {
+            $query->whereIn('color', (array) $request->color);
+        }
+
+        // Sorting
+        $sortBy = $request->get('sort', 'latest');
+        switch ($sortBy) {
+            case 'name':
+                $query->orderBy('name');
+                break;
+            case 'age':
+                $query->orderBy('age_years')->orderBy('age_months');
+                break;
+            case 'featured':
+                $query->orderByDesc('is_featured')->orderByDesc('created_at');
+                break;
+            case 'urgent':
+                $query->orderByDesc('is_urgent')->orderByDesc('created_at');
+                break;
+            default:
+                $query->orderByDesc('created_at');
+        }
+
+        $pets = $query->paginate(12)->withQueryString();
+        
+        // Get filter options
+        $breeds = Breed::active()->orderBy('name')->get();
+        $locations = Location::active()->orderBy('city')->get();
+        $categories = Category::active()->orderBy('name')->get();
+
+        return view('adoption.index', compact('pets', 'breeds', 'locations', 'categories'));
     }
+
+
+
+        public function show(Pet $pet)
+    {
+        // Increment view count
+        $pet->increment('views_count');
+        $pet->update(['last_viewed_at' => now()]);
+
+        $pet->load(['breed', 'category', 'location', 'images', 'vaccinations', 'owner']);
+        
+        $similarPets = Pet::where('id', '!=', $pet->id)
+            ->where('breed_id', $pet->breed_id)
+            ->available()
+            ->take(4)
+            ->get();
+
+        $canAdopt = auth()->check() && $pet->canBeAdoptedBy(auth()->user());
+        $isFavorited = auth()->check() && auth()->user()->hasFavorited($pet);
+
+        return view('adoption.show', compact('pet', 'similarPets', 'canAdopt', 'isFavorited'));
+    }
+
+
 
     public function howItWorks()
     {

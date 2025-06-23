@@ -1,82 +1,77 @@
 <?php
 // File: show.blade.php
-// Path: /resources/views/adoption/show.blade.php
+// Path: /resources/views/pets/show.blade.php
 ?>
 
 @extends('layouts.app')
 
 @section('content')
 <style>
-    .adoption-detail-container {
+    .pet-detail-container {
         background: #f8fafc;
         min-height: 100vh;
         padding: 2rem 0;
     }
     
-    .adoption-header {
+    .pet-header {
         background: white;
         padding: 2rem 0;
         margin-bottom: 2rem;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    .adoption-header .container {
+    .pet-header .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
     }
     
-    .breadcrumb {
+    .pet-breadcrumb {
         color: #6b7280;
         margin-bottom: 1rem;
     }
     
-    .breadcrumb a {
+    .pet-breadcrumb a {
         color: #8B5CF6;
         text-decoration: none;
     }
     
-    .adoption-title {
+    .pet-title-section {
         display: flex;
         align-items: center;
         gap: 1rem;
-        margin-bottom: 1rem;
     }
     
-    .status-badge {
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-transform: uppercase;
+    .pet-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #8B5CF6;
     }
     
-    .status-pending {
-        background: #fef3c7;
-        color: #92400e;
+    .pet-title-info h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
     }
     
-    .status-approved {
-        background: #d1fae5;
-        color: #065f46;
-    }
-    
-    .status-rejected {
-        background: #fee2e2;
-        color: #dc2626;
-    }
-    
-    .status-completed {
-        background: #e0e7ff;
-        color: #3730a3;
-    }
-    
-    .reference-number {
+    .pet-id {
         color: #6b7280;
         font-size: 1rem;
+        margin-bottom: 0.5rem;
     }
     
-    .adoption-content {
+    .pet-location-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #8B5CF6;
+        font-weight: 500;
+    }
+    
+    .pet-content {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 1rem;
@@ -85,113 +80,153 @@
         gap: 2rem;
     }
     
-    .adoption-main {
+    .pet-main {
         background: white;
         border-radius: 15px;
         overflow: hidden;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
     
-    .pet-summary {
-        padding: 2rem;
-        background: linear-gradient(135deg, #f8fafc, #e5e7eb);
-        border-bottom: 1px solid #e5e7eb;
+    .pet-image-gallery {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
     }
     
-    .pet-info-row {
-        display: flex;
-        align-items: center;
-        gap: 1.5rem;
-    }
-    
-    .pet-image {
-        width: 120px;
-        height: 120px;
-        border-radius: 15px;
+    .main-image {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        border: 3px solid #8B5CF6;
     }
     
-    .pet-details h2 {
-        font-size: 1.8rem;
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 0.5rem;
+    .image-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        border: none;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        transition: all 0.3s;
     }
     
-    .pet-details .pet-breed {
-        color: #8B5CF6;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
+    .image-nav:hover {
+        background: rgba(0,0,0,0.7);
     }
     
-    .pet-details .pet-location {
-        color: #6b7280;
+    .image-nav.prev {
+        left: 1rem;
+    }
+    
+    .image-nav.next {
+        right: 1rem;
+    }
+    
+    .favorite-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255,255,255,0.9);
+        border: none;
+        padding: 0.75rem;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: all 0.3s;
+    }
+    
+    .favorite-btn:hover {
+        background: #8B5CF6;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .favorite-btn.favorited {
+        background: #ef4444;
+        color: white;
+    }
+    
+    .image-thumbnails {
         display: flex;
-        align-items: center;
-        gap: 0.25rem;
+        gap: 0.5rem;
+        padding: 1rem;
+        overflow-x: auto;
     }
     
-    .application-details {
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .thumbnail.active {
+        opacity: 1;
+        border-color: #8B5CF6;
+    }
+    
+    .pet-info-section {
         padding: 2rem;
     }
     
-    .section-title {
-        font-size: 1.3rem;
+    .pet-story h2 {
+        font-size: 1.5rem;
         font-weight: bold;
         color: #1f2937;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f1f5f9;
+        margin-bottom: 1rem;
     }
     
-    .form-section {
+    .pet-description {
+        color: #6b7280;
+        line-height: 1.6;
         margin-bottom: 2rem;
     }
     
-    .form-section h4 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 1rem;
+    .pet-characteristics {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
     }
     
-    .form-data {
+    .characteristic {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
         background: #f8fafc;
         border-radius: 10px;
-        padding: 1.5rem;
         border-left: 4px solid #8B5CF6;
     }
     
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        align-items: start;
+    .characteristic i {
+        font-size: 1.5rem;
+        color: #8B5CF6;
     }
     
-    .form-row:last-child {
-        margin-bottom: 0;
+    .characteristic.active i {
+        color: #10b981;
     }
     
-    .form-label {
+    .characteristic-text {
         font-weight: 500;
         color: #374151;
     }
     
-    .form-value {
-        color: #6b7280;
-        word-wrap: break-word;
-    }
-    
-    .adoption-sidebar {
+    .pet-sidebar {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
     }
     
-    .info-card {
+    .pet-info-card {
         background: white;
         border-radius: 15px;
         padding: 1.5rem;
@@ -205,427 +240,506 @@
         margin-bottom: 1rem;
     }
     
-    .timeline {
-        position: relative;
-    }
-    
-    .timeline-item {
-        position: relative;
-        padding-left: 2rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .timeline-item:last-child {
-        margin-bottom: 0;
-    }
-    
-    .timeline-item::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0.5rem;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #e5e7eb;
-    }
-    
-    .timeline-item.completed::before {
-        background: #10b981;
-    }
-    
-    .timeline-item.current::before {
-        background: #8B5CF6;
-    }
-    
-    .timeline-item::after {
-        content: '';
-        position: absolute;
-        left: 5px;
-        top: 1.25rem;
-        width: 2px;
-        height: calc(100% + 0.5rem);
-        background: #e5e7eb;
-    }
-    
-    .timeline-item:last-child::after {
-        display: none;
-    }
-    
-    .timeline-date {
-        font-size: 0.9rem;
-        color: #6b7280;
-        margin-bottom: 0.25rem;
-    }
-    
-    .timeline-title {
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 0.25rem;
-    }
-    
-    .timeline-description {
-        font-size: 0.9rem;
-        color: #6b7280;
-    }
-    
-    .action-buttons {
-        display: flex;
-        flex-direction: column;
+    .pet-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
     
-    .btn {
-        padding: 0.75rem 1rem;
-        border-radius: 8px;
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 10px;
+    }
+    
+    .stat-icon {
+        font-size: 1.5rem;
+        color: #8B5CF6;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+    }
+    
+    .stat-value {
+        font-weight: bold;
+        color: #1f2937;
+    }
+    
+    .adoption-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #8B5CF6, #A855F7);
+        color: white;
+        border: none;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        font-size: 1.1rem;
         font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
         text-decoration: none;
         display: block;
         text-align: center;
-        transition: all 0.3s;
-        border: none;
-        cursor: pointer;
+        margin-bottom: 1rem;
     }
     
-    .btn-primary {
-        background: linear-gradient(135deg, #8B5CF6, #A855F7);
-        color: white;
-    }
-    
-    .btn-primary:hover {
+    .adoption-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
     }
     
-    .btn-outline {
-        background: transparent;
-        border: 2px solid #8B5CF6;
-        color: #8B5CF6;
-    }
-    
-    .btn-outline:hover {
-        background: #8B5CF6;
-        color: white;
-    }
-    
-    .btn-danger {
-        background: transparent;
-        border: 2px solid #ef4444;
-        color: #ef4444;
-    }
-    
-    .btn-danger:hover {
-        background: #ef4444;
-        color: white;
-    }
-    
-    .btn:disabled {
+    .adoption-btn:disabled {
         opacity: 0.6;
         cursor: not-allowed;
         transform: none;
     }
     
-    .contact-info {
-        border-top: 1px solid #e5e7eb;
-        padding-top: 1rem;
+    .contact-btn {
+        width: 100%;
+        background: transparent;
+        border: 2px solid #8B5CF6;
+        color: #8B5CF6;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+    
+    .contact-btn:hover {
+        background: #8B5CF6;
+        color: white;
+    }
+    
+    .vaccination-schedule {
+        margin-top: 1.5rem;
+    }
+    
+    .vaccination-table {
+        width: 100%;
+        border-collapse: collapse;
         margin-top: 1rem;
     }
     
-    .contact-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+    .vaccination-table th,
+    .vaccination-table td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .vaccination-table th {
+        background: #f8fafc;
+        font-weight: 600;
+        color: #374151;
+    }
+    
+    .vaccination-table td {
+        color: #6b7280;
+    }
+    
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .status-completed {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .status-due {
+        background: #fef3c7;
+        color: #92400e;
+    }
+    
+    .similar-pets {
+        margin-top: 2rem;
+        padding: 2rem 0;
+        background: white;
+    }
+    
+    .similar-pets .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .similar-pets h2 {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 2rem;
+    }
+    
+    .similar-pets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .similar-pet-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+    }
+    
+    .similar-pet-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .similar-pet-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    
+    .similar-pet-info {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .similar-pet-name {
+        font-weight: bold;
+        color: #1f2937;
         margin-bottom: 0.5rem;
+    }
+    
+    .similar-pet-details {
         color: #6b7280;
         font-size: 0.9rem;
-    }
-    
-    .admin-notes {
-        background: #fef3c7;
-        border: 1px solid #f59e0b;
-        border-radius: 8px;
-        padding: 1rem;
-        margin-top: 1rem;
-    }
-    
-    .admin-notes h5 {
-        color: #92400e;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    .admin-notes p {
-        color: #92400e;
-        margin: 0;
-        font-size: 0.9rem;
+        margin-bottom: 1rem;
     }
     
     @media (max-width: 1024px) {
-        .adoption-content {
+        .pet-content {
             grid-template-columns: 1fr;
         }
         
-        .adoption-sidebar {
+        .pet-sidebar {
             order: -1;
         }
     }
     
     @media (max-width: 768px) {
-        .pet-info-row {
+        .pet-title-section {
             flex-direction: column;
             text-align: center;
         }
         
-        .form-row {
-            grid-template-columns: 1fr;
-            gap: 0.5rem;
+        .pet-title-info h1 {
+            font-size: 2rem;
         }
         
-        .adoption-title {
-            flex-direction: column;
-            align-items: flex-start;
+        .pet-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .pet-characteristics {
+            grid-template-columns: 1fr;
+        }
+        
+        .image-thumbnails {
+            justify-content: center;
         }
     }
 </style>
 
-<div class="adoption-detail-container">
-    <!-- Header -->
-    <div class="adoption-header">
+<div class="pet-detail-container">
+    <!-- Pet Header -->
+    <div class="pet-header">
         <div class="container">
-            <div class="breadcrumb">
+            <div class="pet-breadcrumb">
                 <a href="{{ route('home') }}">Home</a> > 
-                <a href="{{ route('adoption.requests') }}">My Adoptions</a> > 
-                Adoption Request
+                <a href="{{ route('pets.index') }}">Adopt</a> > 
+                {{ $pet->name }}
             </div>
             
-            <div class="adoption-title">
-                <h1>Adoption Request for {{ $adoption->pet->name }}</h1>
-                <span class="status-badge status-{{ $adoption->status }}">
-                    {{ ucfirst($adoption->status) }}
-                </span>
-            </div>
-            
-            <div class="reference-number">
-                Reference: {{ $adoption->reference_number }}
+            <div class="pet-title-section">
+                <img src="{{ $pet->main_image_url }}" alt="{{ $pet->name }}" class="pet-avatar">
+                <div class="pet-title-info">
+                    <h1>{{ $pet->name }}</h1>
+                    <div class="pet-id">Pet ID: {{ str_pad($pet->id, 7, '0', STR_PAD_LEFT) }}</div>
+                    <div class="pet-location-header">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ $pet->location->city }}, {{ $pet->location->state }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Content -->
-    <div class="adoption-content">
+    <!-- Pet Content -->
+    <div class="pet-content">
         <!-- Main Content -->
-        <div class="adoption-main">
-            <!-- Pet Summary -->
-            <div class="pet-summary">
-                <div class="pet-info-row">
-                    <img src="{{ $adoption->pet->main_image_url }}" alt="{{ $adoption->pet->name }}" class="pet-image">
-                    <div class="pet-details">
-                        <h2>{{ $adoption->pet->name }}</h2>
-                        <div class="pet-breed">{{ $adoption->pet->breed->name }}</div>
-                        <div class="pet-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ $adoption->pet->location->city }}, {{ $adoption->pet->location->state }}
-                        </div>
-                        <div style="margin-top: 1rem;">
-                            <a href="{{ route('pets.show', $adoption->pet) }}" class="btn btn-outline" style="display: inline-block; padding: 0.5rem 1rem;">
-                                <i class="fas fa-eye"></i>
-                                View Pet Details
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        <div class="pet-main">
+            <!-- Image Gallery -->
+            <div class="pet-image-gallery">
+                <img src="{{ $pet->main_image_url }}" alt="{{ $pet->name }}" class="main-image" id="mainImage">
+                
+                @if($pet->getAllImages()->count() > 1)
+                    <button class="image-nav prev" onclick="previousImage()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="image-nav next" onclick="nextImage()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                @endif
+                
+                <button class="favorite-btn {{ $isFavorited ? 'favorited' : '' }}" 
+                        onclick="toggleFavorite({{ $pet->id }}, this)">
+                    <i class="fas fa-heart"></i>
+                </button>
             </div>
 
-            <!-- Application Details -->
-            <div class="application-details">
-                <h3 class="section-title">Application Details</h3>
+            @if($pet->getAllImages()->count() > 1)
+                <div class="image-thumbnails">
+                    @foreach($pet->getAllImages() as $index => $image)
+                        <img src="{{ $image['url'] }}" 
+                             alt="{{ $pet->name }}" 
+                             class="thumbnail {{ $index === 0 ? 'active' : '' }}"
+                             onclick="showImage({{ $index }}, '{{ $image['url'] }}', this)">
+                    @endforeach
+                </div>
+            @endif
 
-                <div class="form-section">
-                    <h4>Personal Information</h4>
-                    <div class="form-data">
-                        <div class="form-row">
-                            <div class="form-label">Full Name:</div>
-                            <div class="form-value">{{ $adoption->application_data['full_name'] ?? 'N/A' }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Email:</div>
-                            <div class="form-value">{{ $adoption->application_data['email'] ?? 'N/A' }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Phone:</div>
-                            <div class="form-value">{{ $adoption->application_data['phone'] ?? 'N/A' }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Address:</div>
-                            <div class="form-value">{{ $adoption->application_data['address'] ?? 'N/A' }}</div>
-                        </div>
-                    </div>
+            <!-- Pet Information -->
+            <div class="pet-info-section">
+                <div class="pet-story">
+                    <h2>{{ $pet->name }}'s Story</h2>
+                    <p class="pet-description">{{ $pet->description }}</p>
+                    
+                    @if($pet->personality)
+                        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #374151;">Personality</h3>
+                        <p class="pet-description">{{ $pet->personality }}</p>
+                    @endif
                 </div>
 
-                <div class="form-section">
-                    <h4>Housing Information</h4>
-                    <div class="form-data">
-                        <div class="form-row">
-                            <div class="form-label">Housing Type:</div>
-                            <div class="form-value">{{ ucfirst($adoption->application_data['housing_type'] ?? 'N/A') }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Own or Rent:</div>
-                            <div class="form-value">{{ ucfirst($adoption->application_data['own_rent'] ?? 'N/A') }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Yard:</div>
-                            <div class="form-value">{{ $adoption->application_data['has_yard'] ? 'Yes' : 'No' }}</div>
-                        </div>
-                        @if($adoption->application_data['has_yard'] ?? false)
-                            <div class="form-row">
-                                <div class="form-label">Yard Type:</div>
-                                <div class="form-value">{{ ucfirst($adoption->application_data['yard_type'] ?? 'N/A') }}</div>
-                            </div>
-                        @endif
+                <div class="pet-characteristics">
+                    <div class="characteristic {{ $pet->good_with_kids ? 'active' : '' }}">
+                        <i class="fas fa-child"></i>
+                        <span class="characteristic-text">
+                            {{ $pet->good_with_kids ? 'Good with kids' : 'Not suitable for kids' }}
+                        </span>
+                    </div>
+                    <div class="characteristic {{ $pet->good_with_pets ? 'active' : '' }}">
+                        <i class="fas fa-paw"></i>
+                        <span class="characteristic-text">
+                            {{ $pet->good_with_pets ? 'Good with pets' : 'Prefers to be alone' }}
+                        </span>
+                    </div>
+                    <div class="characteristic {{ $pet->house_trained ? 'active' : '' }}">
+                        <i class="fas fa-home"></i>
+                        <span class="characteristic-text">
+                            {{ $pet->house_trained ? 'House trained' : 'Needs house training' }}
+                        </span>
+                    </div>
+                    <div class="characteristic {{ $pet->spayed_neutered ? 'active' : '' }}">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="characteristic-text">
+                            {{ $pet->spayed_neutered ? 'Spayed/Neutered' : 'Not spayed/neutered' }}
+                        </span>
                     </div>
                 </div>
-
-                <div class="form-section">
-                    <h4>Experience & Preferences</h4>
-                    <div class="form-data">
-                        <div class="form-row">
-                            <div class="form-label">Previous Pet Experience:</div>
-                            <div class="form-value">{{ $adoption->application_data['previous_pets'] ? 'Yes' : 'No' }}</div>
-                        </div>
-                        @if($adoption->application_data['previous_pets'] ?? false)
-                            <div class="form-row">
-                                <div class="form-label">Previous Pet Details:</div>
-                                <div class="form-value">{{ $adoption->application_data['previous_pets_details'] ?? 'N/A' }}</div>
-                            </div>
-                        @endif
-                        <div class="form-row">
-                            <div class="form-label">Current Pets:</div>
-                            <div class="form-value">{{ $adoption->application_data['current_pets'] ?? 'None' }}</div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label">Reason for Adoption:</div>
-                            <div class="form-value">{{ $adoption->application_data['adoption_reason'] ?? 'N/A' }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                @if($adoption->admin_notes)
-                    <div class="admin-notes">
-                        <h5>Administrator Notes</h5>
-                        <p>{{ $adoption->admin_notes }}</p>
-                    </div>
-                @endif
-
-                @if($adoption->rejection_reason && $adoption->status === 'rejected')
-                    <div class="admin-notes" style="background: #fee2e2; border-color: #ef4444;">
-                        <h5 style="color: #dc2626;">Rejection Reason</h5>
-                        <p style="color: #dc2626;">{{ $adoption->rejection_reason }}</p>
-                    </div>
-                @endif
             </div>
         </div>
 
         <!-- Sidebar -->
-        <div class="adoption-sidebar">
-            <!-- Status Timeline -->
-            <div class="info-card">
-                <h3 class="card-title">Application Status</h3>
-                <div class="timeline">
-                    <div class="timeline-item completed">
-                        <div class="timeline-date">{{ $adoption->requested_at->format('M d, Y') }}</div>
-                        <div class="timeline-title">Application Submitted</div>
-                        <div class="timeline-description">Your adoption request was received</div>
+        <div class="pet-sidebar">
+            <!-- Pet Stats -->
+            <div class="pet-info-card">
+                <h3 class="card-title">Pet Details</h3>
+                <div class="pet-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-venus-mars"></i></div>
+                        <div class="stat-label">Gender</div>
+                        <div class="stat-value">{{ ucfirst($pet->gender) }}</div>
                     </div>
-                    
-                    @if($adoption->status === 'approved' || $adoption->status === 'completed')
-                        <div class="timeline-item completed">
-                            <div class="timeline-date">{{ $adoption->approved_at->format('M d, Y') }}</div>
-                            <div class="timeline-title">Application Approved</div>
-                            <div class="timeline-description">Your application has been approved</div>
-                        </div>
-                    @elseif($adoption->status === 'rejected')
-                        <div class="timeline-item completed">
-                            <div class="timeline-date">{{ $adoption->rejected_at->format('M d, Y') }}</div>
-                            <div class="timeline-title">Application Rejected</div>
-                            <div class="timeline-description">Your application was not approved</div>
-                        </div>
-                    @else
-                        <div class="timeline-item current">
-                            <div class="timeline-date">Pending</div>
-                            <div class="timeline-title">Under Review</div>
-                            <div class="timeline-description">We're reviewing your application</div>
-                        </div>
-                    @endif
-                    
-                    @if($adoption->status === 'completed')
-                        <div class="timeline-item completed">
-                            <div class="timeline-date">{{ $adoption->completed_at->format('M d, Y') }}</div>
-                            <div class="timeline-title">Adoption Completed</div>
-                            <div class="timeline-description">Welcome to the family!</div>
-                        </div>
-                    @elseif($adoption->status === 'approved')
-                        <div class="timeline-item current">
-                            <div class="timeline-date">Pending</div>
-                            <div class="timeline-title">Final Steps</div>
-                            <div class="timeline-description">Complete the adoption process</div>
-                        </div>
-                    @endif
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-birthday-cake"></i></div>
+                        <div class="stat-label">Age</div>
+                        <div class="stat-value">{{ $pet->age_display }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-ruler"></i></div>
+                        <div class="stat-label">Size</div>
+                        <div class="stat-value">{{ ucfirst($pet->size) }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-palette"></i></div>
+                        <div class="stat-label">Color</div>
+                        <div class="stat-value">{{ $pet->color }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-weight"></i></div>
+                        <div class="stat-label">Weight</div>
+                        <div class="stat-value">{{ $pet->weight ? $pet->weight . ' lbs' : 'Unknown' }}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon"><i class="fas fa-dna"></i></div>
+                        <div class="stat-label">Breed</div>
+                        <div class="stat-value">{{ $pet->breed->name }}</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Actions -->
-            <div class="info-card">
-                <h3 class="card-title">Actions</h3>
-                <div class="action-buttons">
-                    @if($adoption->status === 'pending')
-                        <form method="POST" action="{{ route('adoption.requests.cancel', $adoption) }}" 
-                              onsubmit="return confirm('Are you sure you want to cancel this adoption request?')">
-                            @csrf
-                            <button type="submit" class="btn btn-danger">
-                                <i class="fas fa-times"></i>
-                                Cancel Request
-                            </button>
-                        </form>
-                    @endif
-                    
-                    <a href="{{ route('user.messages.create', ['user' => $adoption->pet->owner_id, 'pet' => $adoption->pet_id]) }}" 
-                       class="btn btn-outline">
-                        <i class="fas fa-envelope"></i>
-                        Contact Owner
+            <!-- Adoption Actions -->
+            <div class="pet-info-card">
+                @if($canAdopt)
+                    <a href="{{ route('adoption.request', $pet) }}" class="adoption-btn">
+                        <i class="fas fa-heart"></i>
+                        Adopt {{ $pet->name }}
                     </a>
-                    
-                    <a href="{{ route('pets.show', $adoption->pet) }}" class="btn btn-outline">
-                        <i class="fas fa-eye"></i>
-                        View Pet Details
-                    </a>
-                </div>
+                @else
+                    <button class="adoption-btn" disabled>
+                        @if(!auth()->check())
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login to Adopt
+                        @else
+                            <i class="fas fa-clock"></i>
+                            Adoption Pending
+                        @endif
+                    </button>
+                @endif
             </div>
 
-            <!-- Contact Information -->
-            <div class="info-card">
-                <h3 class="card-title">Need Help?</h3>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>adoptions@furryfriends.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-clock"></i>
-                        <span>Mon-Fri: 9AM-6PM</span>
+            <!-- Vaccination Schedule -->
+            @if($pet->vaccinations->count() > 0)
+                <div class="pet-info-card">
+                    <h3 class="card-title">Vaccination Schedule</h3>
+                    <div class="vaccination-schedule">
+                        <table class="vaccination-table">
+                            <thead>
+                                <tr>
+                                    <th>Vaccine</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pet->vaccinations as $vaccination)
+                                    <tr>
+                                        <td>{{ $vaccination->vaccine_name }}</td>
+                                        <td>{{ $vaccination->vaccination_date->format('M d, Y') }}</td>
+                                        <td>
+                                            <span class="status-badge status-completed">Completed</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                
-                <a href="{{ route('contact') }}" class="btn btn-outline" style="margin-top: 1rem;">
-                    <i class="fas fa-question-circle"></i>
-                    Contact Support
-                </a>
-            </div>
+            @endif
         </div>
     </div>
 </div>
+
+<!-- Similar Pets -->
+@if($similarPets->count() > 0)
+    <div class="similar-pets">
+        <div class="container">
+            <h2>Similar Pets</h2>
+            <div class="similar-pets-grid">
+                @foreach($similarPets as $similarPet)
+                    <a href="{{ route('adoption.show', $similarPet) }}" class="similar-pet-card">
+                        <img src="{{ $similarPet->main_image_url }}" alt="{{ $similarPet->name }}" class="similar-pet-image">
+                        <div class="similar-pet-info">
+                            <div class="similar-pet-name">{{ $similarPet->name }}</div>
+                            <div class="similar-pet-details">
+                                {{ $similarPet->breed->name }} • {{ $similarPet->age_display }} • {{ ucfirst($similarPet->gender) }}
+                            </div>
+                            <div class="more-info-btn" style="margin-top: 0.5rem; padding: 0.5rem;">More Info</div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+@endif
+
+<script>
+let currentImageIndex = 0;
+const images = @json($pet->getAllImages()->toArray());
+
+function showImage(index, url, thumbnail) {
+    currentImageIndex = index;
+    document.getElementById('mainImage').src = url;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+    thumbnail.classList.add('active');
+}
+
+function nextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    const nextImage = images[currentImageIndex];
+    document.getElementById('mainImage').src = nextImage.url;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentImageIndex);
+    });
+}
+
+function previousImage() {
+    currentImageIndex = currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
+    const prevImage = images[currentImageIndex];
+    document.getElementById('mainImage').src = prevImage.url;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentImageIndex);
+    });
+}
+
+function toggleFavorite(petId, button) {
+    @auth
+        fetch(`/ajax/favorite/${petId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.favorited) {
+                button.classList.add('favorited');
+            } else {
+                button.classList.remove('favorited');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    @else
+        window.location.href = '{{ route("login") }}';
+    @endauth
+}
+
+// Keyboard navigation for images
+document.addEventListener('keydown', function(e) {
+    if (images.length > 1) {
+        if (e.key === 'ArrowLeft') {
+            previousImage();
+        } else if (e.key === 'ArrowRight') {
+            nextImage();
+        }
+    }
+});
+</script>
 @endsection

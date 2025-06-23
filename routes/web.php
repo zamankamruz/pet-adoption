@@ -22,6 +22,8 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminAdoptionController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminSetupController;
+use App\Http\Controllers\Admin\AdminRehomingController;
+
 
 
 /*
@@ -66,7 +68,6 @@ Route::prefix('pets')->name('pets.')->group(function () {
     Route::get('/', [PetController::class, 'index'])->name('index');
     Route::get('/search', [SearchController::class, 'pets'])->name('search');
     Route::get('/filter', [PetController::class, 'filter'])->name('filter');
-    Route::get('/{pet}', [PetController::class, 'show'])->name('show');
     Route::get('/category/{category}', [PetController::class, 'byCategory'])->name('category');
     Route::get('/breed/{breed}', [PetController::class, 'byBreed'])->name('breed');
     Route::get('/location/{location}', [PetController::class, 'byLocation'])->name('location');
@@ -75,7 +76,8 @@ Route::prefix('pets')->name('pets.')->group(function () {
 
 // Adoption Routes (Public - can view, but need auth for requests)
 Route::prefix('adoption')->name('adoption.')->group(function () {
-    Route::get('/', [PetController::class, 'index'])->name('index');
+    Route::get('/', [AdoptionController::class, 'index'])->name('index');
+    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
     
@@ -235,6 +237,23 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::post('/{adoption}/complete', [AdminAdoptionController::class, 'complete'])->name('complete');
         Route::get('/{adoption}/documents', [AdminAdoptionController::class, 'documents'])->name('documents');
         Route::post('/{adoption}/notes', [AdminAdoptionController::class, 'addNote'])->name('notes');
+    });
+
+
+
+    // Add this to your admin routes group in web.php
+    Route::prefix('rehoming')->name('rehoming.')->group(function () {
+        Route::get('/', [AdminRehomingController::class, 'index'])->name('index');
+        Route::get('/{rehoming}', [AdminRehomingController::class, 'show'])->name('show');
+        Route::post('/{rehoming}/approve', [AdminRehomingController::class, 'approve'])->name('approve');
+        Route::post('/{rehoming}/reject', [AdminRehomingController::class, 'reject'])->name('reject');
+        Route::post('/{rehoming}/publish', [AdminRehomingController::class, 'publish'])->name('publish');
+        Route::post('/{rehoming}/status', [AdminRehomingController::class, 'updateStatus'])->name('status');
+        Route::post('/{rehoming}/notes', [AdminRehomingController::class, 'addNote'])->name('notes');
+        Route::delete('/{rehoming}', [AdminRehomingController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk', [AdminRehomingController::class, 'bulkAction'])->name('bulk');
+        Route::get('/export', [AdminRehomingController::class, 'export'])->name('export');
+        Route::get('/stats', [AdminRehomingController::class, 'getStats'])->name('stats');
     });
 
 
