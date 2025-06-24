@@ -192,7 +192,7 @@
                                                     </button>
                                                 @endif
 
-                                                <a href="{{ route('pets.show', $adoption->pet) }}" 
+                                                <a href="{{ route('adoption.show', $adoption->pet) }}" 
                                                    class="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-medium rounded-lg transition-colors text-center">
                                                     View Pet
                                                 </a>

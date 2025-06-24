@@ -23,6 +23,8 @@ use App\Http\Controllers\Admin\AdminAdoptionController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminSetupController;
 use App\Http\Controllers\Admin\AdminRehomingController;
+use App\Http\Controllers\Admin\AdminReportsController;
+
 
 
 
@@ -80,6 +82,37 @@ Route::prefix('adoption')->name('adoption.')->group(function () {
     Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
+
+
+
+     Route::middleware('auth')->group(function () {
+        // Multi-step adoption process
+        Route::get('/{pet}/start', [AdoptionController::class, 'start'])->name('start');
+        
+        Route::get('/{pet}/step1', [AdoptionController::class, 'step1'])->name('step1');
+        Route::post('/{pet}/step1', [AdoptionController::class, 'storeStep1'])->name('step1.store');
+        
+        Route::get('/{pet}/step2', [AdoptionController::class, 'step2'])->name('step2');
+        Route::post('/{pet}/step2', [AdoptionController::class, 'storeStep2'])->name('step2.store');
+        
+        Route::get('/{pet}/step3', [AdoptionController::class, 'step3'])->name('step3');
+        Route::post('/{pet}/step3', [AdoptionController::class, 'storeStep3'])->name('step3.store');
+        
+        Route::get('/{pet}/step4', [AdoptionController::class, 'step4'])->name('step4');
+        Route::post('/{pet}/step4', [AdoptionController::class, 'storeStep4'])->name('step4.store');
+        
+        Route::get('/{pet}/step5', [AdoptionController::class, 'step5'])->name('step5');
+        Route::post('/{pet}/step5', [AdoptionController::class, 'storeStep5'])->name('step5.store');
+        
+        Route::get('/{pet}/step6', [AdoptionController::class, 'step6'])->name('step6');
+        Route::post('/{pet}/step6', [AdoptionController::class, 'storeStep6'])->name('step6.store');
+        
+        Route::get('/{pet}/complete', [AdoptionController::class, 'complete'])->name('complete');
+        
+        // AJAX routes for verification
+        Route::post('/send-verification', [AdoptionController::class, 'sendVerificationCode'])->name('send-verification');
+        Route::post('/verify-code', [AdoptionController::class, 'verifyCode'])->name('verify-code');
+    });
     
     // Protected adoption routes
     Route::middleware('auth')->group(function () {
@@ -190,8 +223,6 @@ Route::middleware('auth')->group(function () {
 // Admin Routes (Protected)
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/analytics', [AdminController::class, 'analytics'])->name('analytics');
-    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
     Route::get('/contacts', [AdminController::class, 'contacts'])->name('contacts.index');
     Route::get('/data', [AdminController::class, 'data'])->name('dashboard.data');
 
@@ -237,6 +268,7 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::post('/{adoption}/complete', [AdminAdoptionController::class, 'complete'])->name('complete');
         Route::get('/{adoption}/documents', [AdminAdoptionController::class, 'documents'])->name('documents');
         Route::post('/{adoption}/notes', [AdminAdoptionController::class, 'addNote'])->name('notes');
+        
     });
 
 
@@ -276,18 +308,24 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
     // Admin Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [AdminController::class, 'settings'])->name('index');
-        Route::put('/', [AdminController::class, 'updateSettings'])->name('update');
-        Route::get('/breeds', [AdminController::class, 'breeds'])->name('breeds');
-        Route::post('/breeds', [AdminController::class, 'storeBreed'])->name('breeds.store');
-        Route::delete('/breeds/{breed}', [AdminController::class, 'deleteBreed'])->name('breeds.delete');
-        Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
-        Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
-        Route::delete('/categories/{category}', [AdminController::class, 'deleteCategory'])->name('categories.delete');
-        Route::get('/locations', [AdminController::class, 'locations'])->name('locations');
-        Route::post('/locations', [AdminController::class, 'storeLocation'])->name('locations.store');
-        Route::delete('/locations/{location}', [AdminController::class, 'deleteLocation'])->name('locations.delete');
+        Route::put('/updateSettings', [AdminController::class, 'updateSettings'])->name('update');
     });
     
+
+        // Reports Routes
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [AdminReportsController::class, 'index'])->name('index');
+        Route::get('/data', [AdminReportsController::class, 'getData'])->name('data');
+        Route::get('/chart-data', [AdminReportsController::class, 'getChartData'])->name('chart-data');
+        Route::get('/export', [AdminReportsController::class, 'export'])->name('export');
+        Route::get('/pets-data', [AdminReportsController::class, 'getPetsData'])->name('pets-data');
+        Route::get('/adoptions-data', [AdminReportsController::class, 'getAdoptionsData'])->name('adoptions-data');
+        Route::get('/users-data', [AdminReportsController::class, 'getUsersData'])->name('users-data');
+        Route::get('/financial-data', [AdminReportsController::class, 'getFinancialData'])->name('financial-data');
+        Route::get('/performance-data', [AdminReportsController::class, 'getPerformanceData'])->name('performance-data');
+    });
+
+
     // Admin Content Management
     Route::prefix('content')->name('content.')->group(function () {
         Route::get('/pages', [AdminController::class, 'pages'])->name('pages');
@@ -304,6 +342,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::delete('/testimonials/{testimonial}', [AdminController::class, 'deleteTestimonial'])->name('testimonials.delete');
     });
 });
+
+
 
 // AJAX Routes
 Route::middleware('auth')->group(function () {

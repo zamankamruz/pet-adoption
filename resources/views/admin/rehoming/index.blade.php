@@ -11,7 +11,7 @@
 <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
     <div class="hidden md:flex md:flex-shrink-0">
-        <div class="flex flex-col w-64">
+        <div class="flex flex-col w-50">
             <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0 px-4">
@@ -91,10 +91,10 @@
                         @endif
                     </a>
 
-                    <a href="{{ route('admin.settings.index') }}" 
+                    <a href="{{ route('admin.setup.index') }}" 
                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
                         Setup Data
                     </a>
@@ -108,22 +108,6 @@
                         Messages
                     </a>
 
-                    <!-- Contacts -->
-                    <a href="{{ route('admin.contacts.index') }}" 
-                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
-                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                        </svg>
-                        Contact Messages
-                        @php
-                            $pendingContacts = \App\Models\Contact::where('status', 'pending')->count();
-                        @endphp
-                        @if($pendingContacts > 0)
-                            <span class="ml-auto bg-orange-100 text-orange-600 text-xs rounded-full px-2 py-1">
-                                {{ number_format($pendingContacts) }}
-                            </span>
-                        @endif
-                    </a>
 
                     <!-- Divider -->
                     <div class="border-t border-gray-200 mt-6 pt-6">

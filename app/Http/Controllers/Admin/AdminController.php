@@ -95,284 +95,91 @@ class AdminController extends Controller
         ));
     }
 
-    public function analytics()
-    {
-        // User registration trends
-        $userTrends = User::where('is_admin', false)
-            ->where('created_at', '>=', now()->subYear())
-            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as count')
-            ->groupBy('year', 'month')
-            ->orderBy('year')
-            ->orderBy('month')
-            ->get();
 
-        // Pet listing trends
-        $petTrends = Pet::where('created_at', '>=', now()->subYear())
-            ->selectRaw('MONTH(created_at) as month, YEAR(created_at) as year, COUNT(*) as count')
-            ->groupBy('year', 'month')
-            ->orderBy('year')
-            ->orderBy('month')
-            ->get();
+    
 
-        // Top breeds
-        $topBreeds = Pet::join('breeds', 'pets.breed_id', '=', 'breeds.id')
-            ->selectRaw('breeds.name as breed, COUNT(*) as count')
-            ->groupBy('breeds.id', 'breeds.name')
-            ->orderByDesc('count')
-            ->take(10)
-            ->get();
+public function settings()
+{
+    $settings = Setting::all()->keyBy('key');
+    
+    return view('admin.settings.index', compact('settings'));
+}
 
-        // Adoption success rate by location
-        $adoptionsByLocation = Adoption::join('pets', 'adoptions.pet_id', '=', 'pets.id')
-            ->join('locations', 'pets.location_id', '=', 'locations.id')
-            ->selectRaw('locations.city, locations.state, COUNT(*) as total_adoptions, 
-                        SUM(CASE WHEN adoptions.status = "completed" THEN 1 ELSE 0 END) as completed_adoptions')
-            ->groupBy('locations.id', 'locations.city', 'locations.state')
-            ->having('total_adoptions', '>', 0)
-            ->get();
+public function updateSettings(Request $request)
+{
+    $request->validate([
+        'settings' => 'required|array',
+    ]);
 
-        // Average adoption time
-        $averageAdoptionTime = Adoption::where('status', 'completed')
-            ->whereNotNull('completed_at')
-            ->selectRaw('AVG(DATEDIFF(completed_at, requested_at)) as avg_days')
-            ->value('avg_days');
-
-        return view('admin.analytics', compact(
-            'userTrends',
-            'petTrends',
-            'topBreeds',
-            'adoptionsByLocation',
-            'averageAdoptionTime'
-        ));
-    }
-
-    public function reports()
-    {
-        return view('admin.reports');
-    }
-
-    public function settings()
-    {
-        $settings = Setting::all()->keyBy('key');
+    try {
+        DB::beginTransaction();
         
-        return view('admin.settings.index', compact('settings'));
-    }
-
-    public function updateSettings(Request $request)
-    {
-        $request->validate([
-            'settings' => 'required|array',
-        ]);
-
         foreach ($request->settings as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
-                ['value' => $value]
+                [
+                    'value' => $value,
+                    'type' => $this->getSettingType($value),
+                    'group' => $this->getSettingGroup($key)
+                ]
             );
         }
-
+        
+        DB::commit();
+        
+        // Clear settings cache
+        Cache::forget('app_settings');
+        
         return redirect()->route('admin.settings.index')
             ->with('success', 'Settings updated successfully!');
-    }
-
-    public function breeds()
-    {
-        $breeds = Breed::with('category')->paginate(20);
-        $categories = Category::active()->get();
+            
+    } catch (\Exception $e) {
+        DB::rollback();
+        Log::error('Settings update failed: ' . $e->getMessage());
         
-        return view('admin.settings.breeds', compact('breeds', 'categories'));
+        return redirect()->back()
+            ->with('error', 'Failed to update settings. Please try again.')
+            ->withInput();
     }
+}
 
-    public function storeBreed(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'category_id' => 'required|exists:categories,id',
-            'description' => 'nullable|string',
-            'characteristics' => 'nullable|array',
-            'average_size' => 'nullable|string',
-            'life_expectancy' => 'nullable|string',
-            'temperament' => 'nullable|string',
-        ]);
-
-        Breed::create($request->all());
-
-        return redirect()->route('admin.settings.breeds')
-            ->with('success', 'Breed created successfully!');
+private function getSettingType($value)
+{
+    if (is_bool($value) || in_array($value, ['0', '1', 'true', 'false'])) {
+        return 'boolean';
+    } elseif (is_numeric($value)) {
+        return 'number';
+    } elseif (is_array($value)) {
+        return 'json';
+    } else {
+        return 'string';
     }
+}
 
-    public function deleteBreed(Breed $breed)
-    {
-        if ($breed->pets()->count() > 0) {
-            return redirect()->back()
-                ->with('error', 'Cannot delete breed that has associated pets.');
+private function getSettingGroup($key)
+{
+    $groups = [
+        'app_' => 'general',
+        'site_' => 'site',
+        'adoption_' => 'adoption',
+        'email_' => 'email',
+        'upload_' => 'uploads',
+        'notify_' => 'notifications',
+        'security_' => 'security',
+        'maintenance_' => 'maintenance',
+    ];
+    
+    foreach ($groups as $prefix => $group) {
+        if (strpos($key, $prefix) === 0) {
+            return $group;
         }
-
-        $breed->delete();
-
-        return redirect()->route('admin.settings.breeds')
-            ->with('success', 'Breed deleted successfully!');
     }
+    
+    return 'general';
+}
 
-    public function categories()
-    {
-        $categories = Category::withCount('pets')->paginate(20);
-        
-        return view('admin.settings.categories', compact('categories'));
-    }
 
-    public function storeCategory(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories',
-            'description' => 'nullable|string',
-            'icon' => 'nullable|string',
-            'sort_order' => 'integer|min:0',
-        ]);
 
-        Category::create($request->all());
-
-        return redirect()->route('admin.settings.categories')
-            ->with('success', 'Category created successfully!');
-    }
-
-    public function deleteCategory(Category $category)
-    {
-        if ($category->pets()->count() > 0) {
-            return redirect()->back()
-                ->with('error', 'Cannot delete category that has associated pets.');
-        }
-
-        $category->delete();
-
-        return redirect()->route('admin.settings.categories')
-            ->with('success', 'Category deleted successfully!');
-    }
-
-    public function locations()
-    {
-        $locations = Location::withCount('pets')->paginate(20);
-        
-        return view('admin.settings.locations', compact('locations'));
-    }
-
-    public function storeLocation(Request $request)
-    {
-        $request->validate([
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'zip_code' => 'nullable|string|max:10',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-        ]);
-
-        Location::create($request->all());
-
-        return redirect()->route('admin.settings.locations')
-            ->with('success', 'Location created successfully!');
-    }
-
-    public function deleteLocation(Location $location)
-    {
-        if ($location->pets()->count() > 0) {
-            return redirect()->back()
-                ->with('error', 'Cannot delete location that has associated pets.');
-        }
-
-        $location->delete();
-
-        return redirect()->route('admin.settings.locations')
-            ->with('success', 'Location deleted successfully!');
-    }
-
-    public function pages()
-    {
-        // Static page management would go here
-        return view('admin.content.pages');
-    }
-
-    public function news()
-    {
-        $news = News::with('author')->latest()->paginate(20);
-        
-        return view('admin.content.news.index', compact('news'));
-    }
-
-    public function createNews()
-    {
-        return view('admin.content.news.create');
-    }
-
-    public function storeNews(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:news',
-            'excerpt' => 'required|string',
-            'content' => 'required|string',
-            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:draft,published,archived',
-            'tags' => 'nullable|array',
-            'published_at' => 'nullable|date',
-        ]);
-
-        $data = $request->all();
-        $data['author_id'] = auth()->id();
-
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $request->file('featured_image')->store('news', 'public');
-        }
-
-        News::create($data);
-
-        return redirect()->route('admin.content.news.index')
-            ->with('success', 'News article created successfully!');
-    }
-
-    public function testimonials()
-    {
-        $testimonials = Testimonial::with(['user', 'pet'])->latest()->paginate(20);
-        
-        return view('admin.content.testimonials', compact('testimonials'));
-    }
-
-    public function storeTestimonial(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email',
-            'testimonial' => 'required|string',
-            'rating' => 'required|integer|min:1|max:5',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'is_featured' => 'boolean',
-            'is_approved' => 'boolean',
-        ]);
-
-        $data = $request->all();
-
-        if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar')->store('testimonials', 'public');
-        }
-
-        Testimonial::create($data);
-
-        return redirect()->route('admin.content.testimonials')
-            ->with('success', 'Testimonial created successfully!');
-    }
-
-    public function deleteTestimonial(Testimonial $testimonial)
-    {
-        if ($testimonial->avatar) {
-            Storage::disk('public')->delete($testimonial->avatar);
-        }
-
-        $testimonial->delete();
-
-        return redirect()->route('admin.content.testimonials')
-            ->with('success', 'Testimonial deleted successfully!');
-    }
 
     public function getDashboardData()
     {

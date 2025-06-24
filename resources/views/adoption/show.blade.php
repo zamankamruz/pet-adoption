@@ -464,7 +464,7 @@
         <div class="container">
             <div class="pet-breadcrumb">
                 <a href="{{ route('home') }}">Home</a> > 
-                <a href="{{ route('pets.index') }}">Adopt</a> > 
+                <a href="{{ route('adoption.index') }}">Adopt</a> > 
                 {{ $pet->name }}
             </div>
             
@@ -599,7 +599,7 @@
             <!-- Adoption Actions -->
             <div class="pet-info-card">
                 @if($canAdopt)
-                    <a href="{{ route('adoption.request', $pet) }}" class="adoption-btn">
+                    <a href="{{ route('adoption.start', $pet) }}" class="adoption-btn">
                         <i class="fas fa-heart"></i>
                         Adopt {{ $pet->name }}
                     </a>
