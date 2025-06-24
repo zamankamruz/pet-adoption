@@ -1,0 +1,718 @@
+<?php
+// File: index.blade.php
+// Path: /resources/views/admin/reports/index.blade.php
+?>
+
+@extends('layouts.admin')
+
+@section('title', 'Reports & Analytics')
+
+@section('content')
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-50">
+            <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-white border-r border-gray-200">
+                <!-- Logo -->
+                <div class="flex items-center flex-shrink-0 px-4">
+                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mr-2">
+                        <i class="fas fa-paw text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800">Furry Friends</span>
+                </div>
+                
+                <!-- Navigation -->
+                <nav class="mt-8 flex-1 px-2 space-y-1">
+                    <!-- Dashboard -->
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 13l-3 3l-3-3"/>
+                        </svg>
+                        Dashboard
+                    </a>
+
+                    <!-- Users -->
+                    <a href="{{ route('admin.users.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                        </svg>
+                        Users
+                    </a>
+
+                    <!-- Pets -->
+                    <a href="{{ route('admin.pets.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12C3.12 12 2 13.12 2 14.5S3.12 17 4.5 17 7 15.88 7 14.5 5.88 12 4.5 12M19.5 12C18.12 12 17 13.12 17 14.5S18.12 17 19.5 17 22 15.88 22 14.5 20.88 12 19.5 12M12 3.5C10.62 3.5 9.5 4.62 9.5 6S10.62 8.5 12 8.5 14.5 7.38 14.5 6 13.38 3.5 12 3.5M12 20.5C10.9 20.5 10 19.6 10 18.5S10.9 16.5 12 16.5 14 17.4 14 18.5 13.1 20.5 12 20.5Z"/>
+                        </svg>
+                        Pets
+                    </a>
+
+                    <!-- Adoptions -->
+                    <a href="{{ route('admin.adoptions.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        Adoptions
+                    </a>
+
+                    <!-- Rehoming -->
+                    <a href="{{ route('admin.rehoming.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        Rehoming Requests
+                    </a>
+
+                    <!-- Setup Data -->
+                    <a href="{{ route('admin.setup.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        Setup Data
+                    </a>
+
+                    <!-- Messages -->
+                    <a href="{{ route('admin.messages.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        Messages
+                    </a>
+
+                    <!-- Divider -->
+                    <div class="border-t border-gray-200 mt-6 pt-6">
+                        <!-- Settings -->
+                        <a href="{{ route('admin.settings.index') }}" 
+                           class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            Settings
+                        </a>
+
+                        <!-- Reports -->
+                        <a href="{{ route('admin.reports.index') }}" 
+                           class="bg-purple-100 text-purple-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                            <svg class="text-purple-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            Reports
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <!-- Top Navigation Bar -->
+        <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow border-b border-gray-200">
+            <!-- Mobile menu button -->
+            <button type="button" class="px-4 border-r border-gray-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 md:hidden" onclick="toggleMobileMenu()">
+                <span class="sr-only">Open sidebar</span>
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+
+            <!-- Page title and user menu -->
+            <div class="flex-1 px-4 flex justify-between items-center">
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900">Reports & Analytics</h1>
+                    <p class="text-sm text-gray-600">Comprehensive insights into your platform performance</p>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="ml-4 flex items-center md:ml-6">
+                    <div class="relative">
+                        <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" onclick="toggleUserMenu()">
+                            <span class="sr-only">Open user menu</span>
+                            @if(auth()->user()->avatar)
+                                <img class="h-8 w-8 rounded-full" src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
+                            @else
+                                <div class="h-8 w-8 bg-purple-600 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-sm font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                </div>
+                            @endif
+                            <span class="ml-2 text-gray-700 text-sm">{{ auth()->user()->name }}</span>
+                            <svg class="ml-1 h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- User Dropdown Menu -->
+                        <div id="userMenu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div class="py-1">
+                                <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>Your Profile
+                                </a>
+                                <a href="{{ route('user.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>Settings
+                                </a>
+                                <div class="border-t border-gray-100"></div>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>Sign out
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Content -->
+        <main class="flex-1 relative overflow-y-auto focus:outline-none">
+            <div class="py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Header Actions -->
+                    <div class="flex justify-end mb-6 space-x-3">
+                        <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500" onclick="openDateRangeModal()">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            Date Range
+                        </button>
+                        <div class="relative inline-block text-left">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" onclick="toggleExportMenu()">
+                                <i class="fas fa-download mr-2"></i>
+                                Export
+                                <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                            <div id="exportMenu" class="hidden origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.reports.export', ['type' => 'pdf']) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-file-pdf mr-3 text-red-500"></i>PDF Report
+                                    </a>
+                                    <a href="{{ route('admin.reports.export', ['type' => 'excel']) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-file-excel mr-3 text-green-500"></i>Excel Report
+                                    </a>
+                                    <a href="{{ route('admin.reports.export', ['type' => 'csv']) }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-file-csv mr-3 text-blue-500"></i>CSV Data
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <!-- Total Pets -->
+                        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-blue-500">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-paw text-blue-600 text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Total Pets</h3>
+                                        <p class="text-xl font-bold text-blue-600" id="totalPets">0</p>
+                                        <p class="text-xs text-green-600">
+                                            <i class="fas fa-arrow-up"></i>
+                                            <span id="petsGrowth">0%</span> from last month
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Successful Adoptions -->
+                        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-green-500">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-heart text-green-600 text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Successful Adoptions</h3>
+                                        <p class="text-xl font-bold text-green-600" id="totalAdoptions">0</p>
+                                        <p class="text-xs text-green-600">
+                                            <i class="fas fa-arrow-up"></i>
+                                            <span id="adoptionsGrowth">0%</span> from last month
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Users -->
+                        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-indigo-500">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-users text-indigo-600 text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Active Users</h3>
+                                        <p class="text-xl font-bold text-indigo-600" id="activeUsers">0</p>
+                                        <p class="text-xs text-indigo-600">
+                                            <i class="fas fa-users"></i>
+                                            <span id="userEngagement">0%</span> engagement rate
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Adoption Revenue -->
+                        <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-yellow-500">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-dollar-sign text-yellow-600 text-lg"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ml-3">
+                                        <h3 class="text-sm font-semibold text-gray-900">Adoption Revenue</h3>
+                                        <p class="text-xl font-bold text-yellow-600" id="totalRevenue">$0</p>
+                                        <p class="text-xs text-yellow-600">
+                                            <i class="fas fa-dollar-sign"></i>
+                                            <span id="revenueGrowth">0%</span> from last month
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                        <!-- Adoption Trends Chart -->
+                        <div class="lg:col-span-2">
+                            <div class="bg-white shadow-lg rounded-lg">
+                                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                                    <h3 class="text-lg font-semibold text-gray-900">Adoption Trends</h3>
+                                    <div class="relative">
+                                        <button type="button" class="text-gray-400 hover:text-gray-600" onclick="toggleChartMenu()">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div id="chartMenu" class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                            <div class="py-1">
+                                                <a href="#" onclick="updateChart('monthly')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Monthly View</a>
+                                                <a href="#" onclick="updateChart('weekly')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Weekly View</a>
+                                                <a href="#" onclick="updateChart('daily')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Daily View</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="h-80">
+                                        <canvas id="adoptionTrendsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pet Categories Distribution -->
+                        <div class="lg:col-span-1">
+                            <div class="bg-white shadow-lg rounded-lg">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h3 class="text-lg font-semibold text-gray-900">Pet Categories</h3>
+                                </div>
+                                <div class="p-6">
+                                    <div class="h-64">
+                                        <canvas id="categoriesChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 flex justify-center space-x-4 text-sm">
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                                            <span>Dogs</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                            <span>Cats</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></div>
+                                            <span>Others</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Tabs -->
+                    <div class="bg-white shadow-lg rounded-lg">
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900">Detailed Reports</h3>
+                        </div>
+                        <div class="p-6">
+                            <!-- Tab Navigation -->
+                            <div class="border-b border-gray-200">
+                                <nav class="-mb-px flex space-x-8">
+                                    <button class="tab-button active border-purple-500 text-purple-600 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="pets">
+                                        <i class="fas fa-paw mr-2"></i>Pets Report
+                                    </button>
+                                    <button class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="adoptions">
+                                        <i class="fas fa-heart mr-2"></i>Adoptions Report
+                                    </button>
+                                    <button class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="users">
+                                        <i class="fas fa-users mr-2"></i>Users Report
+                                    </button>
+                                    <button class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="financial">
+                                        <i class="fas fa-dollar-sign mr-2"></i>Financial Report
+                                    </button>
+                                    <button class="tab-button border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-2 px-1 border-b-2 font-medium text-sm" data-tab="performance">
+                                        <i class="fas fa-chart-line mr-2"></i>Performance
+                                    </button>
+                                </nav>
+                            </div>
+
+                            <!-- Tab Content -->
+                            <div class="mt-6">
+                                <!-- Pets Report -->
+                                <div id="pets-tab" class="tab-content">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                        <div class="bg-gray-50 p-6 rounded-lg text-center">
+                                            <h4 class="text-lg font-semibold text-gray-900">Available Pets</h4>
+                                            <p class="text-2xl font-bold text-blue-600" id="availablePets">0</p>
+                                            <p class="text-sm text-gray-600">Ready for adoption</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-6 rounded-lg text-center">
+                                            <h4 class="text-lg font-semibold text-gray-900">Adopted This Month</h4>
+                                            <p class="text-2xl font-bold text-green-600" id="adoptedThisMonth">0</p>
+                                            <p class="text-sm text-gray-600">Successful placements</p>
+                                        </div>
+                                        <div class="bg-gray-50 p-6 rounded-lg text-center">
+                                            <h4 class="text-lg font-semibold text-gray-900">Average Time to Adopt</h4>
+                                            <p class="text-2xl font-bold text-indigo-600" id="avgAdoptionTime">0</p>
+                                            <p class="text-sm text-gray-600">Days</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full bg-white border border-gray-200" id="petsTable">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pet Name</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Species</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Breed</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Listed Date</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Views</th>
+                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inquiries</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <!-- Data will be loaded via AJAX -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Other tab contents (adoptions, users, financial, performance) would follow the same pattern -->
+                                <!-- For brevity, I'm showing just the structure for the first tab -->
+                                
+                                <!-- Hidden tab contents -->
+                                <div id="adoptions-tab" class="tab-content hidden">
+                                    <!-- Adoptions content here -->
+                                </div>
+                                
+                                <div id="users-tab" class="tab-content hidden">
+                                    <!-- Users content here -->
+                                </div>
+                                
+                                <div id="financial-tab" class="tab-content hidden">
+                                    <!-- Financial content here -->
+                                </div>
+                                
+                                <div id="performance-tab" class="tab-content hidden">
+                                    <!-- Performance content here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="mobileMenuOverlay" class="hidden fixed inset-0 flex z-40 md:hidden">
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-75" onclick="toggleMobileMenu()"></div>
+        <div class="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+            <div class="absolute top-0 right-0 -mr-12 pt-2">
+                <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" onclick="toggleMobileMenu()">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <!-- Mobile sidebar content (same as desktop) -->
+            <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+                <!-- Mobile navigation here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Range Modal -->
+    <div id="dateRangeModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Select Date Range</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-600" onclick="closeDateRangeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="dateRangeForm">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+                            <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" id="startDate" name="start_date">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+                            <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" id="endDate" name="end_date">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Quick Ranges</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50" onclick="setQuickRange(7)">Last 7 Days</button>
+                            <button type="button" class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50" onclick="setQuickRange(30)">Last 30 Days</button>
+                            <button type="button" class="px-3 py-2 text-sm border border-gray-300 rounded-md hover:bg-gray-50" onclick="setQuickRange(90)">Last 90 Days</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300" onclick="closeDateRangeModal()">Cancel</button>
+                    <button type="button" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700" onclick="applyDateRange()">Apply Range</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const overlay = document.getElementById('mobileMenuOverlay');
+    overlay.classList.toggle('hidden');
+}
+
+// User menu toggle
+function toggleUserMenu() {
+    const menu = document.getElementById('userMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Export menu toggle
+function toggleExportMenu() {
+    const menu = document.getElementById('exportMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Chart menu toggle
+function toggleChartMenu() {
+    const menu = document.getElementById('chartMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Date range modal
+function openDateRangeModal() {
+    document.getElementById('dateRangeModal').classList.remove('hidden');
+}
+
+function closeDateRangeModal() {
+    document.getElementById('dateRangeModal').classList.add('hidden');
+}
+
+function setQuickRange(days) {
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(endDate.getDate() - days);
+    
+    document.getElementById('startDate').value = startDate.toISOString().split('T')[0];
+    document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+}
+
+// Tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.getAttribute('data-tab');
+            
+            // Remove active class from all buttons
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active', 'border-purple-500', 'text-purple-600');
+                btn.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // Add active class to clicked button
+            this.classList.add('active', 'border-purple-500', 'text-purple-600');
+            this.classList.remove('border-transparent', 'text-gray-500');
+            
+            // Hide all tab contents
+            tabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show target tab content
+            document.getElementById(targetTab + '-tab').classList.remove('hidden');
+        });
+    });
+
+    // Initialize charts and load data
+    initializeCharts();
+    loadReportData();
+    
+    // Refresh data every 5 minutes
+    setInterval(loadReportData, 300000);
+});
+
+// Close menus when clicking outside
+document.addEventListener('click', function(event) {
+    const userMenu = document.getElementById('userMenu');
+    const exportMenu = document.getElementById('exportMenu');
+    const chartMenu = document.getElementById('chartMenu');
+    
+    if (!event.target.closest('[onclick*="toggleUserMenu"]')) {
+        userMenu.classList.add('hidden');
+    }
+    if (!event.target.closest('[onclick*="toggleExportMenu"]')) {
+        exportMenu.classList.add('hidden');
+    }
+    if (!event.target.closest('[onclick*="toggleChartMenu"]')) {
+        chartMenu.classList.add('hidden');
+    }
+});
+
+// Chart and data functions (keeping your existing JavaScript functions)
+function initializeCharts() {
+    // Adoption Trends Chart
+    const adoptionCtx = document.getElementById('adoptionTrendsChart').getContext('2d');
+    window.adoptionChart = new Chart(adoptionCtx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Adoptions',
+                data: [],
+                borderColor: '#4e73df',
+                backgroundColor: 'rgba(78, 115, 223, 0.1)',
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Categories Chart
+    const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+    window.categoriesChart = new Chart(categoriesCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Dogs', 'Cats', 'Others'],
+            datasets: [{
+                data: [60, 35, 5],
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // You can add more charts here if needed...
+}
+
+function loadReportData() {
+    fetch('/admin/reports/data')
+        .then(response => response.json())
+        .then(data => {
+            updateDashboardStats(data);
+            updateCharts(data);
+        })
+        .catch(error => {
+            console.error('Error loading report data:', error);
+        });
+}
+
+function updateDashboardStats(data) {
+    document.getElementById('totalPets').textContent = data.totalPets || 0;
+    document.getElementById('totalAdoptions').textContent = data.totalAdoptions || 0;
+    document.getElementById('activeUsers').textContent = data.activeUsers || 0;
+    document.getElementById('totalRevenue').textContent = '$' + (data.totalRevenue || 0);
+
+    // Growth percentages
+    document.getElementById('petsGrowth').textContent = (data.petsGrowth || 0) + '%';
+    document.getElementById('adoptionsGrowth').textContent = (data.adoptionsGrowth || 0) + '%';
+    document.getElementById('userEngagement').textContent = (data.userEngagement || 0) + '%';
+    document.getElementById('revenueGrowth').textContent = (data.revenueGrowth || 0) + '%';
+}
+
+function updateCharts(data) {
+    if (window.adoptionChart && data.adoptionTrends) {
+        window.adoptionChart.data.labels = data.adoptionTrends.labels;
+        window.adoptionChart.data.datasets[0].data = data.adoptionTrends.data;
+        window.adoptionChart.update();
+    }
+
+    if (window.categoriesChart && data.categoriesData) {
+        window.categoriesChart.data.datasets[0].data = data.categoriesData;
+        window.categoriesChart.update();
+    }
+}
+
+function updateChart(period) {
+    fetch(`/admin/reports/chart-data?period=${period}`)
+        .then(response => response.json())
+        .then(data => {
+            updateCharts(data);
+        })
+        .catch(error => console.error('Error updating chart data:', error));
+}
+
+function applyDateRange() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    if (!startDate || !endDate) {
+        alert('Please select both start and end dates.');
+        return;
+    }
+
+    fetch(`/admin/reports/data?start=${startDate}&end=${endDate}`)
+        .then(response => response.json())
+        .then(data => {
+            updateDashboardStats(data);
+            updateCharts(data);
+            closeDateRangeModal();
+        })
+        .catch(error => console.error('Error applying date range:', error));
+}
+</script>

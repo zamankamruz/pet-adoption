@@ -6,315 +6,50 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .auth-container {
-        min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem 1rem;
-    }
-    
-    .auth-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        overflow: hidden;
-        max-width: 1000px;
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        min-height: 600px;
-    }
-    
-    .auth-left {
-        background: linear-gradient(135deg, #8B5CF6, #A855F7);
-        padding: 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        color: white;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .auth-left::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -50%;
-        width: 200%;
-        height: 200%;
-        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        opacity: 0.1;
-    }
-    
-    .auth-right {
-        padding: 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .auth-logo {
-        display: flex;
-        align-items: center;
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 2rem;
-        color: #8B5CF6;
-    }
-    
-    .auth-logo i {
-        margin-right: 10px;
-        background: #8B5CF6;
-        color: white;
-        padding: 10px;
-        border-radius: 50%;
-        font-size: 1.5rem;
-    }
-    
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #374151;
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        font-size: 1rem;
-        transition: all 0.3s;
-        background: #f9fafb;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: #8B5CF6;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-    }
-    
-    .form-control.is-invalid {
-        border-color: #ef4444;
-        background: #fef2f2;
-    }
-    
-    .invalid-feedback {
-        color: #ef4444;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-    
-    .btn {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #8B5CF6, #A855F7);
-        color: white;
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
-    }
-    
-    .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
-    
-    .social-login {
-        margin: 2rem 0;
-    }
-    
-    .social-divider {
-        text-align: center;
-        margin: 2rem 0;
-        position: relative;
-        color: #6b7280;
-    }
-    
-    .social-divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: #e5e7eb;
-    }
-    
-    .social-divider span {
-        background: white;
-        padding: 0 1rem;
-    }
-    
-    .social-buttons {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-    
-    .btn-social {
-        padding: 12px;
-        border: 2px solid #e5e7eb;
-        background: white;
-        color: #374151;
-        border-radius: 10px;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: all 0.3s;
-    }
-    
-    .btn-social:hover {
-        border-color: #8B5CF6;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .checkbox {
-        width: 18px;
-        height: 18px;
-        accent-color: #8B5CF6;
-    }
-    
-    .auth-links {
-        text-align: center;
-        margin-top: 2rem;
-    }
-    
-    .auth-links a {
-        color: #8B5CF6;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    
-    .auth-links a:hover {
-        text-decoration: underline;
-    }
-    
-    .loading-spinner {
-        display: none;
-        width: 20px;
-        height: 20px;
-        border: 2px solid transparent;
-        border-top: 2px solid currentColor;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-    
-    .hero-illustration {
-        margin-top: 2rem;
-        text-align: center;
-    }
-    
-    .hero-illustration i {
-        font-size: 4rem;
-        opacity: 0.8;
-    }
-    
-    @media (max-width: 768px) {
-        .auth-card {
-            grid-template-columns: 1fr;
-            margin: 1rem;
-        }
-        
-        .auth-left {
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .auth-right {
-            padding: 2rem;
-        }
-        
-        .social-buttons {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-left">
-            <div class="auth-content">
-                <h1>Welcome Back!</h1>
-                <p style="font-size: 1.1rem; opacity: 0.9; margin: 1rem 0;">
-                    Sign in to your account to continue your pet adoption journey. 
-                    Find your perfect furry companion today!
-                </p>
-                <div class="hero-illustration">
-                    <i class="fas fa-heart"></i>
+<div class="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-blue-300 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-[450px] h-[400px] overflow-hidden">
+        <div class="p-6 flex flex-col justify-center h-full">
+            <!-- Logo -->
+            <div class="flex items-center justify-center mb-4">
+                <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center mr-2">
+                    <i class="fas fa-paw text-white text-sm"></i>
                 </div>
+                <span class="text-xl font-bold text-gray-800">Furry Friends</span>
             </div>
-        </div>
-        
-        <div class="auth-right">
-            <div class="auth-logo">
-                <i class="fas fa-paw"></i>
-                Furry Friends
-            </div>
-            
-            <h2 style="margin-bottom: 0.5rem; color: #1f2937;">Sign In</h2>
-            <p style="color: #6b7280; margin-bottom: 2rem;">Enter your credentials to access your account</p>
 
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h2 class="text-xl font-semibold text-gray-800 mb-1">Sign In</h2>
+                <p class="text-gray-600 text-sm">Welcome back to your account</p>
+            </div>
+
+            <!-- Status Messages -->
             @if (session('status'))
-                <div class="alert alert-success" style="background: #d1fae5; color: #065f46; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                <div class="bg-green-50 border border-green-200 text-green-700 px-3 py-2 rounded-lg mb-3 text-xs">
                     {{ session('status') }}
                 </div>
             @endif
 
+            <!-- Error Messages -->
             @if ($errors->any())
-                <div class="alert alert-danger" style="background: #fee2e2; color: #dc2626; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                <div class="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg mb-3 text-xs">
                     @foreach ($errors->all() as $error)
                         <div>{{ $error }}</div>
                     @endforeach
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" id="loginForm">
+            <!-- Login Form -->
+            <form method="POST" action="{{ route('login') }}" id="loginForm" class="space-y-3">
                 @csrf
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
+                <!-- Email -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-envelope text-gray-400 text-sm"></i>
+                    </div>
                     <input id="email" type="email" 
-                           class="form-control @error('email') is-invalid @enderror" 
+                           class="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 @error('email') border-red-500 @enderror" 
                            name="email" 
                            value="{{ old('email') }}" 
                            required 
@@ -322,58 +57,82 @@
                            autofocus
                            placeholder="Enter your email">
                     @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
+                <!-- Password -->
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-lock text-gray-400 text-sm"></i>
+                    </div>
                     <input id="password" type="password" 
-                           class="form-control @error('password') is-invalid @enderror" 
+                           class="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 @error('password') border-red-500 @enderror" 
                            name="password" 
                            required 
                            autocomplete="current-password"
                            placeholder="Enter your password">
                     @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="checkbox-container">
-                    <input class="checkbox" type="checkbox" name="remember" id="remember" 
-                           {{ old('remember') ? 'checked' : '' }}>
-                    <label for="remember">Remember me</label>
+                <!-- Remember Me -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <input class="w-3 h-3 text-purple-600 border-gray-300 rounded focus:ring-purple-500" 
+                               type="checkbox" name="remember" id="remember" 
+                               {{ old('remember') ? 'checked' : '' }}>
+                        <label for="remember" class="text-xs text-gray-600">Remember me</label>
+                    </div>
+                    <a href="{{ route('password.request') }}" class="text-xs text-purple-600 hover:underline">Forgot password?</a>
                 </div>
 
-                <button type="submit" class="btn btn-primary" id="loginButton">
+                <!-- Submit Button -->
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 rounded-lg text-sm font-medium hover:from-purple-700 hover:to-indigo-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-all duration-200 disabled:opacity-50 flex items-center justify-center space-x-2" 
+                        id="loginButton">
                     <span class="button-text">Sign In</span>
-                    <div class="loading-spinner"></div>
+                    <div class="loading-spinner hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 </button>
             </form>
 
-            <div class="social-divider">
-                <span>Or sign in with</span>
-            </div>
-
-            <div class="social-buttons">
-                <a href="{{ route('auth.google') }}" class="btn-social">
-                    <i class="fab fa-google"></i>
-                    Google
-                </a>
-                <a href="{{ route('auth.facebook') }}" class="btn-social">
-                    <i class="fab fa-facebook-f"></i>
-                    Facebook
-                </a>
-            </div>
-
-            <div class="auth-links">
-                <div style="margin-bottom: 1rem;">
-                    <a href="{{ route('password.request') }}">Forgot your password?</a>
+            <!-- Social Login -->
+            <div class="mt-3">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-xs">
+                        <span class="px-3 bg-white text-gray-500">Or sign in with</span>
+                    </div>
                 </div>
-                <div>
+
+                <div class="mt-2 flex space-x-3">
+                    <a href="{{ route('auth.google') }}" 
+                       class="flex-1 flex items-center justify-center px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 mr-1" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                    </a>
+                    <a href="{{ route('auth.facebook') }}" 
+                       class="flex-1 flex items-center justify-center px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                        <svg class="w-4 h-4 mr-1 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Register Link -->
+            <div class="text-center mt-3">
+                <p class="text-xs text-gray-600">
                     Don't have an account? 
-                    <a href="{{ route('register') }}">Sign up here</a>
-                </div>
+                    <a href="{{ route('register') }}" class="text-purple-600 hover:underline font-medium">Sign up here</a>
+                </p>
             </div>
         </div>
     </div>
@@ -386,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const buttonText = button.querySelector('.button-text');
     const spinner = button.querySelector('.loading-spinner');
 
+    // Form submission loading state
     form.addEventListener('submit', function() {
         button.disabled = true;
-        buttonText.style.display = 'none';
-        spinner.style.display = 'block';
+        buttonText.classList.add('hidden');
+        spinner.classList.remove('hidden');
     });
 
     // Email validation on blur
@@ -399,17 +159,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         
         if (email && !emailRegex.test(email)) {
-            this.classList.add('is-invalid');
-            let feedback = this.parentNode.querySelector('.invalid-feedback');
+            this.classList.add('border-red-500');
+            this.classList.remove('border-gray-300');
+            
+            let feedback = this.parentNode.querySelector('.email-feedback');
             if (!feedback) {
-                feedback = document.createElement('div');
-                feedback.className = 'invalid-feedback';
+                feedback = document.createElement('p');
+                feedback.className = 'email-feedback text-red-500 text-xs mt-1';
                 this.parentNode.appendChild(feedback);
             }
             feedback.textContent = 'Please enter a valid email address';
         } else {
-            this.classList.remove('is-invalid');
-            const feedback = this.parentNode.querySelector('.invalid-feedback');
+            this.classList.remove('border-red-500');
+            this.classList.add('border-gray-300');
+            
+            const feedback = this.parentNode.querySelector('.email-feedback');
             if (feedback) {
                 feedback.remove();
             }

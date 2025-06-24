@@ -36,9 +36,28 @@ class HomeController extends Controller
         return view('home.index', compact('featuredPets', 'recentPets', 'adoptionStats'));
     }
 
+    
+
+    public function catGuides()
+    {
+        return view('home.care-guide-cats');
+    }
+
+
+    public function dogGuides()
+    {
+        return view('home.care-guide-dogs'); 
+    }
+
+
     public function about()
     {
         return view('home.about');
+    }
+
+    public function mission()
+    {
+        return view('home.mission'); 
     }
 
     public function contact()
@@ -57,10 +76,6 @@ class HomeController extends Controller
         return view('home.faq-adopters');
     }
 
-    public function faqRehomers()
-    {
-        return view('home.faq-rehomers');
-    }
 
     public function subscribeNewsletter(Request $request)
     {

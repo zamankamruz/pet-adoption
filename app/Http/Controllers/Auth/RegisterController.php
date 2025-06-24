@@ -17,8 +17,7 @@ use App\Notifications\WelcomeNotification;
 
 class RegisterController extends Controller
 {
-    use RegistersUsers;
-
+    
     /**
      * Where to redirect users after registration.
      */
@@ -27,10 +26,6 @@ class RegisterController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     /**
      * Show the application registration form.
@@ -74,14 +69,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'address' => ['nullable', 'string', 'max:500'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'state' => ['nullable', 'string', 'max:100'],
-            'zip_code' => ['nullable', 'string', 'max:10'],
-            'terms' => ['required', 'accepted'],
-            'marketing_emails' => ['boolean'],
+            'password' => ['required', 'string', 'min:8'],
+    
         ], [
             'terms.required' => 'You must agree to the Terms and Conditions.',
             'terms.accepted' => 'You must agree to the Terms and Conditions.',
@@ -97,16 +86,6 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'phone' => $data['phone'] ?? null,
-            'address' => $data['address'] ?? null,
-            'city' => $data['city'] ?? null,
-            'state' => $data['state'] ?? null,
-            'zip_code' => $data['zip_code'] ?? null,
-            'preferences' => [
-                'marketing_emails' => $data['marketing_emails'] ?? false,
-                'newsletter' => true,
-                'adoption_alerts' => true,
-            ],
         ]);
 
         // Send welcome notification
@@ -125,10 +104,6 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        // Send email verification if required
-        if (!$user->hasVerifiedEmail()) {
-            $user->sendEmailVerificationNotification();
-        }
 
         // Log user registration
         \Log::info('New user registered', [

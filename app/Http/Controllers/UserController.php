@@ -16,10 +16,7 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     public function dashboard()
     {
@@ -142,14 +139,45 @@ class UserController extends Controller
         return view('user.adoption-show', compact('adoption'));
     }
 
-    public function rehomedPets()
-    {
-        $rehomings = auth()->user()->rehomingRequests()
-            ->latest()
-            ->paginate(10);
+public function rehomedPets()
+{
+    $user = auth()->user();
+    
+    // Get user's rehoming requests
+    $rehomings = $user->rehomingRequests()
+        ->latest()
+        ->paginate(10);
 
-        return view('user.rehomed', compact('rehomings'));
+    // Get the active pet (if any) - for example, the most recent published pet
+    $activePet = $user->pets()
+        ->where('status', 'available')
+        ->latest()
+        ->first();
+
+    // Get adoption requests for the active pet
+    $adoptionRequests = collect();
+    if ($activePet) {
+        $adoptionRequests = $activePet->adoptionRequests()
+            ->with(['user'])
+            ->where('status', 'pending')
+            ->latest()
+            ->get();
     }
+
+    // Get favorite pets for display
+    $favoritePets = $user->favorites()
+        ->with(['pet.breed', 'pet.location', 'pet.images'])
+        ->whereHas('pet', function($query) {
+            $query->whereNull('deleted_at');
+        })
+        ->latest()
+        ->take(3)
+        ->get();
+
+    return view('user.rehomed', compact('rehomings', 'activePet', 'adoptionRequests', 'favoritePets'));
+}
+
+
 
     public function favorites()
     {

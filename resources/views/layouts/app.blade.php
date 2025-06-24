@@ -19,7 +19,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav class="flex items-center justify-between py-2">
                 <!-- Logo -->
-                <div class="flex items-center">
+                <a href="{{ route('home') }}" class="flex items-center">
                     <div class="bg-violet-500 p-1.5 rounded-full mr-2">
                         <i class="fas fa-paw text-white text-sm"></i>
                     </div>
@@ -27,31 +27,31 @@
                         <div>Furry</div>
                         <div>Friends</div>
                     </div>
-                </div>
-                
+                </a>
+
                 <!-- Navigation Menu -->
                 <ul class="hidden lg:flex items-center space-x-8">
                     <!-- Adopt Dropdown -->
                     <li class="relative group">
-                        <a href="{{ route('pets.index') }}" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                        <a href="#" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
                             Adopt
                         </a>
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <a href="{{ route('pets.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt a Pet</a>
-                            <a href="" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
-                            <a href="{{ route('faq.adopters') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt FAQ's</a>
+                            <a href="{{ route('adoption.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt a Pet</a>
+                            <a href="{{ route('adoption.how-it-works') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
+                            <a href="{{ route('adoption.requirements') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt FAQ's</a>
                         </div>
                     </li>
                     
                     <!-- Rehome Dropdown -->
                     <li class="relative group">
-                        <a href="{{ route('rehoming.index') }}" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                        <a href="#" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
                             Rehome
                         </a>
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                            <a href="{{ route('rehoming.create') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome a Pet</a>
-                            <a href="" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
-                            <a href="{{ route('faq.rehomers') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt FAQ's</a>
+                            <a href="{{ route('rehoming.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome a Pet</a>
+                            <a href="{{ route('rehoming.how-it-works') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
+                            <a href="{{ route('rehoming.faq-rehomers') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome FAQ's</a>
                         </div>
                     </li>
                     
@@ -85,7 +85,7 @@
                         <i class="far fa-bell text-sm"></i>
                     </button>
                     
-                    <!-- Auth Buttons -->
+                   <!-- Auth Buttons -->
                     @guest
                         <div class="flex items-center">
                             <a href="{{ route('login') }}" 
@@ -98,36 +98,60 @@
                         <!-- User Profile Dropdown -->
                         <div class="relative group">
                             <button class="bg-violet-100 text-violet-700 px-4 py-1.5 rounded-full font-medium hover:bg-violet-200 transition-colors duration-300 flex items-center space-x-1 text-sm">
-                                <i class="fas fa-user text-xs"></i>
-                                <span>{{ Auth::user()->name }}</span>
+                                @if(Auth::user()->is_admin)
+                                    <i class="fas fa-crown text-xs text-yellow-600"></i>
+                                    <span>Admin: {{ Auth::user()->name }}</span>
+                                @else
+                                    <i class="fas fa-user text-xs"></i>
+                                    <span>{{ Auth::user()->name }}</span>
+                                @endif
                                 <i class="fas fa-chevron-down text-xs ml-1"></i>
                             </button>
-                            <div class="absolute top-full right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                                <a href="{{ route('dashboard') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                    <i class="fas fa-tachometer-alt mr-2"></i>Overview
-                                </a>
-                                <a href="{{ route('profile.edit') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                    <i class="fas fa-user mr-2"></i>Profile
-                                </a>
-                                <a href="{{ route('rehoming.account') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                    <i class="fas fa-home mr-2"></i>Rehome Account
-                                </a>
-                                <a href="{{ route('favourites') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                    <i class="fas fa-heart mr-2"></i>Favourites
-                                </a>
-                                <a href="{{ route('messages') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                    <i class="fas fa-envelope mr-2"></i>Messages
-                                </a>
-                                <hr class="my-1">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
-                                        <i class="fas fa-sign-out-alt mr-2"></i>Log Out
-                                    </button>
-                                </form>
+                            
+                            <div class="absolute top-full right-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                                @if(Auth::user()->is_admin)
+                                    <!-- Admin Dropdown Menu -->
+                                    
+                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                        <i class="fas fa-tachometer-alt mr-2 text-blue-500"></i>Admin Dashboard
+                                    </a>
+                                    
+                                    <hr class="my-1">
+                                    
+                                    <hr class="my-1">
+                                    
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-500 transition-colors duration-200">
+                                            <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>Log Out
+                                        </button>
+                                    </form>
+                                @else
+                                    <!-- Regular User Dropdown Menu -->
+                                    <a href="{{ route('dashboard') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                        <i class="fas fa-tachometer-alt mr-2"></i>Overview
+                                    </a>
+                                    <a href="{{ route('user.profile') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                        <i class="fas fa-user mr-2"></i>Profile
+                                    </a>
+                                    <a href="{{ route('user.favorites') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                        <i class="fas fa-heart mr-2"></i>Favourites
+                                    </a>
+                                    <a href="{{ route('user.messages') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                        <i class="fas fa-envelope mr-2"></i>Messages
+                                    </a>
+                                    <hr class="my-1">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block w-full text-left px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">
+                                            <i class="fas fa-sign-out-alt mr-2"></i>Log Out
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @endguest
+
                     
                     <!-- Mobile Menu Button -->
                     <button class="lg:hidden text-gray-600 p-2" id="mobile-menu-button">

@@ -8,10 +8,12 @@ use App\Http\Controllers\PetController;
 use App\Http\Controllers\AdoptionController;
 use App\Http\Controllers\RehomingController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BreedController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminController;
@@ -19,6 +21,12 @@ use App\Http\Controllers\Admin\AdminPetController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminAdoptionController;
 use App\Http\Controllers\Admin\AdminMessageController;
+use App\Http\Controllers\Admin\AdminSetupController;
+use App\Http\Controllers\Admin\AdminRehomingController;
+use App\Http\Controllers\Admin\AdminReportsController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,20 +42,13 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/care-guide', [HomeController::class, 'careGuide'])->name('care-guide');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
-Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
 Route::get('/care-guide/cats', [HomeController::class, 'catGuides'])->name('care-guide.cats');
 Route::get('/care-guide/dogs', [HomeController::class, 'dogGuides'])->name('care-guide.dogs');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
 Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
 
 // Adopt Routes
-Route::get('/adopt/how-it-works', [AdoptController::class, 'howItWorks'])->name('adopt.how-it-works');
-
-// Rehoming Routes
-Route::get('/rehoming', [RehomingController::class, 'index'])->name('rehoming.index');
-Route::get('/rehoming/create', [RehomingController::class, 'create'])->name('rehoming.create');
-Route::get('/rehoming/how-it-works', [RehomingController::class, 'howItWorks'])->name('rehome.how-it-works');
-
+Route::get('/adopt/how-it-works', [HomeController::class, 'howItWorks'])->name('adopt.how-it-works');
 
 
 // Authentication Routes
@@ -69,17 +70,49 @@ Route::prefix('pets')->name('pets.')->group(function () {
     Route::get('/', [PetController::class, 'index'])->name('index');
     Route::get('/search', [SearchController::class, 'pets'])->name('search');
     Route::get('/filter', [PetController::class, 'filter'])->name('filter');
-    Route::get('/{pet}', [PetController::class, 'show'])->name('show');
     Route::get('/category/{category}', [PetController::class, 'byCategory'])->name('category');
     Route::get('/breed/{breed}', [PetController::class, 'byBreed'])->name('breed');
     Route::get('/location/{location}', [PetController::class, 'byLocation'])->name('location');
 });
 
+
 // Adoption Routes (Public - can view, but need auth for requests)
 Route::prefix('adoption')->name('adoption.')->group(function () {
     Route::get('/', [AdoptionController::class, 'index'])->name('index');
+    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
+
+
+
+     Route::middleware('auth')->group(function () {
+        // Multi-step adoption process
+        Route::get('/{pet}/start', [AdoptionController::class, 'start'])->name('start');
+        
+        Route::get('/{pet}/step1', [AdoptionController::class, 'step1'])->name('step1');
+        Route::post('/{pet}/step1', [AdoptionController::class, 'storeStep1'])->name('step1.store');
+        
+        Route::get('/{pet}/step2', [AdoptionController::class, 'step2'])->name('step2');
+        Route::post('/{pet}/step2', [AdoptionController::class, 'storeStep2'])->name('step2.store');
+        
+        Route::get('/{pet}/step3', [AdoptionController::class, 'step3'])->name('step3');
+        Route::post('/{pet}/step3', [AdoptionController::class, 'storeStep3'])->name('step3.store');
+        
+        Route::get('/{pet}/step4', [AdoptionController::class, 'step4'])->name('step4');
+        Route::post('/{pet}/step4', [AdoptionController::class, 'storeStep4'])->name('step4.store');
+        
+        Route::get('/{pet}/step5', [AdoptionController::class, 'step5'])->name('step5');
+        Route::post('/{pet}/step5', [AdoptionController::class, 'storeStep5'])->name('step5.store');
+        
+        Route::get('/{pet}/step6', [AdoptionController::class, 'step6'])->name('step6');
+        Route::post('/{pet}/step6', [AdoptionController::class, 'storeStep6'])->name('step6.store');
+        
+        Route::get('/{pet}/complete', [AdoptionController::class, 'complete'])->name('complete');
+        
+        // AJAX routes for verification
+        Route::post('/send-verification', [AdoptionController::class, 'sendVerificationCode'])->name('send-verification');
+        Route::post('/verify-code', [AdoptionController::class, 'verifyCode'])->name('verify-code');
+    });
     
     // Protected adoption routes
     Route::middleware('auth')->group(function () {
@@ -91,29 +124,56 @@ Route::prefix('adoption')->name('adoption.')->group(function () {
     });
 });
 
-// Rehoming Routes
+
+
+// Add these routes to the existing rehoming routes in web.php
+
 Route::prefix('rehoming')->name('rehoming.')->group(function () {
     Route::get('/', [RehomingController::class, 'index'])->name('index');
     Route::get('/how-it-works', [RehomingController::class, 'howItWorks'])->name('how-it-works');
-    Route::get('/tips', [RehomingController::class, 'tips'])->name('tips');
+    Route::get('/faq-rehomers', [RehomingController::class, 'faqRehomers'])->name('faq-rehomers');
     
     // Protected rehoming routes
     Route::middleware('auth')->group(function () {
         Route::get('/start', [RehomingController::class, 'start'])->name('start');
+        
+        // All 9 steps
         Route::get('/step1', [RehomingController::class, 'step1'])->name('step1');
         Route::post('/step1', [RehomingController::class, 'storeStep1'])->name('step1.store');
+        
         Route::get('/step2', [RehomingController::class, 'step2'])->name('step2');
         Route::post('/step2', [RehomingController::class, 'storeStep2'])->name('step2.store');
+        
         Route::get('/step3', [RehomingController::class, 'step3'])->name('step3');
         Route::post('/step3', [RehomingController::class, 'storeStep3'])->name('step3.store');
+        
+        Route::get('/step4', [RehomingController::class, 'step4'])->name('step4');
+        Route::post('/step4', [RehomingController::class, 'storeStep4'])->name('step4.store');
+        
+        Route::get('/step5', [RehomingController::class, 'step5'])->name('step5');
+        Route::post('/step5', [RehomingController::class, 'storeStep5'])->name('step5.store');
+        
+        Route::get('/step6', [RehomingController::class, 'step6'])->name('step6');
+        Route::post('/step6', [RehomingController::class, 'storeStep6'])->name('step6.store');
+        
+        Route::get('/step7', [RehomingController::class, 'step7'])->name('step7');
+        Route::post('/step7', [RehomingController::class, 'storeStep7'])->name('step7.store');
+        
+        Route::get('/step8', [RehomingController::class, 'step8'])->name('step8');
+        Route::post('/step8', [RehomingController::class, 'storeStep8'])->name('step8.store');
+        
+        Route::get('/step9', [RehomingController::class, 'step9'])->name('step9');
+        Route::post('/step9', [RehomingController::class, 'storeStep9'])->name('step9.store');
+        
         Route::get('/complete', [RehomingController::class, 'complete'])->name('complete');
         Route::get('/my-pets', [RehomingController::class, 'myPets'])->name('my-pets');
-        Route::get('/my-pets/{pet}', [RehomingController::class, 'showMyPet'])->name('my-pets.show');
-        Route::get('/my-pets/{pet}/edit', [RehomingController::class, 'editMyPet'])->name('my-pets.edit');
-        Route::put('/my-pets/{pet}', [RehomingController::class, 'updateMyPet'])->name('my-pets.update');
-        Route::delete('/my-pets/{pet}', [RehomingController::class, 'deleteMyPet'])->name('my-pets.delete');
+        Route::get('/my-pets/{rehoming}', [RehomingController::class, 'showMyPet'])->name('my-pets.show');
+        Route::get('/my-pets/{rehoming}/edit', [RehomingController::class, 'editMyPet'])->name('my-pets.edit');
+        Route::put('/my-pets/{rehoming}', [RehomingController::class, 'updateMyPet'])->name('my-pets.update');
+        Route::delete('/my-pets/{rehoming}', [RehomingController::class, 'deleteMyPet'])->name('my-pets.delete');
     });
 });
+
 
 // User Dashboard Routes (Protected)
 Route::middleware('auth')->group(function () {
@@ -127,6 +187,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', [UserController::class, 'settings'])->name('settings');
         Route::put('/settings', [UserController::class, 'updateSettings'])->name('settings.update');
         Route::delete('/account', [UserController::class, 'deleteAccount'])->name('account.delete');
+        Route::put('/password-update', [UserController::class, 'update'])->name('password-update');
+        Route::get('/notifications', [UserController::class, 'notifications'])->name('settings.notifications');
+        Route::get('/settings.privacy', [UserController::class, 'privacy'])->name('settings.privacy');
+        Route::get('/export', [UserController::class, 'export'])->name('export');
+
+
+
+
         
         // Favorites
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites');
@@ -145,16 +213,19 @@ Route::middleware('auth')->group(function () {
         Route::get('/adoptions', [UserController::class, 'adoptions'])->name('adoptions');
         Route::get('/adoptions/{adoption}', [UserController::class, 'showAdoption'])->name('adoptions.show');
         
-        // Rehomed Pets
-        Route::get('/rehomed', [UserController::class, 'rehomedPets'])->name('rehomed');
+
     });
 });
 
+
+
+
 // Admin Routes (Protected)
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/analytics', [AdminController::class, 'analytics'])->name('analytics');
-    Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+    Route::get('/contacts', [AdminController::class, 'contacts'])->name('contacts.index');
+    Route::get('/data', [AdminController::class, 'data'])->name('dashboard.data');
+
     
     // Admin Pet Management
     Route::prefix('pets')->name('pets.')->group(function () {
@@ -197,31 +268,64 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::post('/{adoption}/complete', [AdminAdoptionController::class, 'complete'])->name('complete');
         Route::get('/{adoption}/documents', [AdminAdoptionController::class, 'documents'])->name('documents');
         Route::post('/{adoption}/notes', [AdminAdoptionController::class, 'addNote'])->name('notes');
+        
     });
-    
+
+
+
+    // Add this to your admin routes group in web.php
+    Route::prefix('rehoming')->name('rehoming.')->group(function () {
+        Route::get('/', [AdminRehomingController::class, 'index'])->name('index');
+        Route::get('/{rehoming}', [AdminRehomingController::class, 'show'])->name('show');
+        Route::post('/{rehoming}/approve', [AdminRehomingController::class, 'approve'])->name('approve');
+        Route::post('/{rehoming}/reject', [AdminRehomingController::class, 'reject'])->name('reject');
+        Route::post('/{rehoming}/publish', [AdminRehomingController::class, 'publish'])->name('publish');
+        Route::post('/{rehoming}/status', [AdminRehomingController::class, 'updateStatus'])->name('status');
+        Route::post('/{rehoming}/notes', [AdminRehomingController::class, 'addNote'])->name('notes');
+        Route::delete('/{rehoming}', [AdminRehomingController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk', [AdminRehomingController::class, 'bulkAction'])->name('bulk');
+        Route::get('/export', [AdminRehomingController::class, 'export'])->name('export');
+        Route::get('/stats', [AdminRehomingController::class, 'getStats'])->name('stats');
+    });
+
+
+        Route::get('/admin/setup-data', [AdminSetupController::class, 'index'])->name('setup.index');
+        Route::post('/admin/setup-category', [AdminSetupController::class, 'storeCategory'])->name('setup.category');
+        Route::post('/admin/setup-breed', [AdminSetupController::class, 'storeBreed'])->name('setup.breed');
+        Route::post('/admin/setup-location', [AdminSetupController::class, 'storeLocation'])->name('setup.location');
+
+        
     // Admin Message Management
     Route::prefix('messages')->name('messages.')->group(function () {
         Route::get('/', [AdminMessageController::class, 'index'])->name('index');
         Route::get('/{conversation}', [AdminMessageController::class, 'show'])->name('show');
         Route::delete('/{message}', [AdminMessageController::class, 'delete'])->name('delete');
         Route::post('/broadcast', [AdminMessageController::class, 'broadcast'])->name('broadcast');
+        Route::get('/conversations', [AdminMessageController::class, 'conversations'])->name('conversations');
+
     });
     
     // Admin Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [AdminController::class, 'settings'])->name('index');
-        Route::put('/', [AdminController::class, 'updateSettings'])->name('update');
-        Route::get('/breeds', [AdminController::class, 'breeds'])->name('breeds');
-        Route::post('/breeds', [AdminController::class, 'storeBreed'])->name('breeds.store');
-        Route::delete('/breeds/{breed}', [AdminController::class, 'deleteBreed'])->name('breeds.delete');
-        Route::get('/categories', [AdminController::class, 'categories'])->name('categories');
-        Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
-        Route::delete('/categories/{category}', [AdminController::class, 'deleteCategory'])->name('categories.delete');
-        Route::get('/locations', [AdminController::class, 'locations'])->name('locations');
-        Route::post('/locations', [AdminController::class, 'storeLocation'])->name('locations.store');
-        Route::delete('/locations/{location}', [AdminController::class, 'deleteLocation'])->name('locations.delete');
+        Route::put('/updateSettings', [AdminController::class, 'updateSettings'])->name('update');
     });
     
+
+        // Reports Routes
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [AdminReportsController::class, 'index'])->name('index');
+        Route::get('/data', [AdminReportsController::class, 'getData'])->name('data');
+        Route::get('/chart-data', [AdminReportsController::class, 'getChartData'])->name('chart-data');
+        Route::get('/export', [AdminReportsController::class, 'export'])->name('export');
+        Route::get('/pets-data', [AdminReportsController::class, 'getPetsData'])->name('pets-data');
+        Route::get('/adoptions-data', [AdminReportsController::class, 'getAdoptionsData'])->name('adoptions-data');
+        Route::get('/users-data', [AdminReportsController::class, 'getUsersData'])->name('users-data');
+        Route::get('/financial-data', [AdminReportsController::class, 'getFinancialData'])->name('financial-data');
+        Route::get('/performance-data', [AdminReportsController::class, 'getPerformanceData'])->name('performance-data');
+    });
+
+
     // Admin Content Management
     Route::prefix('content')->name('content.')->group(function () {
         Route::get('/pages', [AdminController::class, 'pages'])->name('pages');
@@ -238,6 +342,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         Route::delete('/testimonials/{testimonial}', [AdminController::class, 'deleteTestimonial'])->name('testimonials.delete');
     });
 });
+
+
 
 // AJAX Routes
 Route::middleware('auth')->group(function () {

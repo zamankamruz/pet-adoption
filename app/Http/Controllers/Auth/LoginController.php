@@ -6,17 +6,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
-
     /**
      * Where to redirect users after login.
      */
@@ -25,10 +23,6 @@ class LoginController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
 
     /**
      * Show the application's login form.
@@ -45,27 +39,20 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        // Check for too many login attempts
+        if ($this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
-
             return $this->sendLockoutResponse($request);
         }
 
         if ($this->attemptLogin($request)) {
-            if ($request->hasSession()) {
-                $request->session()->put('auth.password_confirmed_at', time());
-            }
+            $request->session()->regenerate();
+            $this->clearLoginAttempts($request);
 
             return $this->sendLoginResponse($request);
         }
 
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
+        // Increment login attempts
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
@@ -77,7 +64,7 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            $this->username() => 'required|string',
+            'email' => 'required|string|email',
             'password' => 'required|string',
             'remember' => 'boolean',
         ]);
@@ -90,23 +77,22 @@ class LoginController extends Controller
     {
         $credentials = $this->credentials($request);
         
-        // Check if user is active
-        $user = User::where($this->username(), $credentials[$this->username()])->first();
+        // Check if user exists and is active
+        $user = User::where('email', $credentials['email'])->first();
         
-        if ($user && !$user->is_active) {
+        if ($user && isset($user->is_active) && !$user->is_active) {
             throw ValidationException::withMessages([
-                $this->username() => ['Your account has been deactivated. Please contact support.'],
+                'email' => ['Your account has been deactivated. Please contact support.'],
             ]);
         }
 
-        $attempt = $this->guard()->attempt(
-            $credentials, $request->boolean('remember')
-        );
+        $attempt = Auth::attempt($credentials, $request->boolean('remember'));
 
-        if ($attempt) {
-            // Update last login timestamp
-            $user = $this->guard()->user();
-            $user->update(['last_login_at' => now()]);
+        if ($attempt && $user) {
+            // Update last login timestamp if column exists
+            if ($user->getConnection()->getSchemaBuilder()->hasColumn('users', 'last_login_at')) {
+                $user->update(['last_login_at' => now()]);
+            }
         }
 
         return $attempt;
@@ -117,15 +103,7 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        return $request->only($this->username(), 'password');
-    }
-
-    /**
-     * Get the login username to be used by the controller.
-     */
-    public function username()
-    {
-        return 'email';
+        return $request->only('email', 'password');
     }
 
     /**
@@ -133,32 +111,15 @@ class LoginController extends Controller
      */
     protected function sendLoginResponse(Request $request)
     {
-        $request->session()->regenerate();
-
-        $this->clearLoginAttempts($request);
-
-        if ($response = $this->authenticated($request, $this->guard()->user())) {
-            return $response;
-        }
-
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Login successful',
-                'user' => $this->guard()->user(),
+                'user' => Auth::user(),
                 'redirect' => $this->redirectPath()
             ]);
         }
 
         return redirect()->intended($this->redirectPath());
-    }
-
-    /**
-     * The user has been authenticated.
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        // Add any post-login logic here
-        return null;
     }
 
     /**
@@ -170,13 +131,76 @@ class LoginController extends Controller
             return response()->json([
                 'message' => 'Invalid credentials',
                 'errors' => [
-                    $this->username() => [trans('auth.failed')]
+                    'email' => ['These credentials do not match our records.']
                 ]
             ], 422);
         }
 
         throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
+            'email' => ['These credentials do not match our records.'],
+        ]);
+    }
+
+    /**
+     * Determine if the user has too many failed login attempts.
+     */
+    protected function hasTooManyLoginAttempts(Request $request)
+    {
+        return RateLimiter::tooManyAttempts(
+            $this->throttleKey($request), 5 // 5 attempts
+        );
+    }
+
+    /**
+     * Increment the login attempts for the user.
+     */
+    protected function incrementLoginAttempts(Request $request)
+    {
+        RateLimiter::hit(
+            $this->throttleKey($request), 60 // 60 seconds
+        );
+    }
+
+    /**
+     * Clear the login locks for the given user credentials.
+     */
+    protected function clearLoginAttempts(Request $request)
+    {
+        RateLimiter::clear($this->throttleKey($request));
+    }
+
+    /**
+     * Get the throttle key for the given request.
+     */
+    protected function throttleKey(Request $request)
+    {
+        return Str::lower($request->input('email')).'|'.$request->ip();
+    }
+
+    /**
+     * Fire the lockout event.
+     */
+    protected function fireLockoutEvent(Request $request)
+    {
+        // You can implement event firing here if needed
+    }
+
+    /**
+     * Get the response for too many login attempts.
+     */
+    protected function sendLockoutResponse(Request $request)
+    {
+        $seconds = RateLimiter::availableIn($this->throttleKey($request));
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Too many login attempts.',
+                'retry_after' => $seconds
+            ], 429);
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ["Too many login attempts. Please try again in {$seconds} seconds."],
         ]);
     }
 
@@ -185,14 +209,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->guard()->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        if ($response = $this->loggedOut($request)) {
-            return $response;
-        }
 
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Logged out successfully']);
@@ -202,20 +222,27 @@ class LoginController extends Controller
     }
 
     /**
-     * The user has logged out of the application.
+     * Get the post-login redirect path.
      */
-    protected function loggedOut(Request $request)
+    public function redirectPath()
     {
-        return null;
+        // Check if user is authenticated and get their role
+        if (Auth::check()) {
+            $user = Auth::user();
+            
+            // Redirect admin users to admin dashboard
+            if ($user->is_admin) {
+                return route('admin.dashboard');
+            }
+            
+            // Redirect regular users to user dashboard
+            return route('dashboard');
+        }
+
+        // Default fallback
+        return '/';
     }
 
-    /**
-     * Get the guard to be used during authentication.
-     */
-    protected function guard()
-    {
-        return Auth::guard();
-    }
 
     /**
      * Show forgot password form.
@@ -245,7 +272,7 @@ class LoginController extends Controller
         }
 
         // Generate reset token
-        $token = \Str::random(64);
+        $token = Str::random(64);
         
         \DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $request->email],
@@ -338,108 +365,5 @@ class LoginController extends Controller
         }
 
         return redirect()->route('login')->with('status', 'Password reset successfully. You can now login.');
-    }
-
-    /**
-     * Redirect to Google OAuth.
-     */
-    public function redirectToGoogle()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-
-    /**
-     * Handle Google OAuth callback.
-     */
-    public function handleGoogleCallback()
-    {
-        try {
-            $googleUser = Socialite::driver('google')->user();
-            
-            $user = User::where('email', $googleUser->email)->first();
-
-            if ($user) {
-                // User exists, log them in
-                Auth::login($user);
-                $user->update(['last_login_at' => now()]);
-            } else {
-                // Create new user
-                $user = User::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'email_verified_at' => now(),
-                    'password' => Hash::make(\Str::random(24)),
-                    'avatar' => $googleUser->avatar,
-                ]);
-
-                Auth::login($user);
-            }
-
-            return redirect()->intended($this->redirectPath());
-            
-        } catch (\Exception $e) {
-            return redirect()->route('login')
-                ->with('error', 'Google authentication failed. Please try again.');
-        }
-    }
-
-    /**
-     * Redirect to Facebook OAuth.
-     */
-    public function redirectToFacebook()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
-
-    /**
-     * Handle Facebook OAuth callback.
-     */
-    public function handleFacebookCallback()
-    {
-        try {
-            $facebookUser = Socialite::driver('facebook')->user();
-            
-            $user = User::where('email', $facebookUser->email)->first();
-
-            if ($user) {
-                // User exists, log them in
-                Auth::login($user);
-                $user->update(['last_login_at' => now()]);
-            } else {
-                // Create new user
-                $user = User::create([
-                    'name' => $facebookUser->name,
-                    'email' => $facebookUser->email,
-                    'email_verified_at' => now(),
-                    'password' => Hash::make(\Str::random(24)),
-                    'avatar' => $facebookUser->avatar,
-                ]);
-
-                Auth::login($user);
-            }
-
-            return redirect()->intended($this->redirectPath());
-            
-        } catch (\Exception $e) {
-            return redirect()->route('login')
-                ->with('error', 'Facebook authentication failed. Please try again.');
-        }
-    }
-
-    /**
-     * Get the post-login redirect path.
-     */
-    public function redirectPath()
-    {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
-
-        // Redirect admin users to admin dashboard
-        if (Auth::user() && Auth::user()->is_admin) {
-            return '/admin';
-        }
-
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/dashboard';
     }
 }
