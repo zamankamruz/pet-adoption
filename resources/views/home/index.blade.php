@@ -51,14 +51,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Take a Look at Some of Our Pets</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-8">
-            @foreach($featuredPets as $pet)
+            @foreach($pets as $pet)
             <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="relative h-48 bg-cover bg-center" style="background-image: url('{{ $pet->main_image }}')">
-                    @if($pet->is_new)
-                        <div class="absolute top-3 left-3 bg-violet-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                            New
-                        </div>
-                    @endif
+                <div class="relative h-48 bg-cover bg-center" style="background-image: url('{{ $pet->main_image_url }}')">
+                    <!-- Badges -->
+                     
+                  @if($pet->is_new)
+                    <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                       NEW
+                    </div>
+                 @endif
+                 @if($pet->is_urgent)
+                    <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                       URGENT
+                    </div>
+                 @endif
                     <button class="absolute top-3 right-3 bg-white hover:bg-violet-500 hover:text-white text-gray-600 w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300">
                         <i class="far fa-heart"></i>
                     </button>
@@ -76,7 +83,7 @@
                         <div><strong>Size:</strong> {{ $pet->size }}</div>
                     </div>
                     <p class="text-gray-600 text-sm mb-4 leading-relaxed">{{ Str::limit($pet->description, 100) }}</p>
-                    <button onclick="window.location.href='{{ route('pets.show', $pet) }}'" class="w-full py-3 border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white rounded-full font-semibold transition-all duration-300">
+                    <button onclick="window.location.href='{{ route('adoption.show', $pet) }}'" class="w-full py-3 border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white rounded-full font-semibold transition-all duration-300">
                         More Info
                     </button>
                 </div>
@@ -84,12 +91,14 @@
             @endforeach
         </div>
         <div class="text-center">
-            <a href="{{ route('pets.index') }}" class="inline-block py-3 px-8 border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white rounded-full font-semibold transition-all duration-300">
+            <a href="{{ route('adoption.index') }}" class="inline-block py-3 px-8 border-2 border-violet-500 text-violet-500 hover:bg-violet-500 hover:text-white rounded-full font-semibold transition-all duration-300">
                 See more
             </a>
         </div>
     </div>
 </section>
+
+
 
 <!-- Steps Section -->
 <section class="bg-gray-50 py-16">

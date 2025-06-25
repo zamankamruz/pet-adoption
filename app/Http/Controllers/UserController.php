@@ -13,11 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
 
-
+    use AuthorizesRequests;
     public function dashboard()
     {
         $user = auth()->user();
@@ -127,7 +128,7 @@ class UserController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('user.adoptions', compact('adoptions'));
+        return view('user.adoptions.index', compact('adoptions'));
     }
 
     public function showAdoption(Adoption $adoption)
@@ -136,7 +137,7 @@ class UserController extends Controller
         
         $adoption->load(['pet.breed', 'pet.location', 'pet.images']);
 
-        return view('user.adoption-show', compact('adoption'));
+        return view('user.adoptions.show', compact('adoption'));
     }
 
 public function rehomedPets()
