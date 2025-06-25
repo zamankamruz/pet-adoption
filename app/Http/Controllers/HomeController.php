@@ -10,6 +10,8 @@ use App\Models\Adoption;
 use App\Models\Breed;
 use App\Models\Location;
 use App\Models\News;
+use App\Models\Testimonial;
+
 
 use Illuminate\Http\Request;
 
@@ -96,8 +98,13 @@ class HomeController extends Controller
             ->get();
 
 
+        $testimonials = Testimonial::approved()
+            ->latest()
+            ->take(8)
+            ->get();
 
-        return view('home.index', compact('pets', 'news', 'breeds', 'locations', 'categories'));
+
+        return view('home.index', compact('pets', 'news','testimonials', 'breeds', 'locations', 'categories'));
     }
 
     

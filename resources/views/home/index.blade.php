@@ -237,68 +237,57 @@
 <section class="py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">What People say about us</h2>
-        <div class="relative overflow-hidden">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-4 bg-cover bg-center" style="background-image: url('/images/testimonials/angela.jpg')"></div>
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+        
+        @if($testimonials->count() > 0)
+            <div class="relative overflow-hidden">
+                <div class="testimonials-container">
+                    <div class="testimonials-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="testimonialsGrid">
+                        @foreach($testimonials as $testimonial)
+                            <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg text-center">
+                                <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-4 bg-cover bg-center" 
+                                     style="background-image: url('{{ $testimonial->avatar_url }}')"></div>
+                                <div class="text-yellow-400 mb-4">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star{{ $i <= $testimonial->rating ? '' : '-o' }}"></i>
+                                    @endfor
+                                </div>
+                                <h4 class="font-bold text-gray-800 mb-2">{{ $testimonial->name }}</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">
+                                    {{ Str::limit($testimonial->testimonial, 150) }}
+                                </p>
+                                @if($testimonial->pet)
+                                    <div class="mt-3 text-xs text-violet-500">
+                                        <i class="fas fa-paw"></i> About {{ $testimonial->pet->name }}
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Angela Hernandez</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">I want to thank everyone who worked and was involved in my pet's shelter process. I learned a lot and was educated at every step of the process. I was especially grateful that there was a trainer...</p>
                 </div>
-                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-4 bg-cover bg-center" style="background-image: url('/images/testimonials/carl.jpg')"></div>
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                
+                @if($testimonials->count() > 4)
+                    <div class="flex justify-center gap-4 mt-8">
+                        <button onclick="previousTestimonial()" class="w-10 h-10 rounded-full bg-violet-500 hover:bg-violet-600 text-white border-none cursor-pointer flex items-center justify-center transition-all duration-300">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextTestimonial()" class="w-10 h-10 rounded-full bg-violet-500 hover:bg-violet-600 text-white border-none cursor-pointer flex items-center justify-center transition-all duration-300">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Carl Bryson</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">My wife and I want to thank FurryFriends for their wonderful service. When I was looking to get a dog my sister reached out to the staff. I asked them about specific...</p>
-                </div>
-                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-4 bg-cover bg-center" style="background-image: url('/images/testimonials/ana.jpg')"></div>
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Ana Jonson</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">We got our sweet rabbit Rex from this place. We did our research and found this highly rated no-kill shelter. We want to find a young rabbit and they were...</p>
-                </div>
-                <div class="testimonial-card bg-white p-8 rounded-2xl shadow-lg text-center">
-                    <div class="w-20 h-20 rounded-full bg-gray-200 mx-auto mb-4 bg-cover bg-center" style="background-image: url('/images/testimonials/javier.jpg')"></div>
-                    <div class="text-yellow-400 mb-4">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h4 class="font-bold text-gray-800 mb-2">Javier Dino Martinez</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">Best pet rescue center in the city. We got our rescued lovely dogs from this location. The staff was very friendly and helpful...</p>
-                </div>
+                @endif
             </div>
-            <div class="flex justify-center gap-4 mt-8">
-                <button onclick="previousTestimonial()" class="w-10 h-10 rounded-full bg-violet-500 hover:bg-violet-600 text-white border-none cursor-pointer flex items-center justify-center transition-all duration-300">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button onclick="nextTestimonial()" class="w-10 h-10 rounded-full bg-violet-500 hover:bg-violet-600 text-white border-none cursor-pointer flex items-center justify-center transition-all duration-300">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+        @else
+            <div class="text-center py-12">
+                <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl text-gray-400">
+                    <i class="fas fa-quote-right"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No testimonials yet</h3>
+                <p class="text-gray-500">Be the first to share your experience with us!</p>
             </div>
-        </div>
+        @endif
     </div>
 </section>
+
 
 <!-- FAQ Section -->
 <section class="bg-gray-50 py-16">
@@ -346,4 +335,51 @@
     // Initialize
     showTestimonial(0);
 </script>
+
+
+<script>
+@if($testimonials->count() > 4)
+    let currentTestimonialIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial-card');
+    const testimonialsPerView = window.innerWidth >= 1024 ? 4 : (window.innerWidth >= 768 ? 2 : 1);
+    const maxIndex = Math.max(0, testimonials.length - testimonialsPerView);
+    
+    function showTestimonials(startIndex) {
+        testimonials.forEach((card, i) => {
+            if (i >= startIndex && i < startIndex + testimonialsPerView) {
+                card.style.display = 'block';
+                card.style.opacity = '1';
+                card.style.transform = 'translateX(0)';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    function nextTestimonial() {
+        currentTestimonialIndex = Math.min(currentTestimonialIndex + testimonialsPerView, maxIndex);
+        showTestimonials(currentTestimonialIndex);
+    }
+    
+    function previousTestimonial() {
+        currentTestimonialIndex = Math.max(currentTestimonialIndex - testimonialsPerView, 0);
+        showTestimonials(currentTestimonialIndex);
+    }
+    
+    // Initialize
+    showTestimonials(0);
+    
+    // Auto-rotate testimonials every 5 seconds
+    setInterval(() => {
+        if (currentTestimonialIndex >= maxIndex) {
+            currentTestimonialIndex = 0;
+        } else {
+            currentTestimonialIndex += testimonialsPerView;
+        }
+        showTestimonials(currentTestimonialIndex);
+    }, 5000);
+@endif
+</script>
+
+
 @endsection

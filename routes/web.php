@@ -26,8 +26,7 @@ use App\Http\Controllers\Admin\AdminSetupController;
 use App\Http\Controllers\Admin\AdminRehomingController;
 use App\Http\Controllers\Admin\AdminReportsController;
 use App\Http\Controllers\Admin\AdminNewsController;
-
-
+use App\Http\Controllers\Admin\AdminTestimonialController;
 
 
 
@@ -357,6 +356,25 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
         Route::delete('/{news}', [AdminNewsController::class, 'destroy'])->name('destroy');
         Route::post('/bulk-action', [AdminNewsController::class, 'bulkAction'])->name('bulk-action');
     });
+
+
+    // Add to admin routes group in web.php
+Route::prefix('testimonials')->name('testimonials.')->group(function () {
+    Route::get('/', [AdminTestimonialController::class, 'index'])->name('index');
+    Route::get('/create', [AdminTestimonialController::class, 'create'])->name('create');
+    Route::post('/', [AdminTestimonialController::class, 'store'])->name('store');
+    Route::get('/{testimonial}', [AdminTestimonialController::class, 'show'])->name('show');
+    Route::get('/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('edit');
+    Route::put('/{testimonial}', [AdminTestimonialController::class, 'update'])->name('update');
+    Route::delete('/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('destroy');
+    Route::post('/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('approve');
+    Route::post('/{testimonial}/feature', [AdminTestimonialController::class, 'toggleFeature'])->name('feature');
+    Route::post('/bulk', [AdminTestimonialController::class, 'bulkAction'])->name('bulk');
+});
+
+
+
+
 });
 
 

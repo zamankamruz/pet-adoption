@@ -105,6 +105,17 @@
                         News
                     </a>
 
+                                        <!-- News -->
+                    <a href="{{ route('admin.testimonials.index') }}" 
+                       class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 20H5a2 2 0 01-2-2V7a2 2 0 012-2h3l2-2h4l2 2h3a2 2 0 012 2v11a2 2 0 01-2 2zM7 10h10M7 14h10M7 18h10" />
+                        </svg>
+                        Testimonials
+                    </a>
+
 
                     <!-- Messages -->
                     <a href="{{ route('admin.messages.index') }}" 
