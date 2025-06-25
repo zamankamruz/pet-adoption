@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Adoption;
 use App\Models\Breed;
 use App\Models\Location;
+use App\Models\News;
 
 use Illuminate\Http\Request;
 
@@ -87,7 +88,16 @@ class HomeController extends Controller
         $locations = Location::active()->orderBy('city')->get();
         $categories = Category::active()->orderBy('name')->get();
 
-        return view('home.index', compact('pets', 'breeds', 'locations', 'categories'));
+
+            // Get dynamic news articles
+        $news = News::published()
+            ->orderBy('published_at', 'desc')
+            ->take(4)
+            ->get();
+
+
+
+        return view('home.index', compact('pets', 'news', 'breeds', 'locations', 'categories'));
     }
 
     

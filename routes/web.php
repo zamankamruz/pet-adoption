@@ -14,6 +14,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminController;
@@ -24,6 +25,8 @@ use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminSetupController;
 use App\Http\Controllers\Admin\AdminRehomingController;
 use App\Http\Controllers\Admin\AdminReportsController;
+use App\Http\Controllers\Admin\AdminNewsController;
+
 
 
 
@@ -46,6 +49,23 @@ Route::get('/care-guide/cats', [HomeController::class, 'catGuides'])->name('care
 Route::get('/care-guide/dogs', [HomeController::class, 'dogGuides'])->name('care-guide.dogs');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
 Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
+
+
+    // Public News Routes (add outside admin group)
+    Route::prefix('news')->name('news.')->group(function () {
+    Route::get('/', [NewsController::class, 'index'])->name('index');
+    Route::get('/{slug}', [NewsController::class, 'show'])->name('show');
+    Route::get('/search',         [NewsController::class, 'search'  ])->name('search');
+    Route::get('/category/{category}', [NewsController::class, 'category'])->name('category');
+    Route::get('/tag/{tag}',      [NewsController::class, 'tag'     ])->name('tag');
+    Route::get('/trending',       [NewsController::class, 'trending'])->name('trending');
+    Route::get('/archive',        [NewsController::class, 'archive' ])->name('archive');
+    Route::post('/subscribe',     [NewsController::class, 'subscribe' ])->name('subscribe');
+
+
+    });
+
+
 
 // Adopt Routes
 Route::get('/adopt/how-it-works', [HomeController::class, 'howItWorks'])->name('adopt.how-it-works');
@@ -326,20 +346,16 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
     });
 
 
-    // Admin Content Management
-    Route::prefix('content')->name('content.')->group(function () {
-        Route::get('/pages', [AdminController::class, 'pages'])->name('pages');
-        Route::get('/pages/{page}/edit', [AdminController::class, 'editPage'])->name('pages.edit');
-        Route::put('/pages/{page}', [AdminController::class, 'updatePage'])->name('pages.update');
-        Route::get('/news', [AdminController::class, 'news'])->name('news');
-        Route::get('/news/create', [AdminController::class, 'createNews'])->name('news.create');
-        Route::post('/news', [AdminController::class, 'storeNews'])->name('news.store');
-        Route::get('/news/{news}/edit', [AdminController::class, 'editNews'])->name('news.edit');
-        Route::put('/news/{news}', [AdminController::class, 'updateNews'])->name('news.update');
-        Route::delete('/news/{news}', [AdminController::class, 'deleteNews'])->name('news.delete');
-        Route::get('/testimonials', [AdminController::class, 'testimonials'])->name('testimonials');
-        Route::post('/testimonials', [AdminController::class, 'storeTestimonial'])->name('testimonials.store');
-        Route::delete('/testimonials/{testimonial}', [AdminController::class, 'deleteTestimonial'])->name('testimonials.delete');
+    // Admin News Management  
+    Route::prefix('news')->name('news.')->group(function () {
+        Route::get('/', [AdminNewsController::class, 'index'])->name('index');
+        Route::get('/create', [AdminNewsController::class, 'create'])->name('create');
+        Route::post('/', [AdminNewsController::class, 'store'])->name('store');
+        Route::get('/{news}', [AdminNewsController::class, 'show'])->name('show');
+        Route::get('/{news}/edit', [AdminNewsController::class, 'edit'])->name('edit');
+        Route::put('/{news}', [AdminNewsController::class, 'update'])->name('update');
+        Route::delete('/{news}', [AdminNewsController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-action', [AdminNewsController::class, 'bulkAction'])->name('bulk-action');
     });
 });
 

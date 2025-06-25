@@ -145,50 +145,45 @@
     </div>
 </section>
 
+
+
+
 <!-- News Section -->
 <section class="py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl font-bold text-gray-800 text-center mb-12">Pet News</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="h-44 bg-cover bg-center" style="background-image: url('/images/news/dog-breeds.jpg')"></div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Dog Breeds</h3>
-                    <p class="text-gray-600 leading-relaxed mb-4">The group of dogs of the original dog includes hunting dogs, guard breeds, shepherd dogs and crossbreeds of sled dogs.</p>
-                    <a href="#" class="text-violet-500 font-semibold hover:text-violet-600 transition-colors">Read more</a>
+            @forelse($news as $article)
+                <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div class="h-44 bg-cover bg-center" style="background-image: url('{{ $article->featured_image_url }}')"></div>
+                    <div class="p-6">
+                        <div class="flex items-center mb-2">
+                            <span class="px-2 py-1 text-xs font-medium bg-violet-100 text-violet-600 rounded-full">
+                                {{ ucfirst($article->category) }}
+                            </span>
+                            <span class="text-xs text-gray-500 ml-auto">
+                                {{ $article->published_at->format('M d, Y') }}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">{{ $article->title }}</h3>
+                        <p class="text-gray-600 leading-relaxed mb-4">{{ Str::limit($article->excerpt, 100) }}</p>
+                        <a href="{{ route('news.show', $article->slug) }}" class="text-violet-500 font-semibold hover:text-violet-600 transition-colors">
+                            Read more
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="h-44 bg-cover bg-center" style="background-image: url('/images/news/training-cats.jpg')"></div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Training cats</h3>
-                    <p class="text-gray-600 leading-relaxed mb-4">The process of training the animal is to be gradual, start from the initial commands and gradually move to the next step.</p>
-                    <a href="#" class="text-violet-500 font-semibold hover:text-violet-600 transition-colors">Read more</a>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="h-44 bg-cover bg-center" style="background-image: url('/images/news/nutrition-dogs.jpg')"></div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Nutrition of dogs</h3>
-                    <p class="text-gray-600 leading-relaxed mb-4">Food moderations for animals are a common problem. Dogs and cats can get liver and kidney problems.</p>
-                    <a href="#" class="text-violet-500 font-semibold hover:text-violet-600 transition-colors">Read more</a>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div class="h-44 bg-cover bg-center" style="background-image: url('/images/news/cat-behavior.jpg')"></div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Cat behavior</h3>
-                    <p class="text-gray-600 leading-relaxed mb-4">Cats communicate with each other and with humans through behavioral signals, vocalizations and scent.</p>
-                    <a href="#" class="text-violet-500 font-semibold hover:text-violet-600 transition-colors">Read more</a>
-                </div>
-            </div>
+            @empty
+                
+            @endforelse
         </div>
         <div class="flex gap-4 mt-8 justify-center">
-            <a href="#" class="px-5 py-2 bg-gray-100 border-2 border-gray-200 rounded-full text-gray-600 font-medium hover:border-violet-500 hover:text-violet-500 transition-all duration-300">Cat News</a>
-            <a href="#" class="px-5 py-2 bg-gray-100 border-2 border-gray-200 rounded-full text-gray-600 font-medium hover:border-violet-500 hover:text-violet-500 transition-all duration-300">Dog News</a>
+            <a href="{{ route('news.index', ['category' => 'cat']) }}" class="px-5 py-2 bg-gray-100 border-2 border-gray-200 rounded-full text-gray-600 font-medium hover:border-violet-500 hover:text-violet-500 transition-all duration-300">Cat News</a>
+            <a href="{{ route('news.index', ['category' => 'dog']) }}" class="px-5 py-2 bg-gray-100 border-2 border-gray-200 rounded-full text-gray-600 font-medium hover:border-violet-500 hover:text-violet-500 transition-all duration-300">Dog News</a>
         </div>
     </div>
 </section>
+
+
 
 <!-- Human & Animals Section -->
 <section class="bg-gray-50 py-16">
