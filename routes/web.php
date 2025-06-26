@@ -98,9 +98,9 @@ Route::prefix('pets')->name('pets.')->group(function () {
 // Adoption Routes (Public - can view, but need auth for requests)
 Route::prefix('adoption')->name('adoption.')->group(function () {
     Route::get('/', [AdoptionController::class, 'index'])->name('index');
-    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
+    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
 
 
 
