@@ -7,45 +7,13 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
-    <!-- Progress Bar -->
-    <div class="bg-white shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center space-x-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="Furry Friends" class="h-8">
-                    <span class="text-lg font-semibold text-gray-900">Furry Friends</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                        <i class="fas fa-user text-white text-sm"></i>
-                    </div>
-                    <span class="text-sm font-medium text-gray-700">{{ auth()->user()->name }}</span>
-                </div>
-            </div>
-
             <!-- Progress Steps -->
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                        <i class="fas fa-check text-white text-xs"></i>
-                    </div>
-                    <span class="ml-2 text-sm font-medium text-green-600">Start</span>
+    <div class="bg-white shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <div class="flex items-center justify-center">
+                <div class="flex items-center space-x-8">
+                    <img src="{{ asset('images/steps2.png') }}" alt="">
                 </div>
-                
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                        <span class="text-white text-sm font-bold">2</span>
-                    </div>
-                    <span class="ml-2 text-sm font-medium text-purple-600">Primary Questions</span>
-                </div>
-
-                @for($i = 3; $i <= 9; $i++)
-                <div class="flex items-center">
-                    <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span class="text-gray-600 text-sm">{{ $i }}</span>
-                    </div>
-                </div>
-                @endfor
             </div>
         </div>
     </div>
