@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
-            <!-- Progress Steps -->
+    <!-- Progress Steps -->
     <div class="bg-white shadow-sm">
         <div class="max-w-4xl mx-auto px-4 py-6">
             <div class="flex items-center justify-center">
