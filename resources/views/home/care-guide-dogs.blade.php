@@ -12,9 +12,9 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Left Image -->
             <div class="order-2 lg:order-1">
-                <img src="{{ asset('images/dog-guide/dog-nutrition-care.jpg') }}" 
+                <img src="{{ asset('images/Group-dog.jpeg') }}" 
                      alt="Dog nutrition and healthy feeding" 
-                     class="w-full h-96 object-cover rounded-lg shadow-lg">
+                     class="w-full h-86 object-cover rounded-lg shadow-lg">
             </div>
 
             <!-- Right Content -->
@@ -44,7 +44,7 @@
             <!-- Topic 1: Dog Training Fundamentals -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/dog-guide/dog-training-basics.jpg') }}" 
+                    <img src="{{ asset('images/dog1.png') }}" 
                          alt="Dog training fundamentals" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -62,7 +62,7 @@
             <!-- Topic 2: Exercise and Activity -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/dog-guide/dog-exercise-activity.jpg') }}" 
+                    <img src="{{ asset('images/dog2.png') }}" 
                          alt="Dog exercise and activities" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -80,7 +80,7 @@
             <!-- Topic 3: Dog Health and Wellness -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/dog-guide/dog-health-wellness.jpg') }}" 
+                    <img src="{{ asset('images/dog3.png') }}" 
                          alt="Dog health and wellness care" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -98,7 +98,7 @@
             <!-- Topic 4: Grooming and Hygiene -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/dog-guide/dog-grooming-hygiene.jpg') }}" 
+                    <img src="{{ asset('images/dog4.png') }}" 
                          alt="Dog grooming and hygiene" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -117,112 +117,87 @@
 </div>
 
 <!-- FURRY FRIENDS Magazine Section -->
-<div class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">FURRY FRIENDS Magazine</h2>
+<div class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Title -->
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+      FURRY FRIENDS <span class="text-teal-600">Magazine</span>
+    </h2>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <!-- Header -->
+        <div class="bg-gray-100 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-600">Fashionable Pets</p>
         </div>
-
-        <!-- Magazine Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Magazine Card 1 - Blue -->
-            <div class="relative bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Dog Training Mastery</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/dog-training-magazine.jpg') }}" 
-                             alt="Dog training magazine" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Latest Issue</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 2 - Red -->
-            <div class="relative bg-gradient-to-br from-red-400 to-red-600 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Dog Health & Nutrition</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/dog-health-nutrition.jpg') }}" 
-                             alt="Dog health and nutrition magazine" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Spring Edition</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 3 - Black/White -->
-            <div class="relative bg-gradient-to-br from-gray-800 to-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Dog Breed Spotlight</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/dog-breeds-spotlight.jpg') }}" 
-                             alt="Dog breeds spotlight magazine" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Special Issue</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 4 - Orange/Yellow -->
-            <div class="relative bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Dog Exercise & Fun</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/dog-exercise-fun.jpg') }}" 
-                             alt="Dog exercise and fun activities" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Summer Guide</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Cover Image + Date -->
+        <div class="relative">
+          <img src="{{ asset('images/dog5.jpeg') }}" alt="Fashionable Pets" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-400">Jan 2023</span>
         </div>
+      </div>
 
-        <!-- Subscribe Section -->
-        <div class="text-center mt-12">
-            <p class="text-gray-600 mb-6 text-sm">Join the FurryFriends magazine and be first to hear about news.</p>
-            <form action="{{ route('newsletter.subscribe') }}" method="POST" class="max-w-md mx-auto flex">
-                @csrf
-                <input type="email" 
-                       name="email" 
-                       placeholder="Enter your email" 
-                       class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
-                <button type="submit" 
-                        class="px-8 py-3 bg-purple-600 text-white rounded-r-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 font-semibold text-sm">
-                    Subscribe
-                </button>
-            </form>
+      <!-- Card 2 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-teal-600 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-white">Furry Friends</h3>
+          <p class="text-xs text-teal-100">Behavior of dogs</p>
         </div>
+        <div class="relative">
+          <img src="{{ asset('images/dog6.jpeg') }}" alt="Behavior of dogs" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-200">Apr 2023</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-gray-50 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-600">Play with your cat</p>
+        </div>
+        <div class="relative">
+          <img src="{{ asset('images/dog7.jpeg') }}" alt="Play with your cat" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-400">Apr 2023</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-yellow-400 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-800">How to Train your Cat</p>
+        </div>
+        <div class="relative">
+          <img src="{{ asset('images/dog9.jpeg') }}" alt="How to Train your Cat" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-700">Apr 2023</span>
+        </div>
+      </div>
     </div>
+
+    <!-- Subscribe CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-sm text-gray-700 mb-4">
+        Join the FurryFriends magazine and be the first to hear about news
+      </p>
+      <div class="inline-flex">
+        <input 
+          type="email" 
+          placeholder="E-mail Address" 
+          class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none text-sm"
+        />
+        <button 
+          class="px-6 py-2 bg-purple-600 text-white rounded-r-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+        >
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
 
 <!-- Dog Care Resources Section -->
 <div class="py-16 bg-white">
