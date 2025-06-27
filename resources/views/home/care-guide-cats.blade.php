@@ -8,35 +8,54 @@
 @section('content')
 <!-- Hero Section with Dog Food -->
 <div class="bg-gray-50 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Left Image -->
-            <div class="order-2 lg:order-1">
-                <img src="{{ asset('images/care-guide/pet-nutrition.jpg') }}" 
-                     alt="Pet nutrition and food" 
-                     class="w-full h-96 object-cover rounded-lg shadow-lg">
-            </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <!-- Left Image -->
+      <div class="order-2 lg:order-1">
+        <img
+          src="{{ asset('images/Food.png') }}"
+          alt="Pet nutrition and food"
+          class="w-full h-70 object-contain rounded-lg "
+        >
+      </div>
 
-            <!-- Right Content -->
-            <div class="order-1 lg:order-2">
-                <h1 class="text-2xl font-bold text-gray-900 mb-6">Consequences of obesity in pets</h1>
-                <p class="text-gray-600 leading-relaxed mb-6 text-sm">
-                    La obesidad es un factor de riesgo para la mortalidad, tanto o más que el tabaco ansiedad en los 
-                    seres humanos. En los perros no es diferente, ya que la obesidad puede causar una condición 
-                    ansiedad en todo el cuerpo del animal, por lo que es responsable de una serie de otros problemas 
-                    de salud. En este artículo, vamos a explicar las principales consecuencias de la obesidad en las 
-                    mascotas.
-                </p>
-                <a href="#" class="inline-flex items-center text-purple-600 text-sm font-semibold hover:text-purple-700">
-                    Read More
-                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
+      <!-- Right Content -->
+      <div class="order-1 lg:order-2">
+        <h1 class="text-2xl font-bold text-gray-900 mb-6">
+          Consequences of obesity in pets
+        </h1>
+        <p class="text-gray-600 leading-relaxed mb-6 text-sm">
+          La obesidad es un factor de riesgo para la mortalidad, tanto o más que el tabaco ansiedad en los 
+          seres humanos. En los perros no es diferente, ya que la obesidad puede causar una condición 
+          ansiedad en todo el cuerpo del animal, por lo que es responsable de una serie de otros problemas 
+          de salud. En este artículo, vamos a explicar las principales consecuencias de la obesidad en las 
+          mascotas.
+        </p>
+        <a
+          href="#"
+          class="inline-flex items-center text-purple-600 text-sm font-semibold hover:text-purple-700"
+        >
+          Read More
+          <svg
+            class="w-4 h-4 ml-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </a>
+      </div>
     </div>
+  </div>
 </div>
+
+
 
 <!-- Care Guide Topics Section -->
 <div class="py-16 bg-white">
@@ -45,7 +64,7 @@
             <!-- Topic 1: Step by step to develop your dogs -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/care-guide/dog-training.jpg') }}" 
+                    <img src="{{ asset('images/cat1.png') }}" 
                          alt="Dog training steps" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -63,7 +82,7 @@
             <!-- Topic 2: Create feelings in pets -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/care-guide/pet-emotions.jpg') }}" 
+                    <img src="{{ asset('images/cat2.png') }}" 
                          alt="Pet emotional care" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -81,7 +100,7 @@
             <!-- Topic 3: The language of cats -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/care-guide/cat-communication.jpg') }}" 
+                    <img src="{{ asset('images/cat3.jpeg') }}" 
                          alt="Cat language and behavior" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -99,7 +118,7 @@
             <!-- Topic 4: How many times Do Cats need Bathing -->
             <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="h-48 overflow-hidden">
-                    <img src="{{ asset('images/care-guide/cat-grooming.jpg') }}" 
+                    <img src="{{ asset('images/cat4.jpeg') }}" 
                          alt="Cat grooming and bathing" 
                          class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
                 </div>
@@ -118,112 +137,87 @@
 </div>
 
 <!-- FURRY FRIENDS Magazine Section -->
-<div class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">FURRY FRIENDS Magazine</h2>
+<div class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Title -->
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">
+      FURRY FRIENDS <span class="text-teal-600">Magazine</span>
+    </h2>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Card 1 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <!-- Header -->
+        <div class="bg-gray-100 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-600">Fashionable Pets</p>
         </div>
-
-        <!-- Magazine Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Magazine Card 1 - Blue -->
-            <div class="relative bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Pet Health & Nutrition Guide</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/health-nutrition.jpg') }}" 
-                             alt="Pet health and nutrition" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Latest Issue</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 2 - Red -->
-            <div class="relative bg-gradient-to-br from-red-400 to-red-600 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Training & Behavior Tips</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/training-behavior.jpg') }}" 
-                             alt="Pet training and behavior" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Spring Edition</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 3 - Black/White -->
-            <div class="relative bg-gradient-to-br from-gray-800 to-black rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-30"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Adoption Success Stories</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/adoption-success.jpg') }}" 
-                             alt="Adoption success stories" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Special Issue</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Magazine Card 4 - Orange/Yellow -->
-            <div class="relative bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                <div class="absolute inset-0 bg-black bg-opacity-20"></div>
-                <div class="relative p-6 h-80 flex flex-col justify-between">
-                    <div>
-                        <div class="text-white text-xs font-semibold mb-2 opacity-90">FURRY FRIENDS</div>
-                        <h3 class="text-white text-sm font-bold leading-tight">Seasonal Pet Care</h3>
-                    </div>
-                    <div class="flex items-center">
-                        <img src="{{ asset('images/magazine/seasonal-pet-care.jpg') }}" 
-                             alt="Seasonal pet care" 
-                             class="w-16 h-16 rounded-full object-cover border-2 border-white mr-3">
-                        <div class="text-white text-sm">
-                            <div class="font-semibold text-sm">Summer Guide</div>
-                            <div class="opacity-90 text-sm">2024</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <!-- Cover Image + Date -->
+        <div class="relative">
+          <img src="{{ asset('images/magazine1.jpeg') }}" alt="Fashionable Pets" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-400">Jan 2023</span>
         </div>
+      </div>
 
-        <!-- Subscribe Section -->
-        <div class="text-center mt-12">
-            <p class="text-gray-600 mb-6 text-sm">Join the FurryFriends magazine and be first to hear about news.</p>
-            <form action="{{ route('newsletter.subscribe') }}" method="POST" class="max-w-md mx-auto flex">
-                @csrf
-                <input type="email" 
-                       name="email" 
-                       placeholder="Enter your email" 
-                       class="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm">
-                <button type="submit" 
-                        class="px-8 py-3 bg-purple-600 text-white rounded-r-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 font-semibold text-sm">
-                    Subscribe
-                </button>
-            </form>
+      <!-- Card 2 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-teal-600 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-white">Furry Friends</h3>
+          <p class="text-xs text-teal-100">Behavior of dogs</p>
         </div>
+        <div class="relative">
+          <img src="{{ asset('images/magazine2.jpeg') }}" alt="Behavior of dogs" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-200">Apr 2023</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-gray-50 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-600">Play with your cat</p>
+        </div>
+        <div class="relative">
+          <img src="{{ asset('images/magazine3.png') }}" alt="Play with your cat" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-400">Apr 2023</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white rounded-lg overflow-hidden shadow">
+        <div class="bg-yellow-400 px-4 py-3">
+          <h3 class="uppercase text-sm font-bold text-gray-900">Furry Friends</h3>
+          <p class="text-xs text-gray-800">How to Train your Cat</p>
+        </div>
+        <div class="relative">
+          <img src="{{ asset('images/magazine4.png') }}" alt="How to Train your Cat" class="w-full h-48 object-cover">
+          <span class="absolute bottom-2 right-2 text-xs uppercase text-gray-700">Apr 2023</span>
+        </div>
+      </div>
     </div>
+
+    <!-- Subscribe CTA -->
+    <div class="mt-12 text-center">
+      <p class="text-sm text-gray-700 mb-4">
+        Join the FurryFriends magazine and be the first to hear about news
+      </p>
+      <div class="inline-flex">
+        <input 
+          type="email" 
+          placeholder="E-mail Address" 
+          class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none text-sm"
+        />
+        <button 
+          class="px-6 py-2 bg-purple-600 text-white rounded-r-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+        >
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
 
 <!-- Additional Resources Section -->
 <div class="py-16 bg-white">

@@ -6,15 +6,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-gray-50 min-h-screen">
+<div class="bg-gray-50 min-h-screen mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header Section -->
     <div class="bg-white py-16">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <!-- Paw Icon -->
             <div class="w-24 h-24 mx-auto mb-6 bg-purple-100 rounded-full flex items-center justify-center">
-                <svg class="w-12 h-12 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8.5 1C7.1 1 6 2.1 6 3.5S7.1 6 8.5 6 11 4.9 11 3.5 9.9 1 8.5 1M15.5 1C14.1 1 13 2.1 13 3.5S14.1 6 15.5 6 18 4.9 18 3.5 16.9 1 15.5 1M12 6.5C10.6 6.5 9.5 7.6 9.5 9S10.6 11.5 12 11.5 14.5 10.4 14.5 9 13.4 6.5 12 6.5M4 9C2.6 9 1.5 10.1 1.5 11.5S2.6 14 4 14 6.5 12.9 6.5 11.5 5.4 9 4 9M20 9C18.6 9 17.5 10.1 17.5 11.5S18.6 14 20 14 22.5 12.9 22.5 11.5 21.4 9 20 9M12 12.5C9.8 12.5 8 14.3 8 16.5V20C8 21.1 8.9 22 10 22H14C15.1 22 16 21.1 16 20V16.5C16 14.3 14.2 12.5 12 12.5Z"/>
-                </svg>
+                <img src="{{ asset('images/Group.png') }}" alt="">
             </div>
             
             <h1 class="text-2xl font-bold text-gray-900 mb-4">How It Works For Rehomers</h1>
@@ -43,7 +41,7 @@
                 </ul>
             </div>
             <div class="flex-1 pl-8">
-                <img src="{{ asset('images/rehoming/step1-cats.png') }}" 
+                <img src="{{ asset('images/Group1.png') }}" 
                      alt="Create pet profile" 
                      class="w-full max-w-sm mx-auto">
             </div>
@@ -57,7 +55,7 @@
         <!-- Step 2 -->
         <div class="flex items-center mb-16">
             <div class="flex-1 pr-8">
-                <img src="{{ asset('images/rehoming/step2-dog-card.png') }}" 
+                <img src="{{ asset('images/Group2.png') }}" 
                      alt="Dog ID card" 
                      class="w-full max-w-sm mx-auto">
             </div>
@@ -96,7 +94,7 @@
                 </ul>
             </div>
             <div class="flex-1 pl-8">
-                <img src="{{ asset('images/rehoming/step3-computer.png') }}" 
+                <img src="{{ asset('images/Group3.png') }}" 
                      alt="Choose adopter" 
                      class="w-full max-w-sm mx-auto">
             </div>
@@ -110,7 +108,7 @@
         <!-- Step 4 -->
         <div class="flex items-center mb-16">
             <div class="flex-1 pr-8">
-                <img src="{{ asset('images/rehoming/step4-home-check.png') }}" 
+                <img src="{{ asset('images/Group4.png') }}" 
                      alt="Home check" 
                      class="w-full max-w-sm mx-auto">
             </div>
@@ -149,7 +147,7 @@
                 </ul>
             </div>
             <div class="flex-1 pl-8">
-                <img src="{{ asset('images/rehoming/step5-chat.png') }}" 
+                <img src="{{ asset('images/Group5.png') }}" 
                      alt="Chat with adopter" 
                      class="w-full max-w-sm mx-auto">
             </div>
@@ -163,7 +161,7 @@
         <!-- Step 6 -->
         <div class="flex items-center mb-16">
             <div class="flex-1 pr-8">
-                <img src="{{ asset('images/rehoming/step6-adoption.png') }}" 
+                <img src="{{ asset('images/Group6.png') }}" 
                      alt="Confirm adoption" 
                      class="w-full max-w-sm mx-auto">
             </div>

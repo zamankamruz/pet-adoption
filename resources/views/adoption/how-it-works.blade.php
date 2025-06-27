@@ -166,7 +166,7 @@
 
         <!-- Search Button -->
         <div class="text-center mt-16">
-            <a href="{{ route('pets.index') }}" 
+            <a href="{{ route('adoption.index') }}" 
                class="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold text-sm hover:bg-purple-700 transition-colors">
                 Search a pet
             </a>

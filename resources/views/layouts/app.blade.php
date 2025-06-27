@@ -181,21 +181,44 @@
         </div>
     </header>
 
-    <!-- Purple Bar with Search -->
-    <div class="bg-violet-500 py-2">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-end">
-                <div class="relative">
-                    <input type="text" 
-                           class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm" 
-                           placeholder="search...">
-                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
-                        <i class="fas fa-search text-sm"></i>
-                    </button>
-                </div>
-            </div>
+    <!-- Purple Bar with Breadcrumbs + Search -->
+    <div class="bg-violet-500 px-4 py-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+        {{-- Breadcrumbs --}}
+        <nav class="text-white text-sm" aria-label="breadcrumb">
+            <ol class="list-reset flex space-x-2">
+            <li>
+                <a href="{{ route('home') }}" class="hover:underline">Home</a>
+            </li>
+            @php $path = ''; @endphp
+            @foreach(Request::segments() as $segment)
+                @php $path .= '/'.$segment; @endphp
+                <li>/</li>
+                <li>
+                <a href="{{ url($path) }}" class="hover:underline">
+                    {{ ucwords(str_replace('-', ' ', $segment)) }}
+                </a>
+                </li>
+            @endforeach
+            </ol>
+        </nav>
+
+        {{-- Search box --}}
+        <div class="relative">
+            <input
+            type="text"
+            class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm"
+            placeholder="search..."
+            >
+            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
+            <i class="fas fa-search text-sm"></i>
+            </button>
+        </div>
         </div>
     </div>
+    </div>
+
 
     <!-- Main Content -->
     <main>
