@@ -40,9 +40,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
                         </svg>
                         Users
-                        <span class="ml-auto bg-gray-200 text-gray-600 text-xs rounded-full px-2 py-1">
-                            {{ number_format($stats['total_users']) }}
-                        </span>
                     </a>
 
                     <!-- Pets -->
@@ -52,9 +49,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12C3.12 12 2 13.12 2 14.5S3.12 17 4.5 17 7 15.88 7 14.5 5.88 12 4.5 12M19.5 12C18.12 12 17 13.12 17 14.5S18.12 17 19.5 17 22 15.88 22 14.5 20.88 12 19.5 12M12 3.5C10.62 3.5 9.5 4.62 9.5 6S10.62 8.5 12 8.5 14.5 7.38 14.5 6 13.38 3.5 12 3.5M12 20.5C10.9 20.5 10 19.6 10 18.5S10.9 16.5 12 16.5 14 17.4 14 18.5 13.1 20.5 12 20.5Z"/>
                         </svg>
                         Pets
-                        <span class="ml-auto bg-gray-200 text-gray-600 text-xs rounded-full px-2 py-1">
-                            {{ number_format($stats['total_pets']) }}
-                        </span>
                     </a>
 
                     <!-- Adoptions -->
@@ -77,7 +71,7 @@
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
-                        Rehoming Requests
+                        Rehoming
                         @if($stats['pending_rehoming'] > 0)
                             <span class="ml-auto bg-blue-100 text-blue-600 text-xs rounded-full px-2 py-1">
                                 {{ number_format($stats['pending_rehoming']) }}

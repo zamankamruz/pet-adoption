@@ -85,9 +85,18 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                         </svg>
                         News
-                        <span class="ml-auto bg-purple-200 text-purple-700 text-xs rounded-full px-2 py-1">
-                            {{ $news->total() }}
-                        </span>
+                    </a>
+
+                    <!-- Testimonials -->
+                    <a href="{{ route('admin.testimonials.index') }}"
+                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- Annotation/chat bubble icon for “Testimonials” -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 8h10M7 12h8m-5 8l-5-5H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-3l-5 5z" />
+                        </svg>
+                        Testimonials
                     </a>
 
                     <!-- Messages -->
@@ -98,6 +107,16 @@
                         </svg>
                         Messages
                     </a>
+
+                    <a href="{{ route('admin.newsletter.index') }}" 
+                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M3 10l9 4-9 4V6l18 6-18 6" />
+                        </svg>
+                        Newsletter 
+                    </a>
+
 
                     <!-- Divider -->
                     <div class="border-t border-gray-200 mt-6 pt-6">
