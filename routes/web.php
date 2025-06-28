@@ -15,6 +15,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Admin\AdminRehomingController;
 use App\Http\Controllers\Admin\AdminReportsController;
 use App\Http\Controllers\Admin\AdminNewsController;
 use App\Http\Controllers\Admin\AdminTestimonialController;
+use App\Http\Controllers\Admin\AdminNewsletterController;
 
 
 
@@ -359,21 +361,38 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
 
 
     // Add to admin routes group in web.php
-Route::prefix('testimonials')->name('testimonials.')->group(function () {
-    Route::get('/', [AdminTestimonialController::class, 'index'])->name('index');
-    Route::get('/create', [AdminTestimonialController::class, 'create'])->name('create');
-    Route::post('/', [AdminTestimonialController::class, 'store'])->name('store');
-    Route::get('/{testimonial}', [AdminTestimonialController::class, 'show'])->name('show');
-    Route::get('/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('edit');
-    Route::put('/{testimonial}', [AdminTestimonialController::class, 'update'])->name('update');
-    Route::delete('/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('destroy');
-    Route::post('/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('approve');
-    Route::post('/{testimonial}/feature', [AdminTestimonialController::class, 'toggleFeature'])->name('feature');
-    Route::post('/bulk', [AdminTestimonialController::class, 'bulkAction'])->name('bulk');
-});
+    Route::prefix('testimonials')->name('testimonials.')->group(function () {
+        Route::get('/', [AdminTestimonialController::class, 'index'])->name('index');
+        Route::get('/create', [AdminTestimonialController::class, 'create'])->name('create');
+        Route::post('/', [AdminTestimonialController::class, 'store'])->name('store');
+        Route::get('/{testimonial}', [AdminTestimonialController::class, 'show'])->name('show');
+        Route::get('/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('edit');
+        Route::put('/{testimonial}', [AdminTestimonialController::class, 'update'])->name('update');
+        Route::delete('/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('destroy');
+        Route::post('/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('approve');
+        Route::post('/{testimonial}/feature', [AdminTestimonialController::class, 'toggleFeature'])->name('feature');
+        Route::post('/bulk', [AdminTestimonialController::class, 'bulkAction'])->name('bulk');
+    });
 
 
+        Route::get('/admin/newsletter/stats', [NewsletterController::class, 'getSubscriberStats'])->name('newsletter.stats');
 
+        Route::prefix('newsletter')->name('newsletter.')->group(function () {
+        Route::get('/', [AdminNewsletterController::class, 'index'])->name('index');
+        Route::get('/create', [AdminNewsletterController::class, 'create'])->name('create');
+        Route::post('/', [AdminNewsletterController::class, 'store'])->name('store');
+        Route::get('/{subscriber}', [AdminNewsletterController::class, 'show'])->name('show');
+        Route::get('/{subscriber}/edit', [AdminNewsletterController::class, 'edit'])->name('edit');
+        Route::put('/{subscriber}', [AdminNewsletterController::class, 'update'])->name('update');
+        Route::delete('/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('destroy');
+        Route::post('/{subscriber}/activate', [AdminNewsletterController::class, 'activate'])->name('activate');
+        Route::post('/{subscriber}/deactivate', [AdminNewsletterController::class, 'deactivate'])->name('deactivate');
+        Route::post('/bulk', [AdminNewsletterController::class, 'bulkAction'])->name('bulk');
+        Route::get('/broadcast/form', [AdminNewsletterController::class, 'broadcast'])->name('broadcast');
+        Route::post('/broadcast/send', [AdminNewsletterController::class, 'sendBroadcast'])->name('send-broadcast');
+        Route::get('/export', [AdminNewsletterController::class, 'export'])->name('export');
+        Route::get('/stats', [AdminNewsletterController::class, 'getStats'])->name('stats');
+    });
 
 });
 
@@ -406,8 +425,10 @@ Route::get('/auth/facebook', [LoginController::class, 'redirectToFacebook'])->na
 Route::get('/auth/facebook/callback', [LoginController::class, 'handleFacebookCallback']);
 
 // Newsletter Routes
-Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
-Route::get('/newsletter/unsubscribe/{token}', [HomeController::class, 'unsubscribeNewsletter'])->name('newsletter.unsubscribe');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
+
 
 // Sitemap and SEO Routes
 Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');

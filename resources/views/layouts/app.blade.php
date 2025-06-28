@@ -261,19 +261,38 @@
                 </ul>
             </div>
 
-            <!-- Keep In Touch -->
-            <div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">Keep In Touch With Us</h3>
-                <p class="text-gray-600 mb-4">Join the FurryFriends magazine and be first to hear about news</p>
-                <div class="flex flex-col sm:flex-row gap-2">
-                    <input type="email" 
-                           placeholder="E-mail Address" 
-                           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
-                    <button class="bg-violet-500 hover:bg-violet-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300">
-                        Subscribe
-                    </button>
-                </div>
-            </div>
+<!-- Keep In Touch -->
+<div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Keep In Touch With Us</h3>
+    <p class="text-gray-600 mb-4">Join the FurryFriends magazine and be first to hear about news</p>
+    
+    <!-- Newsletter Subscription Form -->
+    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2">
+        @csrf
+        <input type="email" 
+               id="newsletter-email"
+               name="email"
+               placeholder="E-mail Address" 
+               required
+               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
+        <button type="submit" 
+                id="newsletter-submit"
+                class="bg-violet-500 hover:bg-violet-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="newsletter-text">Subscribe</span>
+            <span class="newsletter-loading hidden">
+                <i class="fas fa-spinner fa-spin"></i> Subscribing...
+            </span>
+        </button>
+    </form>
+    
+    <!-- Success/Error Messages -->
+    <div id="newsletter-message" class="mt-3 hidden">
+        <div id="newsletter-alert" class="p-3 rounded-lg text-sm"></div>
+    </div>
+</div>
+
+
+
         </div>
     </div>
 
@@ -313,5 +332,113 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
+
+
+<!-- Add this JavaScript before closing </body> tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('newsletter-form');
+    const emailInput = document.getElementById('newsletter-email');
+    const submitButton = document.getElementById('newsletter-submit');
+    const messageDiv = document.getElementById('newsletter-message');
+    const alertDiv = document.getElementById('newsletter-alert');
+    const submitText = submitButton.querySelector('.newsletter-text');
+    const loadingText = submitButton.querySelector('.newsletter-loading');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        if (!email) {
+            showMessage('Please enter your email address.', 'error');
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showMessage('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        // Show loading state
+        setLoadingState(true);
+        hideMessage();
+
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
+        // Submit form
+        fetch('{{ route("newsletter.subscribe") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setLoadingState(false);
+            
+            if (data.success) {
+                showMessage(data.message, 'success');
+                emailInput.value = ''; // Clear the input
+            } else {
+                showMessage(data.message || 'An error occurred. Please try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Newsletter subscription error:', error);
+            setLoadingState(false);
+            showMessage('Sorry, something went wrong. Please try again later.', 'error');
+        });
+    });
+
+    function setLoadingState(loading) {
+        if (loading) {
+            submitButton.disabled = true;
+            submitText.classList.add('hidden');
+            loadingText.classList.remove('hidden');
+        } else {
+            submitButton.disabled = false;
+            submitText.classList.remove('hidden');
+            loadingText.classList.add('hidden');
+        }
+    }
+
+    function showMessage(message, type) {
+        messageDiv.classList.remove('hidden');
+        alertDiv.textContent = message;
+        
+        // Remove existing classes
+        alertDiv.classList.remove('bg-green-100', 'text-green-700', 'border-green-300', 'bg-red-100', 'text-red-700', 'border-red-300');
+        
+        if (type === 'success') {
+            alertDiv.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-300');
+        } else {
+            alertDiv.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
+        }
+
+        // Auto-hide success messages after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                hideMessage();
+            }, 5000);
+        }
+    }
+
+    function hideMessage() {
+        messageDiv.classList.add('hidden');
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+});
+</script>
+
+
 </body>
 </html>
