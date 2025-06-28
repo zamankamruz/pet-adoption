@@ -1,6 +1,7 @@
 <?php
 // File: dashboard.blade.php
 // Path: /resources/views/user/dashboard.blade.php
+// Continuation from previous file - updating the visitor statistics section
 ?>
 
 @extends('layouts.app')
@@ -111,8 +112,6 @@
                             </button>
                         </div>
                     </div>
-
-                    
                 </div>
             </div>
 
@@ -176,11 +175,12 @@
                             </div>
                         </div>
 
-                        <!-- Visitor Statistics -->
-                        @if(auth()->user()->pets->count() > 0)
+                        <!-- Visitor Statistics - Always show this section -->
                         <div>
                             <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-lg font-semibold text-gray-900">Visitor Statistics({{ auth()->user()->pets->first()->name }})</h2>
+                                <h2 class="text-lg font-semibold text-gray-900">
+                                    {{ 'Visitor Statistics' . (auth()->user()->pets->count() > 0 ? ' (' . auth()->user()->pets->first()->name . ')' : '') }}
+                                </h2>
                                 <div class="text-sm text-gray-500">Last 30 days</div>
                             </div>
                             <div class="bg-white border border-gray-200 rounded-xl p-6">
@@ -192,7 +192,6 @@
                                 </p>
                             </div>
                         </div>
-                        @endif
 
                         <!-- Adoption Requests -->
                         @if($recentAdoptions->count() > 0)
@@ -331,20 +330,25 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Visitor Statistics Chart
-@if(auth()->user()->pets->count() > 0)
+// Visitor Statistics Chart - Always display chart
 const ctx = document.getElementById('visitorChart').getContext('2d');
+
+// Use the visitor data passed from controller
+const visitorData = @json($visitorData ?? []);
+const labels = Object.keys(visitorData);
+const data = Object.values(visitorData);
+
 const visitorChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: labels,
         datasets: [{
             label: 'Number of views',
-            data: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 240, 235],
+            data: data,
             borderColor: '#8B5CF6',
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
             borderWidth: 2,
-            fill: false,
+            fill: true,
             tension: 0.4,
             pointBackgroundColor: '#8B5CF6',
             pointBorderColor: '#8B5CF6',
@@ -384,7 +388,6 @@ const visitorChart = new Chart(ctx, {
         }
     }
 });
-@endif
 
 // Toggle favorite function
 function toggleFavorite(petId, button) {
