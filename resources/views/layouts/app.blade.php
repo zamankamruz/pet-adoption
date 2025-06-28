@@ -205,16 +205,17 @@
         </nav>
 
         {{-- Search box --}}
-        <div class="relative">
+        <form action="{{ route('pets.search') }}" method="GET" class="relative">
             <input
-            type="text"
-            class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm"
-            placeholder="search..."
+                type="text"
+                name="q"
+                class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm"
+                placeholder="Search pets..."
             >
-            <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
-            <i class="fas fa-search text-sm"></i>
+            <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
+                <i class="fas fa-search text-sm"></i>
             </button>
-        </div>
+        </form>
         </div>
     </div>
     </div>
