@@ -8,39 +8,50 @@
 @section('content')
 <div class="bg-gray-50 min-h-screen pt-8">
     <div class="max-w-7xl mx-auto px-4">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Filters Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border sticky top-24">
-                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
-                        <h3 class="text-lg font-semibold text-gray-900">Filters</h3>
-                        <a href="{{ route('pets.index') }}" class="text-purple-600 text-sm font-medium hover:underline">Reset Filters</a>
-                    </div>
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Filters Sidebar -->
+<div class="lg:col-span-1">
+  <div class="bg-white rounded-2xl p-6 shadow-sm border sticky top-24">
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-900">Filters</h3>
+      <a href="{{ route('pets.index') }}" class="text-purple-600 text-sm font-medium hover:underline">
+        Reset Filters
+      </a>
+    </div>
 
-                    <form method="GET" action="{{ route('pets.index') }}" id="filterForm">
-                        <!-- Animal Type Selection -->
-                        <div class="mb-6">
-                            <div class="grid grid-cols-2 gap-3">
-                                <a href="{{ route('pets.index', array_merge(request()->query(), ['species' => 'cat'])) }}" 
-                                   class="flex flex-col items-center p-4 border-2 rounded-xl transition-all duration-200 {{ request('species') === 'cat' ? 'border-purple-500 bg-purple-50 text-purple-600' : 'border-gray-200 text-gray-600 hover:border-gray-300' }}">
-                                    <div class="w-12 h-12 flex items-center justify-center mb-2">
-                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L15 1L13.5 2.5C13.1 1.9 12.6 1.4 12 1.1C11.4 1.4 10.9 1.9 10.5 2.5L9 1L3 7V9H9C10.1 9 11 9.9 11 11V16C11 17.1 11.9 18 13 18H15C16.1 18 17 17.1 17 16V11C17 9.9 17.9 9 19 9H21Z"/>
-                                        </svg>
-                                    </div>
-                                    <span class="text-sm font-medium">Cat</span>
-                                </a>
-                                <a href="{{ route('pets.index', array_merge(request()->query(), ['species' => 'dog'])) }}" 
-                                   class="flex flex-col items-center p-4 border-2 rounded-xl transition-all duration-200 {{ request('species') === 'dog' ? 'border-purple-500 bg-purple-50 text-purple-600' : 'border-gray-200 text-gray-600 hover:border-gray-300' }}">
-                                    <div class="w-12 h-12 flex items-center justify-center mb-2">
-                                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M4.5 12C3.12 12 2 13.12 2 14.5S3.12 17 4.5 17 7 15.88 7 14.5 5.88 12 4.5 12M19.5 12C18.12 12 17 13.12 17 14.5S18.12 17 19.5 17 22 15.88 22 14.5 20.88 12 19.5 12M12 3.5C10.62 3.5 9.5 4.62 9.5 6S10.62 8.5 12 8.5 14.5 7.38 14.5 6 13.38 3.5 12 3.5M12 20.5C10.9 20.5 10 19.6 10 18.5S10.9 16.5 12 16.5 14 17.4 14 18.5 13.1 20.5 12 20.5Z"/>
-                                        </svg>
-                                    </div>
-                                    <span class="text-sm font-medium">Dog</span>
-                                </a>
-                            </div>
-                        </div>
+    <form method="GET" action="{{ route('pets.index') }}" id="filterForm">
+      <!-- Animal Type Selection -->
+      <div class="mb-6">
+        <div class="grid grid-cols-2 gap-4">
+          <!-- Cat -->
+          <a href="{{ route('pets.index', array_merge(request()->query(), ['species' => 'cat'])) }}"
+             class="flex flex-col items-center text-sm">
+            <div class="w-16 h-16 rounded-full border-2 flex items-center justify-center mb-2 transition-colors duration-200
+                        {{ request('species') === 'cat'
+                           ? 'bg-purple-50 border-purple-500 text-white'
+                           : 'border-gray-200 text-gray-400 hover:border-gray-300' }}">
+              <img src="{{ asset('images/cat.png') }}" alt="">
+            </div>
+            <span class="{{ request('species') === 'cat' ? 'text-purple-600' : 'text-gray-600' }} font-medium">
+              Cat
+            </span>
+          </a>
+          
+          <!-- Dog -->
+          <a href="{{ route('pets.index', array_merge(request()->query(), ['species' => 'dog'])) }}"
+             class="flex flex-col items-center text-sm">
+            <div class="w-16 h-16 rounded-full border-2 flex items-center justify-center mb-2 transition-colors duration-200
+                        {{ request('species') === 'dog'
+                           ? 'bg-purple-50 border-purple-500 text-white'
+                           : 'border-gray-200 text-gray-400 hover:border-gray-300' }}">
+              <img src="{{ asset('images/dog.png') }}" alt="">
+            </div>
+            <span class="{{ request('species') === 'dog' ? 'text-purple-600' : 'text-gray-600' }} font-medium">
+              Dog
+            </span>
+          </a>
+        </div>
+      </div>
 
                         <!-- Location Filter -->
                         <div class="mb-6">
@@ -56,47 +67,69 @@
                             </select>
                         </div>
 
-                        <!-- Distance -->
-                        <div class="mb-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-medium text-gray-700">Distance</span>
-                                <span class="text-sm text-gray-500">Use current location</span>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <div class="flex-1 h-2 bg-gray-200 rounded-full relative">
-                                    <div class="absolute inset-0 bg-purple-500 rounded-full" style="width: 0%"></div>
-                                    <div class="absolute top-0 left-0 w-4 h-4 bg-purple-500 rounded-full transform -translate-y-1"></div>
-                                </div>
-                            </div>
-                            <div class="flex justify-between text-xs text-gray-500 mt-2">
-                                <span>0 Miles</span>
-                                <span>100+ Miles</span>
-                            </div>
-                        </div>
+                        <!-- Distance Filter -->
+<div class="mb-6">
+  <label class="block text-sm font-medium text-gray-700 mb-2">Distance</label>
+  <!-- dynamic miles text -->
+  <div id="distanceLabel" class="text-sm text-gray-700 mb-2">
+    {{ request('distance', 0) }} Miles
+  </div>
+  <div class="relative">
+    <!-- full track -->
+    <div class="w-full h-1 bg-gray-200 rounded-full"></div>
+    <!-- filled track -->
+    <div id="filledTrack" class="absolute top-0 left-0 h-1 bg-purple-500 rounded-full" style="width: {{ request('distance',0) }}%"></div>
+    <!-- invisible range input sits on top -->
+    <input
+      type="range"
+      name="distance"
+      min="0" max="100"
+      value="{{ request('distance', 0) }}"
+      oninput="updateDistance(this)"
+      class="absolute top-0 left-0 w-full h-1 opacity-0 cursor-pointer"
+    />
+    <!-- paw thumb -->
+    <div
+      id="pawThumb"
+      class="absolute top-1/2 text-purple-500 transform -translate-y-1/2"
+      style="left: {{ request('distance',0) }}%"
+    >
+      <i class="fas fa-paw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateDistance(el) {
+    const v = el.value;
+    // move & resize
+    document.getElementById('filledTrack').style.width = v + '%';
+    document.getElementById('pawThumb').style.left     = v + '%';
+    // update label
+    document.getElementById('distanceLabel').innerText = v + ' Miles';
+  }
+</script>
+
 
                         <!-- Size Filter -->
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700 mb-3">Size</label>
                             <div class="grid grid-cols-3 gap-3">
-                                <div class="size-option {{ in_array('small', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
+                                <div class="size-option {{ in_array('small', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
                                      onclick="toggleSize('small')">
-                                    <svg class="w-4 h-4 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 8.5C10.62 8.5 9.5 9.62 9.5 11S10.62 13.5 12 13.5 14.5 12.38 14.5 11 13.38 8.5 12 8.5M12 1.5C10.62 1.5 9.5 2.62 9.5 4S10.62 6.5 12 6.5 14.5 5.38 14.5 4 13.38 1.5 12 1.5M6 8.5C4.62 8.5 3.5 9.62 3.5 11S4.62 13.5 6 13.5 8.5 12.38 8.5 11 7.38 8.5 6 8.5M18 8.5C16.62 8.5 15.5 9.62 15.5 11S16.62 13.5 18 13.5 20.5 12.38 20.5 11 19.38 8.5 18 8.5Z"/>
-                                    </svg>
+                                    <img src="{{ asset('images/small.png') }}" alt="">
                                     <span class="text-xs font-medium">Small</span>
                                 </div>
-                                <div class="size-option {{ in_array('medium', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
+                                <div class="size-option {{ in_array('medium', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3  rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
                                      onclick="toggleSize('medium')">
-                                    <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 8.5C10.62 8.5 9.5 9.62 9.5 11S10.62 13.5 12 13.5 14.5 12.38 14.5 11 13.38 8.5 12 8.5M12 1.5C10.62 1.5 9.5 2.62 9.5 4S10.62 6.5 12 6.5 14.5 5.38 14.5 4 13.38 1.5 12 1.5M6 8.5C4.62 8.5 3.5 9.62 3.5 11S4.62 13.5 6 13.5 8.5 12.38 8.5 11 7.38 8.5 6 8.5M18 8.5C16.62 8.5 15.5 9.62 15.5 11S16.62 13.5 18 13.5 20.5 12.38 20.5 11 19.38 8.5 18 8.5Z"/>
-                                    </svg>
+                                     <img src="{{ asset('images/mediam.png') }}" alt="">
+
                                     <span class="text-xs font-medium">Medium</span>
                                 </div>
-                                <div class="size-option {{ in_array('large', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3 border-2 rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
+                                <div class="size-option {{ in_array('large', (array)request('size')) ? 'bg-purple-500 text-white border-purple-500' : 'bg-white text-gray-600 border-gray-200' }} flex flex-col items-center p-3  rounded-lg cursor-pointer transition-all duration-200 hover:border-purple-300" 
                                      onclick="toggleSize('large')">
-                                    <svg class="w-6 h-6 mb-1" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M12 8.5C10.62 8.5 9.5 9.62 9.5 11S10.62 13.5 12 13.5 14.5 12.38 14.5 11 13.38 8.5 12 8.5M12 1.5C10.62 1.5 9.5 2.62 9.5 4S10.62 6.5 12 6.5 14.5 5.38 14.5 4 13.38 1.5 12 1.5M6 8.5C4.62 8.5 3.5 9.62 3.5 11S4.62 13.5 6 13.5 8.5 12.38 8.5 11 7.38 8.5 6 8.5M18 8.5C16.62 8.5 15.5 9.62 15.5 11S16.62 13.5 18 13.5 20.5 12.38 20.5 11 19.38 8.5 18 8.5Z"/>
-                                    </svg>
+                                    <img src="{{ asset('images/large.png') }}" alt="">
+
                                     <span class="text-xs font-medium">Large</span>
                                 </div>
                             </div>
@@ -117,40 +150,41 @@
                             </select>
                         </div>
 
-                        <!-- Color Filter -->
+                       <!-- Color Filter -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-3">Color</label>
-                            <div class="grid grid-cols-3 gap-3">
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-yellow-400 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Golden</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-amber-800 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Brown</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-gray-500 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Gray</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-black rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Black</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-red-500 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Red</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-gradient-to-r from-amber-600 to-yellow-400 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Bicolor</span>
-                                </div>
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-4 h-4 bg-gradient-to-r from-amber-800 via-yellow-600 to-amber-700 rounded-full border border-gray-300"></div>
-                                    <span class="text-sm text-gray-600">Brindle</span>
-                                </div>
-                            </div>
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Color</label>
+                        <div class="space-y-3">
+                            @php
+                            $colors = [
+                                'golden'  => 'bg-yellow-400',
+                                'brown'   => 'bg-amber-800',
+                                'gray'    => 'bg-gray-500',
+                                'black'   => 'bg-black',
+                                'red'     => 'bg-red-500',
+                                'bicolor' => 'bg-gradient-to-r from-amber-600 to-yellow-400',
+                                'brindle' => 'bg-gradient-to-r from-amber-800 via-yellow-600 to-amber-700',
+                            ];
+                            $selected = (array)request('colors', []);
+                            @endphp
+
+                            @foreach($colors as $value => $bgClass)
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input
+                                type="checkbox"
+                                name="colors[]"
+                                value="{{ $value }}"
+                                {{ in_array($value, $selected) ? 'checked' : '' }}
+                                onchange="document.getElementById('filterForm').submit()"
+                                class="sr-only"
+                                >
+                                <div class="w-4 h-4 {{ $bgClass }} rounded-full border border-gray-300"></div>
+                                <span class="text-sm text-gray-600 capitalize">{{ $value }}</span>
+                            </label>
+                            @endforeach
+
                         </div>
+                        </div>
+
 
                         <!-- Gender Filter -->
                         <div class="mb-6">
@@ -182,12 +216,19 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 px-6 rounded-lg font-medium hover:from-purple-700 hover:to-purple-800 transition-all duration-200 transform hover:scale-105">
-                            Apply your Filter
-                        </button>
+                       <button
+  type="submit"
+  class="w-full border-2 border-purple-600 text-purple-600 bg-transparent py-3 px-6 rounded-lg font-medium
+         hover:bg-purple-600 hover:text-white transition-all duration-200 transform hover:scale-105"
+>
+  Apply Filter
+</button>
+
                     </form>
                 </div>
             </div>
+
+
              <!-- Main Content -->
             <div class="lg:col-span-3">
                 <!-- Header with results count and sort -->
@@ -205,16 +246,17 @@
 
                 @if($pets->count() > 0)
                     <!-- Pets Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-                        @foreach($pets as $pet)
-                            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                                <!-- Pet Image -->
-                                <div class="relative h-48 overflow-hidden">
-                                    <img src="{{ $pet->main_image_url }}" 
-                                         alt="{{ $pet->name }}" 
-                                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
-                                    
-                                    <!-- Badges -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    @foreach($pets as $pet)
+                        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                        
+                        <!-- much shorter image block -->
+                        <div class="relative h-32 overflow-hidden">
+                            <img src="{{ $pet->main_image_url }}"
+                                alt="{{ $pet->name }}"
+                                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+                            {{-- badges & heart as before --}}
+                                     <!-- Badges -->
                                     @if($pet->is_new)
                                         <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                                             NEW
@@ -236,72 +278,35 @@
                                     </button>
                                 </div>
 
-                                <!-- Pet Info -->
-                                <div class="p-5">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ $pet->name }}</h3>
-                                        <span class="text-sm text-purple-600 font-medium">{{ ucfirst($pet->gender) }}</span>
-                                    </div>
-                                    
-                                    <div class="flex items-center text-gray-500 text-sm mb-3">
-                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                                        </svg>
-                                        {{ $pet->location->city }}, {{ $pet->location->state }}
+                                <!-- tighter padding -->
+                                <div class="p-3">
+                                    <div class="flex justify-between items-start mb-1">
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ $pet->name }}</h3>
+                                    <span class="text-sm text-purple-600 font-medium">{{ ucfirst($pet->gender) }}</span>
                                     </div>
 
-                                    <!-- Pet Details Grid -->
-                                    <div class="grid grid-cols-2 gap-3 text-sm mb-4">
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Breed:</span>
-                                            <span class="font-medium text-gray-900">{{ $pet->breed->name }}</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Age:</span>
-                                            <span class="font-medium text-gray-900">{{ $pet->age_display }}</span>
-                                        </div>
-                                        <div class="flex justify-between">
-                                            <span class="text-gray-600">Size:</span>
-                                            <span class="font-medium text-gray-900">{{ ucfirst($pet->size) }}</span>
-                                        </div>
+                                    <div class="flex items-center text-gray-500 text-sm mb-2">
+                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">…</svg>
+                                    {{ $pet->location->city }}, {{ $pet->location->state }}
                                     </div>
 
-                                    <!-- Description -->
-                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                                        {{ Str::limit($pet->description, 100) }}
+                                    <div class="grid grid-cols-2 gap-2 text-sm mb-2">
+                                    <div><strong>Breed:</strong> {{ $pet->breed->name }}</div>
+                                    <div><strong>Age:</strong> {{ $pet->age_display }}</div>
+                                    </div>
+
+                                    <p class="text-gray-600 text-sm line-clamp-2 mb-2">
+                                    {{ Str::limit($pet->description, 80) }}
                                     </p>
 
-                                    <!-- Pet Features -->
-                                    <div class="flex items-center space-x-4 mb-4 text-xs">
-                                        <div class="flex items-center {{ $pet->good_with_kids ? 'text-green-600' : 'text-gray-300' }}">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M12 7C14.21 7 16 8.79 16 11V17H14V22H10V17H8V11C8 8.79 9.79 7 12 7Z"/>
-                                            </svg>
-                                            <span>Kids</span>
-                                        </div>
-                                        <div class="flex items-center {{ $pet->good_with_pets ? 'text-green-600' : 'text-gray-300' }}">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M12 8.5C10.62 8.5 9.5 9.62 9.5 11S10.62 13.5 12 13.5 14.5 12.38 14.5 11 13.38 8.5 12 8.5M12 1.5C10.62 1.5 9.5 2.62 9.5 4S10.62 6.5 12 6.5 14.5 5.38 14.5 4 13.38 1.5 12 1.5M6 8.5C4.62 8.5 3.5 9.62 3.5 11S4.62 13.5 6 13.5 8.5 12.38 8.5 11 7.38 8.5 6 8.5M18 8.5C16.62 8.5 15.5 9.62 15.5 11S16.62 13.5 18 13.5 20.5 12.38 20.5 11 19.38 8.5 18 8.5Z"/>
-                                            </svg>
-                                            <span>Pets</span>
-                                        </div>
-                                        <div class="flex items-center {{ $pet->house_trained ? 'text-green-600' : 'text-gray-300' }}">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"/>
-                                            </svg>
-                                            <span>Trained</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- More Info Button -->
-                                    <a href="{{ route('adoption.show', $pet) }}" 
-                                       class="block w-full text-center py-2 border-2 border-purple-600 text-purple-600 rounded-lg font-medium hover:bg-purple-600 hover:text-white transition-all duration-200">
-                                        More Info
+                                    <a href="{{ route('adoption.show', $pet) }}"
+                                    class="block w-full text-center py-2 border-2 border-purple-600 text-purple-600 rounded-lg font-medium hover:bg-purple-600 hover:text-white transition-all duration-200">
+                                    More Info
                                     </a>
                                 </div>
+                                </div>
+                            @endforeach
                             </div>
-                        @endforeach
-                    </div>
 
                     <!-- Pagination -->
                     <div class="flex justify-center">

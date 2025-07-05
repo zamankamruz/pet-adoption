@@ -14,6 +14,8 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\AdminController;
@@ -24,7 +26,9 @@ use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminSetupController;
 use App\Http\Controllers\Admin\AdminRehomingController;
 use App\Http\Controllers\Admin\AdminReportsController;
-
+use App\Http\Controllers\Admin\AdminNewsController;
+use App\Http\Controllers\Admin\AdminTestimonialController;
+use App\Http\Controllers\Admin\AdminNewsletterController;
 
 
 
@@ -46,6 +50,23 @@ Route::get('/care-guide/cats', [HomeController::class, 'catGuides'])->name('care
 Route::get('/care-guide/dogs', [HomeController::class, 'dogGuides'])->name('care-guide.dogs');
 Route::get('/faq/adopters', [HomeController::class, 'faqAdopters'])->name('faq.adopters');
 Route::get('/faq/rehomers', [HomeController::class, 'faqRehomers'])->name('faq.rehomers');
+
+
+    // Public News Routes (add outside admin group)
+    Route::prefix('news')->name('news.')->group(function () {
+    Route::get('/', [NewsController::class, 'index'])->name('index');
+    Route::get('/{slug}', [NewsController::class, 'show'])->name('show');
+    Route::get('/search',         [NewsController::class, 'search'  ])->name('search');
+    Route::get('/category/{category}', [NewsController::class, 'category'])->name('category');
+    Route::get('/tag/{tag}',      [NewsController::class, 'tag'     ])->name('tag');
+    Route::get('/trending',       [NewsController::class, 'trending'])->name('trending');
+    Route::get('/archive',        [NewsController::class, 'archive' ])->name('archive');
+    Route::post('/subscribe',     [NewsController::class, 'subscribe' ])->name('subscribe');
+
+
+    });
+
+
 
 // Adopt Routes
 Route::get('/adopt/how-it-works', [HomeController::class, 'howItWorks'])->name('adopt.how-it-works');
@@ -79,9 +100,9 @@ Route::prefix('pets')->name('pets.')->group(function () {
 // Adoption Routes (Public - can view, but need auth for requests)
 Route::prefix('adoption')->name('adoption.')->group(function () {
     Route::get('/', [AdoptionController::class, 'index'])->name('index');
-    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
     Route::get('/how-it-works', [AdoptionController::class, 'howItWorks'])->name('how-it-works');
     Route::get('/requirements', [AdoptionController::class, 'requirements'])->name('requirements');
+    Route::get('/{pet}', [AdoptionController::class, 'show'])->name('show');
 
 
 
@@ -326,21 +347,53 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
     });
 
 
-    // Admin Content Management
-    Route::prefix('content')->name('content.')->group(function () {
-        Route::get('/pages', [AdminController::class, 'pages'])->name('pages');
-        Route::get('/pages/{page}/edit', [AdminController::class, 'editPage'])->name('pages.edit');
-        Route::put('/pages/{page}', [AdminController::class, 'updatePage'])->name('pages.update');
-        Route::get('/news', [AdminController::class, 'news'])->name('news');
-        Route::get('/news/create', [AdminController::class, 'createNews'])->name('news.create');
-        Route::post('/news', [AdminController::class, 'storeNews'])->name('news.store');
-        Route::get('/news/{news}/edit', [AdminController::class, 'editNews'])->name('news.edit');
-        Route::put('/news/{news}', [AdminController::class, 'updateNews'])->name('news.update');
-        Route::delete('/news/{news}', [AdminController::class, 'deleteNews'])->name('news.delete');
-        Route::get('/testimonials', [AdminController::class, 'testimonials'])->name('testimonials');
-        Route::post('/testimonials', [AdminController::class, 'storeTestimonial'])->name('testimonials.store');
-        Route::delete('/testimonials/{testimonial}', [AdminController::class, 'deleteTestimonial'])->name('testimonials.delete');
+    // Admin News Management  
+    Route::prefix('news')->name('news.')->group(function () {
+        Route::get('/', [AdminNewsController::class, 'index'])->name('index');
+        Route::get('/create', [AdminNewsController::class, 'create'])->name('create');
+        Route::post('/', [AdminNewsController::class, 'store'])->name('store');
+        Route::get('/{news}', [AdminNewsController::class, 'show'])->name('show');
+        Route::get('/{news}/edit', [AdminNewsController::class, 'edit'])->name('edit');
+        Route::put('/{news}', [AdminNewsController::class, 'update'])->name('update');
+        Route::delete('/{news}', [AdminNewsController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-action', [AdminNewsController::class, 'bulkAction'])->name('bulk-action');
     });
+
+
+    // Add to admin routes group in web.php
+    Route::prefix('testimonials')->name('testimonials.')->group(function () {
+        Route::get('/', [AdminTestimonialController::class, 'index'])->name('index');
+        Route::get('/create', [AdminTestimonialController::class, 'create'])->name('create');
+        Route::post('/', [AdminTestimonialController::class, 'store'])->name('store');
+        Route::get('/{testimonial}', [AdminTestimonialController::class, 'show'])->name('show');
+        Route::get('/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('edit');
+        Route::put('/{testimonial}', [AdminTestimonialController::class, 'update'])->name('update');
+        Route::delete('/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('destroy');
+        Route::post('/{testimonial}/approve', [AdminTestimonialController::class, 'approve'])->name('approve');
+        Route::post('/{testimonial}/feature', [AdminTestimonialController::class, 'toggleFeature'])->name('feature');
+        Route::post('/bulk', [AdminTestimonialController::class, 'bulkAction'])->name('bulk');
+    });
+
+
+        Route::get('/admin/newsletter/stats', [NewsletterController::class, 'getSubscriberStats'])->name('newsletter.stats');
+
+        Route::prefix('newsletter')->name('newsletter.')->group(function () {
+        Route::get('/', [AdminNewsletterController::class, 'index'])->name('index');
+        Route::get('/create', [AdminNewsletterController::class, 'create'])->name('create');
+        Route::post('/', [AdminNewsletterController::class, 'store'])->name('store');
+        Route::get('/{subscriber}', [AdminNewsletterController::class, 'show'])->name('show');
+        Route::get('/{subscriber}/edit', [AdminNewsletterController::class, 'edit'])->name('edit');
+        Route::put('/{subscriber}', [AdminNewsletterController::class, 'update'])->name('update');
+        Route::delete('/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('destroy');
+        Route::post('/{subscriber}/activate', [AdminNewsletterController::class, 'activate'])->name('activate');
+        Route::post('/{subscriber}/deactivate', [AdminNewsletterController::class, 'deactivate'])->name('deactivate');
+        Route::post('/bulk', [AdminNewsletterController::class, 'bulkAction'])->name('bulk');
+        Route::get('/broadcast/form', [AdminNewsletterController::class, 'broadcast'])->name('broadcast');
+        Route::post('/broadcast/send', [AdminNewsletterController::class, 'sendBroadcast'])->name('send-broadcast');
+        Route::get('/export', [AdminNewsletterController::class, 'export'])->name('export');
+        Route::get('/stats', [AdminNewsletterController::class, 'getStats'])->name('stats');
+    });
+
 });
 
 
@@ -372,8 +425,10 @@ Route::get('/auth/facebook', [LoginController::class, 'redirectToFacebook'])->na
 Route::get('/auth/facebook/callback', [LoginController::class, 'handleFacebookCallback']);
 
 // Newsletter Routes
-Route::post('/newsletter/subscribe', [HomeController::class, 'subscribeNewsletter'])->name('newsletter.subscribe');
-Route::get('/newsletter/unsubscribe/{token}', [HomeController::class, 'unsubscribeNewsletter'])->name('newsletter.unsubscribe');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/unsubscribe/{token}', [NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
+
 
 // Sitemap and SEO Routes
 Route::get('/sitemap.xml', [HomeController::class, 'sitemap'])->name('sitemap');

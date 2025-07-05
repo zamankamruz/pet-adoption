@@ -1,6 +1,7 @@
 <?php
 // File: dashboard.blade.php
 // Path: /resources/views/user/dashboard.blade.php
+// Continuation from previous file - updating the visitor statistics section
 ?>
 
 @extends('layouts.app')
@@ -92,19 +93,14 @@
                     <!-- Charity Widget -->
                     <div class="p-4">
                         <div class="relative bg-white border-2 border-gray-100 rounded-2xl p-4 text-center">
-                            <button class="absolute top-2 right-2 w-6 h-6 text-gray-400 hover:text-gray-600">
-                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
                             <div class="flex justify-center mb-3">
                                 <div class="flex -space-x-1">
-                                    <img src="/api/placeholder/32/32" alt="Pet 1" class="w-8 h-8 rounded-full border-2 border-white">
-                                    <img src="/api/placeholder/32/32" alt="Pet 2" class="w-8 h-8 rounded-full border-2 border-white">
-                                    <img src="/api/placeholder/32/32" alt="Pet 3" class="w-8 h-8 rounded-full border-2 border-white">
-                                    <img src="/api/placeholder/32/32" alt="Pet 4" class="w-8 h-8 rounded-full border-2 border-white">
-                                    <img src="/api/placeholder/32/32" alt="Pet 5" class="w-8 h-8 rounded-full border-2 border-white">
-                                    <img src="/api/placeholder/32/32" alt="Pet 6" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate1.jpeg') }}" alt="Pet 1" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate2.jpeg') }}" alt="Pet 2" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate3.jpeg') }}" alt="Pet 3" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate4.jpeg') }}" alt="Pet 4" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate5.jpeg') }}" alt="Pet 5" class="w-8 h-8 rounded-full border-2 border-white">
+                                    <img src="{{ asset('images/donate6.jpeg') }}" alt="Pet 6" class="w-8 h-8 rounded-full border-2 border-white">
                                 </div>
                             </div>
                             <p class="text-sm text-gray-700 font-medium mb-3">Join Furry Friends Charity</p>
@@ -179,11 +175,12 @@
                             </div>
                         </div>
 
-                        <!-- Visitor Statistics -->
-                        @if(auth()->user()->pets->count() > 0)
+                        <!-- Visitor Statistics - Always show this section -->
                         <div>
                             <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-lg font-semibold text-gray-900">Visitor Statistics({{ auth()->user()->pets->first()->name }})</h2>
+                                <h2 class="text-lg font-semibold text-gray-900">
+                                    {{ 'Visitor Statistics' . (auth()->user()->pets->count() > 0 ? ' (' . auth()->user()->pets->first()->name . ')' : '') }}
+                                </h2>
                                 <div class="text-sm text-gray-500">Last 30 days</div>
                             </div>
                             <div class="bg-white border border-gray-200 rounded-xl p-6">
@@ -195,7 +192,6 @@
                                 </p>
                             </div>
                         </div>
-                        @endif
 
                         <!-- Adoption Requests -->
                         @if($recentAdoptions->count() > 0)
@@ -334,20 +330,25 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Visitor Statistics Chart
-@if(auth()->user()->pets->count() > 0)
+// Visitor Statistics Chart - Always display chart
 const ctx = document.getElementById('visitorChart').getContext('2d');
+
+// Use the visitor data passed from controller
+const visitorData = @json($visitorData ?? []);
+const labels = Object.keys(visitorData);
+const data = Object.values(visitorData);
+
 const visitorChart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: labels,
         datasets: [{
             label: 'Number of views',
-            data: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 240, 235],
+            data: data,
             borderColor: '#8B5CF6',
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
             borderWidth: 2,
-            fill: false,
+            fill: true,
             tension: 0.4,
             pointBackgroundColor: '#8B5CF6',
             pointBorderColor: '#8B5CF6',
@@ -387,7 +388,6 @@ const visitorChart = new Chart(ctx, {
         }
     }
 });
-@endif
 
 // Toggle favorite function
 function toggleFavorite(petId, button) {

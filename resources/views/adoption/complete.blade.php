@@ -7,76 +7,17 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
-    <!-- Progress Steps -->
-    <div class="bg-white shadow-sm">
+       <div class="bg-white shadow-sm">
         <div class="max-w-4xl mx-auto px-4 py-6">
             <div class="flex items-center justify-center">
                 <div class="flex items-center space-x-8">
-                    <!-- All steps completed -->
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Start</span>
-                    </div>
+                    <img src="{{ asset('images/step6.png') }}" alt="">
 
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Address</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Home</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Images of Home</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Roommate</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Other Animals</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-green-500">Confirm</span>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 
     <!-- Main Content -->
     <div class="max-w-4xl mx-auto px-4 py-8">

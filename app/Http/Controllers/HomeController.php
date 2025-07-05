@@ -7,33 +7,104 @@ namespace App\Http\Controllers;
 use App\Models\Pet;
 use App\Models\Category;
 use App\Models\Adoption;
+use App\Models\Breed;
+use App\Models\Location;
+use App\Models\News;
+use App\Models\Testimonial;
+
+
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+
+ public function index(Request $request)
     {
-        $featuredPets = Pet::with(['breed', 'location', 'images'])
-            ->available()
-            ->featured()
+        $query = Pet::with(['breed', 'category', 'location', 'images'])
+            ->available();
+
+        // Apply filters
+        if ($request->filled('species')) {
+            $query->where('species', $request->species);
+        }
+
+        if ($request->filled('breed_id')) {
+            $query->where('breed_id', $request->breed_id);
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('size')) {
+            $query->whereIn('size', (array) $request->size);
+        }
+
+        if ($request->filled('age_min') && $request->filled('age_max')) {
+            $query->whereBetween('age_years', [$request->age_min, $request->age_max]);
+        }
+
+        if ($request->filled('location_id')) {
+            $query->where('location_id', $request->location_id);
+        }
+
+        if ($request->filled('good_with_kids')) {
+            $query->where('good_with_kids', true);
+        }
+
+        if ($request->filled('good_with_pets')) {
+            $query->where('good_with_pets', true);
+        }
+
+        if ($request->filled('gender')) {
+            $query->whereIn('gender', (array) $request->gender);
+        }
+
+        if ($request->filled('color')) {
+            $query->whereIn('color', (array) $request->color);
+        }
+
+        // Sorting
+        $sortBy = $request->get('sort', 'latest');
+        switch ($sortBy) {
+            case 'name':
+                $query->orderBy('name');
+                break;
+            case 'age':
+                $query->orderBy('age_years')->orderBy('age_months');
+                break;
+            case 'featured':
+                $query->orderByDesc('is_featured')->orderByDesc('created_at');
+                break;
+            case 'urgent':
+                $query->orderByDesc('is_urgent')->orderByDesc('created_at');
+                break;
+            default:
+                $query->orderByDesc('created_at');
+        }
+
+        $pets = $query->paginate(12)->withQueryString();
+        
+        // Get filter options
+        $breeds = Breed::active()->orderBy('name')->get();
+        $locations = Location::active()->orderBy('city')->get();
+        $categories = Category::active()->orderBy('name')->get();
+
+
+            // Get dynamic news articles
+        $news = News::published()
+            ->orderBy('published_at', 'desc')
             ->take(4)
             ->get();
 
-        $recentPets = Pet::with(['breed', 'location'])
-            ->available()
+
+        $testimonials = Testimonial::approved()
             ->latest()
             ->take(8)
             ->get();
 
-        $adoptionStats = [
-            'total_pets' => Pet::available()->count(),
-            'adopted_this_month' => Adoption::completed()
-                ->whereMonth('completed_at', now()->month)
-                ->count(),
-            'happy_families' => Adoption::completed()->count(),
-        ];
 
-        return view('home.index', compact('featuredPets', 'recentPets', 'adoptionStats'));
+        return view('home.index', compact('pets', 'news','testimonials', 'breeds', 'locations', 'categories'));
     }
 
     

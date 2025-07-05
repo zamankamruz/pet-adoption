@@ -12,65 +12,7 @@
         <div class="max-w-4xl mx-auto px-4 py-6">
             <div class="flex items-center justify-center">
                 <div class="flex items-center space-x-8">
-                    <!-- Start -->
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-purple-600 text-white rounded-full flex items-center justify-center font-semibold">
-                            ✓
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-purple-600">Start</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-purple-600"></div>
-
-                    <!-- Address (Current) -->
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center font-semibold">
-                            2
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-green-500">Address</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-gray-300"></div>
-
-                    <!-- Other steps -->
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">
-                            3
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-gray-600">Home</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-gray-300"></div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">
-                            4
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-gray-600">Images of Home</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-gray-300"></div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">
-                            5
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-gray-600">Roommate</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-gray-300"></div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">
-                            6
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-gray-600">Other Animals</span>
-                    </div>
-
-                    <div class="w-8 h-0.5 bg-gray-300"></div>
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center font-semibold">
-                            7
-                        </div>
-                        <span class="ml-2 text-sm font-medium text-gray-600">Confirm</span>
-                    </div>
+                    <img src="{{ asset('images/step1.png') }}" alt="">
                 </div>
             </div>
         </div>

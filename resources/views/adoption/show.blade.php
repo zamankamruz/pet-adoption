@@ -1,675 +1,312 @@
 <?php
-// File: show.blade.php
+// File: show.blade.php (continued from previous - updating specific sections)
 // Path: /resources/views/pets/show.blade.php
 ?>
 
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .pet-detail-container {
-        background: #f8fafc;
-        min-height: 100vh;
-        padding: 2rem 0;
-    }
-    
-    .pet-header {
-        background: white;
-        padding: 2rem 0;
-        margin-bottom: 2rem;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
-    .pet-header .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-    
-    .pet-breadcrumb {
-        color: #6b7280;
-        margin-bottom: 1rem;
-    }
-    
-    .pet-breadcrumb a {
-        color: #8B5CF6;
-        text-decoration: none;
-    }
-    
-    .pet-title-section {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    .pet-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 4px solid #8B5CF6;
-    }
-    
-    .pet-title-info h1 {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 0.5rem;
-    }
-    
-    .pet-id {
-        color: #6b7280;
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-    }
-    
-    .pet-location-header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: #8B5CF6;
-        font-weight: 500;
-    }
-    
-    .pet-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 2rem;
-    }
-    
-    .pet-main {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .pet-image-gallery {
-        position: relative;
-        height: 400px;
-        overflow: hidden;
-    }
-    
-    .main-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    
-    .image-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0,0,0,0.5);
-        color: white;
-        border: none;
-        padding: 1rem;
-        cursor: pointer;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        transition: all 0.3s;
-    }
-    
-    .image-nav:hover {
-        background: rgba(0,0,0,0.7);
-    }
-    
-    .image-nav.prev {
-        left: 1rem;
-    }
-    
-    .image-nav.next {
-        right: 1rem;
-    }
-    
-    .favorite-btn {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: rgba(255,255,255,0.9);
-        border: none;
-        padding: 0.75rem;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.5rem;
-        transition: all 0.3s;
-    }
-    
-    .favorite-btn:hover {
-        background: #8B5CF6;
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .favorite-btn.favorited {
-        background: #ef4444;
-        color: white;
-    }
-    
-    .image-thumbnails {
-        display: flex;
-        gap: 0.5rem;
-        padding: 1rem;
-        overflow-x: auto;
-    }
-    
-    .thumbnail {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-        cursor: pointer;
-        opacity: 0.7;
-        transition: all 0.3s;
-        border: 2px solid transparent;
-    }
-    
-    .thumbnail.active {
-        opacity: 1;
-        border-color: #8B5CF6;
-    }
-    
-    .pet-info-section {
-        padding: 2rem;
-    }
-    
-    .pet-story h2 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 1rem;
-    }
-    
-    .pet-description {
-        color: #6b7280;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-    }
-    
-    .pet-characteristics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .characteristic {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1rem;
-        background: #f8fafc;
-        border-radius: 10px;
-        border-left: 4px solid #8B5CF6;
-    }
-    
-    .characteristic i {
-        font-size: 1.5rem;
-        color: #8B5CF6;
-    }
-    
-    .characteristic.active i {
-        color: #10b981;
-    }
-    
-    .characteristic-text {
-        font-weight: 500;
-        color: #374151;
-    }
-    
-    .pet-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-    
-    .pet-info-card {
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-    
-    .card-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 1rem;
-    }
-    
-    .pet-stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-    
-    .stat-item {
-        text-align: center;
-        padding: 1rem;
-        background: #f8fafc;
-        border-radius: 10px;
-    }
-    
-    .stat-icon {
-        font-size: 1.5rem;
-        color: #8B5CF6;
-        margin-bottom: 0.5rem;
-    }
-    
-    .stat-label {
-        font-size: 0.9rem;
-        color: #6b7280;
-        margin-bottom: 0.25rem;
-    }
-    
-    .stat-value {
-        font-weight: bold;
-        color: #1f2937;
-    }
-    
-    .adoption-btn {
-        width: 100%;
-        background: linear-gradient(135deg, #8B5CF6, #A855F7);
-        color: white;
-        border: none;
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-    
-    .adoption-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
-    }
-    
-    .adoption-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-    }
-    
-    .contact-btn {
-        width: 100%;
-        background: transparent;
-        border: 2px solid #8B5CF6;
-        color: #8B5CF6;
-        padding: 0.75rem 1.5rem;
-        border-radius: 10px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-decoration: none;
-        display: block;
-        text-align: center;
-    }
-    
-    .contact-btn:hover {
-        background: #8B5CF6;
-        color: white;
-    }
-    
-    .vaccination-schedule {
-        margin-top: 1.5rem;
-    }
-    
-    .vaccination-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-    }
-    
-    .vaccination-table th,
-    .vaccination-table td {
-        padding: 0.75rem;
-        text-align: left;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .vaccination-table th {
-        background: #f8fafc;
-        font-weight: 600;
-        color: #374151;
-    }
-    
-    .vaccination-table td {
-        color: #6b7280;
-    }
-    
-    .status-badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-    
-    .status-completed {
-        background: #d1fae5;
-        color: #065f46;
-    }
-    
-    .status-due {
-        background: #fef3c7;
-        color: #92400e;
-    }
-    
-    .similar-pets {
-        margin-top: 2rem;
-        padding: 2rem 0;
-        background: white;
-    }
-    
-    .similar-pets .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 1rem;
-    }
-    
-    .similar-pets h2 {
-        text-align: center;
-        font-size: 2rem;
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 2rem;
-    }
-    
-    .similar-pets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-    }
-    
-    .similar-pet-card {
-        background: white;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: all 0.3s;
-    }
-    
-    .similar-pet-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    
-    .similar-pet-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-    
-    .similar-pet-info {
-        padding: 1rem;
-        text-align: center;
-    }
-    
-    .similar-pet-name {
-        font-weight: bold;
-        color: #1f2937;
-        margin-bottom: 0.5rem;
-    }
-    
-    .similar-pet-details {
-        color: #6b7280;
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-    }
-    
-    @media (max-width: 1024px) {
-        .pet-content {
-            grid-template-columns: 1fr;
-        }
-        
-        .pet-sidebar {
-            order: -1;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .pet-title-section {
-            flex-direction: column;
-            text-align: center;
-        }
-        
-        .pet-title-info h1 {
-            font-size: 2rem;
-        }
-        
-        .pet-stats {
-            grid-template-columns: 1fr;
-        }
-        
-        .pet-characteristics {
-            grid-template-columns: 1fr;
-        }
-        
-        .image-thumbnails {
-            justify-content: center;
-        }
-    }
-</style>
+<div class="min-h-screen bg-gray-50 mx-auto px-4 sm:px-6 lg:px-8">
 
-<div class="pet-detail-container">
-    <!-- Pet Header -->
-    <div class="pet-header">
-        <div class="container">
-            <div class="pet-breadcrumb">
-                <a href="{{ route('home') }}">Home</a> > 
-                <a href="{{ route('adoption.index') }}">Adopt</a> > 
-                {{ $pet->name }}
-            </div>
-            
-            <div class="pet-title-section">
-                <img src="{{ $pet->main_image_url }}" alt="{{ $pet->name }}" class="pet-avatar">
-                <div class="pet-title-info">
-                    <h1>{{ $pet->name }}</h1>
-                    <div class="pet-id">Pet ID: {{ str_pad($pet->id, 7, '0', STR_PAD_LEFT) }}</div>
-                    <div class="pet-location-header">
-                        <i class="fas fa-map-marker-alt"></i>
-                        {{ $pet->location->city }}, {{ $pet->location->state }}
+
+    <!-- Pet Profile Header -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex items-start space-x-4">
+                <!-- Pet Avatar -->
+                <div class="flex-shrink-0">
+                    <img src="{{ $pet->main_image_url }}" 
+                         alt="{{ $pet->name }}" 
+                         class="w-20 h-20 rounded-full object-cover border-2 border-gray-200">
+                </div>
+                
+                <!-- Pet Basic Info -->
+                <div class="flex-1">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-1">Hi Human !</h1>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-1">{{ $pet->name }}</h2>
+                    <p class="text-sm text-gray-600 mb-2">Pet ID: {{ str_pad($pet->id, 8, '0', STR_PAD_LEFT) }}</p>
+                    
+                    <!-- Location -->
+                    <div class="flex items-center space-x-2 text-sm">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 16'%3E%3Crect width='24' height='16' fill='%23b22234'/%3E%3Cpath d='M0,0h9.6v8H0z' fill='%23002868'/%3E%3Cpath d='M0,2.4h9.6m0,1.6H0m0,1.6h9.6m0,1.6H0' stroke='%23fff' stroke-width='0.8'/%3E%3C/svg%3E" 
+                             alt="US Flag" class="w-4 h-3">
+                        <span class="text-gray-700">United States Of America</span>
+                    </div>
+                    <div class="flex items-center space-x-1 text-sm text-gray-600 mt-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>{{ $pet->location->city }} ({{ $pet->location->state === 'CA' ? '12 Km away' : $pet->location->state }})</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Pet Content -->
-    <div class="pet-content">
-        <!-- Main Content -->
-        <div class="pet-main">
-            <!-- Image Gallery -->
-            <div class="pet-image-gallery">
-                <img src="{{ $pet->main_image_url }}" alt="{{ $pet->name }}" class="main-image" id="mainImage">
-                
-                @if($pet->getAllImages()->count() > 1)
-                    <button class="image-nav prev" onclick="previousImage()">
-                        <i class="fas fa-chevron-left"></i>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - Images -->
+            <div class="lg:col-span-2">
+                <!-- Main Image -->
+                <div class="relative mb-4">
+                    <img src="{{ $pet->main_image_url }}" 
+                         alt="{{ $pet->name }}" 
+                         id="mainImage"
+                         class="w-full h-96 object-cover rounded-lg">
+                    
+                    <!-- Favorite Button -->
+                    <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 {{ $isFavorited ? 'text-red-500' : 'text-gray-400' }}" 
+                            onclick="toggleFavorite({{ $pet->id }}, this)">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+                        </svg>
                     </button>
-                    <button class="image-nav next" onclick="nextImage()">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                @endif
-                
-                <button class="favorite-btn {{ $isFavorited ? 'favorited' : '' }}" 
-                        onclick="toggleFavorite({{ $pet->id }}, this)">
-                    <i class="fas fa-heart"></i>
-                </button>
-            </div>
+                </div>
 
-            @if($pet->getAllImages()->count() > 1)
-                <div class="image-thumbnails">
+                <!-- Thumbnail Gallery -->
+                @if($pet->getAllImages()->count() > 1)
+                <div class="flex space-x-3 overflow-x-auto pb-2">
                     @foreach($pet->getAllImages() as $index => $image)
                         <img src="{{ $image['url'] }}" 
                              alt="{{ $pet->name }}" 
-                             class="thumbnail {{ $index === 0 ? 'active' : '' }}"
+                             class="w-20 h-20 object-cover rounded-lg cursor-pointer border-2 {{ $index === 0 ? 'border-purple-500' : 'border-transparent hover:border-gray-300' }} thumbnail"
                              onclick="showImage({{ $index }}, '{{ $image['url'] }}', this)">
                     @endforeach
                 </div>
-            @endif
-
-            <!-- Pet Information -->
-            <div class="pet-info-section">
-                <div class="pet-story">
-                    <h2>{{ $pet->name }}'s Story</h2>
-                    <p class="pet-description">{{ $pet->description }}</p>
-                    
-                    @if($pet->personality)
-                        <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: #374151;">Personality</h3>
-                        <p class="pet-description">{{ $pet->personality }}</p>
-                    @endif
-                </div>
-
-                <div class="pet-characteristics">
-                    <div class="characteristic {{ $pet->good_with_kids ? 'active' : '' }}">
-                        <i class="fas fa-child"></i>
-                        <span class="characteristic-text">
-                            {{ $pet->good_with_kids ? 'Good with kids' : 'Not suitable for kids' }}
-                        </span>
-                    </div>
-                    <div class="characteristic {{ $pet->good_with_pets ? 'active' : '' }}">
-                        <i class="fas fa-paw"></i>
-                        <span class="characteristic-text">
-                            {{ $pet->good_with_pets ? 'Good with pets' : 'Prefers to be alone' }}
-                        </span>
-                    </div>
-                    <div class="characteristic {{ $pet->house_trained ? 'active' : '' }}">
-                        <i class="fas fa-home"></i>
-                        <span class="characteristic-text">
-                            {{ $pet->house_trained ? 'House trained' : 'Needs house training' }}
-                        </span>
-                    </div>
-                    <div class="characteristic {{ $pet->spayed_neutered ? 'active' : '' }}">
-                        <i class="fas fa-check-circle"></i>
-                        <span class="characteristic-text">
-                            {{ $pet->spayed_neutered ? 'Spayed/Neutered' : 'Not spayed/neutered' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="pet-sidebar">
-            <!-- Pet Stats -->
-            <div class="pet-info-card">
-                <h3 class="card-title">Pet Details</h3>
-                <div class="pet-stats">
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-venus-mars"></i></div>
-                        <div class="stat-label">Gender</div>
-                        <div class="stat-value">{{ ucfirst($pet->gender) }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-birthday-cake"></i></div>
-                        <div class="stat-label">Age</div>
-                        <div class="stat-value">{{ $pet->age_display }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-ruler"></i></div>
-                        <div class="stat-label">Size</div>
-                        <div class="stat-value">{{ ucfirst($pet->size) }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-palette"></i></div>
-                        <div class="stat-label">Color</div>
-                        <div class="stat-value">{{ $pet->color }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-weight"></i></div>
-                        <div class="stat-label">Weight</div>
-                        <div class="stat-value">{{ $pet->weight ? $pet->weight . ' lbs' : 'Unknown' }}</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-icon"><i class="fas fa-dna"></i></div>
-                        <div class="stat-label">Breed</div>
-                        <div class="stat-value">{{ $pet->breed->name }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Adoption Actions -->
-            <div class="pet-info-card">
-                @if($canAdopt)
-                    <a href="{{ route('adoption.start', $pet) }}" class="adoption-btn">
-                        <i class="fas fa-heart"></i>
-                        Adopt {{ $pet->name }}
-                    </a>
-                @else
-                    <button class="adoption-btn" disabled>
-                        @if(!auth()->check())
-                            <i class="fas fa-sign-in-alt"></i>
-                            Login to Adopt
-                        @else
-                            <i class="fas fa-clock"></i>
-                            Adoption Pending
-                        @endif
-                    </button>
                 @endif
-            </div>
 
-            <!-- Vaccination Schedule -->
-            @if($pet->vaccinations->count() > 0)
-                <div class="pet-info-card">
-                    <h3 class="card-title">Vaccination Schedule</h3>
-                    <div class="vaccination-schedule">
-                        <table class="vaccination-table">
-                            <thead>
+                <!-- Pet Details Grid -->
+                <div class="mt-8 grid grid-cols-6 gap-4">
+                    <!-- Gender -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Gender</p>
+                        <p class="text-sm font-medium">{{ ucfirst($pet->gender) }}</p>
+                    </div>
+
+                    <!-- Breed -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L15 1L13.5 2.5C13.1 1.9 12.6 1.4 12 1.1C11.4 1.4 10.9 1.9 10.5 2.5L9 1L3 7V9H9C10.1 9 11 9.9 11 11V16C11 17.1 11.9 18 13 18H15C16.1 18 17 17.1 17 16V11C17 9.9 17.9 9 19 9H21Z"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Breed</p>
+                        <p class="text-sm font-medium">{{ $pet->breed->name }}</p>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Age</p>
+                        <p class="text-sm font-medium">{{ $pet->age_years > 0 ? $pet->age_years . ' year' . ($pet->age_years > 1 ? 's' : '') : $pet->age_months . ' month' . ($pet->age_months > 1 ? 's' : '') }}</p>
+                    </div>
+
+                    <!-- Color -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="13.5" cy="6.5" r=".5"></circle>
+                                <circle cx="17.5" cy="10.5" r=".5"></circle>
+                                <circle cx="8.5" cy="7.5" r=".5"></circle>
+                                <circle cx="6.5" cy="12.5" r=".5"></circle>
+                                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Color</p>
+                        <p class="text-sm font-medium">{{ $pet->color }}</p>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Weight</p>
+                        <p class="text-sm font-medium">{{ $pet->weight ? $pet->weight . ' Lb' : '12 Lb' }}</p>
+                    </div>
+
+                    <!-- Height -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 mx-auto mb-2 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V1h4a1 1 0 011 1v20a1 1 0 01-1 1H3a1 1 0 01-1-1V2a1 1 0 011-1h4v3M7 4h10M9 9h6m-6 4h6m-6 4h6"></path>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-1">Height</p>
+                        <p class="text-sm font-medium">{{ $pet->size === 'small' ? '51 Cm' : ($pet->size === 'medium' ? '61 Cm' : '71 Cm') }}</p>
+                    </div>
+                </div>
+
+                <!-- Vaccination Schedule -->
+                @if($pet->vaccinations->count() > 0)
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold mb-4">Vaccinated</h3>
+                    <div class="bg-white rounded-lg border overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
                                 <tr>
-                                    <th>Vaccine</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Age</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">8th Week</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">14th Week</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">22th Week</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach($pet->vaccinations as $vaccination)
-                                    <tr>
-                                        <td>{{ $vaccination->vaccine_name }}</td>
-                                        <td>{{ $vaccination->vaccination_date->format('M d, Y') }}</td>
-                                        <td>
-                                            <span class="status-badge status-completed">Completed</span>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 text-sm text-gray-900">Vaccinated</td>
+                                    <td class="px-4 py-3">
+                                        <div class="text-sm text-gray-900">Bordetella</div>
+                                        <div class="text-sm text-gray-500">Match</div>
+                                        <div class="text-xs text-gray-500">Leptospirosis</div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="text-sm text-gray-900">Bordetella,Canine Antifluanza</div>
+                                        <div class="text-sm text-gray-500">Match</div>
+                                        <div class="text-xs text-gray-500">Leptospirosis</div>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <div class="text-sm text-gray-900">Bordetella,Canine Antifluanza</div>
+                                        <div class="text-sm text-gray-500">Match</div>
+                                        <div class="text-xs text-gray-500">Leptospirosis</div>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            @endif
+                @endif
+            </div>
+
+            <!-- Right Column - Pet Info -->
+            <div class="lg:col-span-1">
+                <!-- Pet Story -->
+                <div class="bg-white rounded-lg p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">{{ $pet->name }} Story</h3>
+                    <p class="text-sm text-gray-700 leading-relaxed mb-6">
+                        {{ $pet->description }}
+                    </p>
+
+                    <!-- Pet Characteristics -->
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 {{ $pet->good_with_kids ? 'text-green-500' : 'text-gray-400' }}">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">{{ $pet->good_with_kids ? 'Can live with other children of any age' : 'Better with older children' }}</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 {{ $pet->vaccination_status === 'up_to_date' ? 'text-green-500' : 'text-gray-400' }}">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">Vaccinated</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 {{ $pet->house_trained ? 'text-green-500' : 'text-gray-400' }}">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">House-Trained</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 {{ $pet->spayed_neutered ? 'text-green-500' : 'text-gray-400' }}">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">Neutered</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 text-green-500">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">Shots up to date</span>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <div class="w-6 h-6 text-green-500">
+                                <svg fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4z"></path>
+                                </svg>
+                            </div>
+                            <span class="text-sm">Microchipped</span>
+                        </div>
+                    </div>
+
+                    <!-- Adoption Call to Action -->
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600 mb-4">If you are interested to adopt</p>
+                        @if($canAdopt)
+                            <a href="{{ route('adoption.start', $pet) }}" 
+                               class="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-purple-700 transition-colors">
+                                Get started
+                            </a>
+                        @else
+                            <button class="inline-block bg-gray-400 text-white px-8 py-3 rounded-lg font-medium cursor-not-allowed">
+                                @if(!auth()->check())
+                                    Login to Adopt
+                                @else
+                                    Adoption Pending
+                                @endif
+                            </button>
+                        @endif
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Similar Pets -->
-@if($similarPets->count() > 0)
-    <div class="similar-pets">
-        <div class="container">
-            <h2>Similar Pets</h2>
-            <div class="similar-pets-grid">
+    <!-- Similar Pets -->
+    @if($similarPets->count() > 0)
+    <div class="bg-white py-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-8">Similar Pets</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($similarPets as $similarPet)
-                    <a href="{{ route('adoption.show', $similarPet) }}" class="similar-pet-card">
-                        <img src="{{ $similarPet->main_image_url }}" alt="{{ $similarPet->name }}" class="similar-pet-image">
-                        <div class="similar-pet-info">
-                            <div class="similar-pet-name">{{ $similarPet->name }}</div>
-                            <div class="similar-pet-details">
-                                {{ $similarPet->breed->name }} • {{ $similarPet->age_display }} • {{ ucfirst($similarPet->gender) }}
-                            </div>
-                            <div class="more-info-btn" style="margin-top: 0.5rem; padding: 0.5rem;">More Info</div>
-                        </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="relative mb-4">
+                        <img src="{{ $similarPet->main_image_url }}" 
+                             alt="{{ $similarPet->name }}" 
+                             class="w-20 h-20 rounded-full object-cover mx-auto border-2 border-gray-200">
+                    </div>
+                    <h3 class="font-semibold text-lg mb-1">{{ $similarPet->name }}</h3>
+                    <p class="text-sm text-gray-600 mb-1">{{ ucfirst($similarPet->gender) }}</p>
+                    <p class="text-sm text-gray-600 mb-3">{{ $similarPet->breed->name }}</p>
+                    <a href="{{ route('adoption.show', $similarPet) }}" 
+                       class="inline-block border border-purple-600 text-purple-600 px-6 py-2 rounded-lg text-sm hover:bg-purple-600 hover:text-white transition-colors">
+                        More Info
                     </a>
+                </div>
                 @endforeach
             </div>
         </div>
     </div>
-@endif
+    @endif
+</div>
 
 <script>
 let currentImageIndex = 0;
@@ -680,30 +317,12 @@ function showImage(index, url, thumbnail) {
     document.getElementById('mainImage').src = url;
     
     // Update thumbnail active state
-    document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
-    thumbnail.classList.add('active');
-}
-
-function nextImage() {
-    currentImageIndex = (currentImageIndex + 1) % images.length;
-    const nextImage = images[currentImageIndex];
-    document.getElementById('mainImage').src = nextImage.url;
-    
-    // Update thumbnail active state
-    document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === currentImageIndex);
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.classList.remove('border-purple-500');
+        thumb.classList.add('border-transparent');
     });
-}
-
-function previousImage() {
-    currentImageIndex = currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1;
-    const prevImage = images[currentImageIndex];
-    document.getElementById('mainImage').src = prevImage.url;
-    
-    // Update thumbnail active state
-    document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === currentImageIndex);
-    });
+    thumbnail.classList.remove('border-transparent');
+    thumbnail.classList.add('border-purple-500');
 }
 
 function toggleFavorite(petId, button) {
@@ -718,9 +337,11 @@ function toggleFavorite(petId, button) {
         .then(response => response.json())
         .then(data => {
             if (data.favorited) {
-                button.classList.add('favorited');
+                button.classList.add('text-red-500');
+                button.classList.remove('text-gray-400');
             } else {
-                button.classList.remove('favorited');
+                button.classList.add('text-gray-400');
+                button.classList.remove('text-red-500');
             }
         })
         .catch(error => {
@@ -730,16 +351,5 @@ function toggleFavorite(petId, button) {
         window.location.href = '{{ route("login") }}';
     @endauth
 }
-
-// Keyboard navigation for images
-document.addEventListener('keydown', function(e) {
-    if (images.length > 1) {
-        if (e.key === 'ArrowLeft') {
-            previousImage();
-        } else if (e.key === 'ArrowRight') {
-            nextImage();
-        }
-    }
-});
 </script>
 @endsection

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
             
-            $table->index(['documentable_type', 'documentable_id']);
             $table->index('type');
         });
     }

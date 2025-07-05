@@ -67,7 +67,7 @@
                         <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
-                        Rehoming Requests
+                        Rehoming 
                     </a>
 
                     <a href="{{ route('admin.setup.index') }}" 
@@ -78,6 +78,31 @@
                         Setup Data
                     </a>
 
+                                        <!-- News -->
+                    <a href="{{ route('admin.news.index') }}"
+                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- RSS feed icon for “News” -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 11a8 8 0 018 8m-8-4a4 4 0 014 4m0-8a12 12 0 0112 12"/>
+                            <circle cx="6" cy="18" r="2" />
+                        </svg>
+                        News
+                    </a>
+
+                    <!-- Testimonials -->
+                    <a href="{{ route('admin.testimonials.index') }}"
+                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <!-- Annotation/chat bubble icon for “Testimonials” -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 8h10M7 12h8m-5 8l-5-5H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v7a2 2 0 01-2 2h-3l-5 5z" />
+                        </svg>
+                        Testimonials
+                    </a>
+
                     <!-- Messages -->
                     <a href="{{ route('admin.messages.index') }}" 
                        class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
@@ -86,6 +111,16 @@
                         </svg>
                         Messages
                     </a>
+
+                    <a href="{{ route('admin.newsletter.index') }}" 
+                    class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+                        <svg class="text-gray-400 group-hover:text-gray-500 mr-3 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M3 10l9 4-9 4V6l18 6-18 6" />
+                        </svg>
+                        Newsletter 
+                    </a>
+
 
                     <!-- Divider -->
                     <div class="border-t border-gray-200 mt-6 pt-6">

@@ -20,22 +20,18 @@
             <nav class="flex items-center justify-between py-2">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <div class="bg-violet-500 p-1.5 rounded-full mr-2">
-                        <i class="fas fa-paw text-white text-sm"></i>
-                    </div>
-                    <div class="text-gray-900 text-lg font-bold leading-tight">
-                        <div>Furry</div>
-                        <div>Friends</div>
-                    </div>
+                    <img src="{{ asset('images/Logo.png') }}" alt="Logo" class="h-10 w-auto">
                 </a>
+
 
                 <!-- Navigation Menu -->
                 <ul class="hidden lg:flex items-center space-x-8">
                     <!-- Adopt Dropdown -->
                     <li class="relative group">
-                        <a href="#" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                        <a href="#" class="text-gray-800 font-medium transition-colors duration-300 
+                            {{ request()->routeIs('adoption.*') ? 'text-violet-600 font-semibold' : 'hover:text-violet-500' }}">
                             Adopt
-                        </a>
+                            </a>
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <a href="{{ route('adoption.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Adopt a Pet</a>
                             <a href="{{ route('adoption.how-it-works') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
@@ -45,9 +41,12 @@
                     
                     <!-- Rehome Dropdown -->
                     <li class="relative group">
-                        <a href="#" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                        <a href="#" 
+                        class="text-gray-800 font-medium transition-colors duration-300 
+                                {{ request()->routeIs('rehoming.*') ? 'text-violet-600 font-semibold' : 'hover:text-violet-500' }}">
                             Rehome
                         </a>
+
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <a href="{{ route('rehoming.index') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Rehome a Pet</a>
                             <a href="{{ route('rehoming.how-it-works') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">How it works</a>
@@ -57,9 +56,14 @@
                     
                     <!-- Care Guide Dropdown -->
                     <li class="relative group">
-                        <a href="{{ route('care-guide') }}" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                        <a href="{{ route('care-guide') }}" 
+                        class="font-medium transition-colors duration-300 
+                                {{ request()->routeIs('care-guide*') 
+                                    ? 'text-violet-600 font-semibold' 
+                                    : 'text-gray-800 hover:text-violet-500' }}">
                             Care Guide
                         </a>
+
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <a href="{{ route('care-guide.cats') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Cat Guides</a>
                             <a href="{{ route('care-guide.dogs') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Dog Guides</a>
@@ -68,9 +72,14 @@
                     
                     <!-- About Us Dropdown -->
                     <li class="relative group">
-                        <a href="{{ route('about') }}" class="text-gray-800 hover:text-violet-500 font-medium transition-colors duration-300">
+                         <a href="{{ route('about') }}" 
+                        class="font-medium transition-colors duration-300 
+                                {{ request()->routeIs('about*') 
+                                    ? 'text-violet-600 font-semibold' 
+                                    : 'text-gray-800 hover:text-violet-500' }}">
                             About Us
                         </a>
+
                         <div class="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                             <a href="{{ route('about.mission') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Our Mission</a>
                             <a href="{{ route('contact') }}" class="block px-4 py-3 text-gray-700 hover:bg-violet-50 hover:text-violet-500 transition-colors duration-200">Contact Us</a>
@@ -172,21 +181,45 @@
         </div>
     </header>
 
-    <!-- Purple Bar with Search -->
-    <div class="bg-violet-500 py-2">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-end">
-                <div class="relative">
-                    <input type="text" 
-                           class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm" 
-                           placeholder="search...">
-                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
-                        <i class="fas fa-search text-sm"></i>
-                    </button>
-                </div>
-            </div>
+    <!-- Purple Bar with Breadcrumbs + Search -->
+    <div class="bg-violet-500 px-4 py-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between">
+        {{-- Breadcrumbs --}}
+        <nav class="text-white text-sm" aria-label="breadcrumb">
+            <ol class="list-reset flex space-x-2">
+            <li>
+                <a href="{{ route('home') }}" class="hover:underline">Home</a>
+            </li>
+            @php $path = ''; @endphp
+            @foreach(Request::segments() as $segment)
+                @php $path .= '/'.$segment; @endphp
+                <li>/</li>
+                <li>
+                <a href="{{ url($path) }}" class="hover:underline">
+                    {{ ucwords(str_replace('-', ' ', $segment)) }}
+                </a>
+                </li>
+            @endforeach
+            </ol>
+        </nav>
+
+        {{-- Search box --}}
+        <form action="{{ route('pets.search') }}" method="GET" class="relative">
+            <input
+                type="text"
+                name="q"
+                class="w-72 pl-4 pr-10 py-1.5 rounded-full bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-300 text-sm"
+                placeholder="Search pets..."
+            >
+            <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-violet-500 hover:text-violet-700">
+                <i class="fas fa-search text-sm"></i>
+            </button>
+        </form>
         </div>
     </div>
+    </div>
+
 
     <!-- Main Content -->
     <main>
@@ -194,82 +227,103 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 mt-16">
-        <!-- Footer Content -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- How Can We Help -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">How Can We Help?</h3>
-                    <ul class="space-y-3">
-                        <li><a href="{{ route('pets.index') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Adopt a pet</a></li>
-                        <li><a href="{{ route('rehoming.index') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Rehome a pet</a></li>
-                        <li><a href="{{ route('faq.adopters') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Adopt FAQ's</a></li>
-                        <li><a href="{{ route('faq.rehomers') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Rehome FAQ's</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Contact Us -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Contact Us</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-start text-gray-600">
-                            <i class="fas fa-map-marker-alt text-violet-500 mr-3 mt-1"></i>
-                            <span>123 Main Street, Anytown, USA</span>
-                        </li>
-                        <li class="flex items-center text-gray-600">
-                            <i class="fas fa-phone text-violet-500 mr-3"></i>
-                            <span>+1 (555) 123-4567</span>
-                        </li>
-                        <li class="flex items-center text-gray-600">
-                            <i class="fas fa-envelope text-violet-500 mr-3"></i>
-                            <span>FurryFriendsSupport@gmail.com</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Keep In Touch -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Keep In Touch With Us</h3>
-                    <p class="text-gray-600 mb-4">Join the FurryFriends magazine and be first to hear about news</p>
-                    <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="email" 
-                               placeholder="E-mail Address" 
-                               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
-                        <button class="bg-violet-500 hover:bg-violet-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300">
-                            Subscribe
-                        </button>
-                    </div>
-                </div>
+<footer class="bg-gray-50 mt-16 text-sm">
+    <!-- Footer Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- How Can We Help -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">How Can We Help?</h3>
+                <ul class="space-y-3">
+                    <li><a href="{{ route('pets.index') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Adopt a pet</a></li>
+                    <li><a href="{{ route('rehoming.index') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Rehome a pet</a></li>
+                    <li><a href="{{ route('faq.adopters') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Adopt FAQ's</a></li>
+                    <li><a href="{{ route('faq.rehomers') }}" class="text-gray-600 hover:text-violet-500 transition-colors duration-300">Rehome FAQ's</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Us -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Contact Us</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start text-gray-600">
+                        <i class="fas fa-map-marker-alt text-violet-500 mr-3 mt-1"></i>
+                        <span>123 Main Street, Anytown, USA</span>
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <i class="fas fa-phone text-violet-500 mr-3"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </li>
+                    <li class="flex items-center text-gray-600">
+                        <i class="fas fa-envelope text-violet-500 mr-3"></i>
+                        <span>FurryFriendsSupport@gmail.com</span>
+                    </li>
+                </ul>
+            </div>
+
+<!-- Keep In Touch -->
+<div>
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Keep In Touch With Us</h3>
+    <p class="text-gray-600 mb-4">Join the FurryFriends magazine and be first to hear about news</p>
+    
+    <!-- Newsletter Subscription Form -->
+    <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2">
+        @csrf
+        <input type="email" 
+               id="newsletter-email"
+               name="email"
+               placeholder="E-mail Address" 
+               required
+               class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500">
+        <button type="submit" 
+                id="newsletter-submit"
+                class="bg-violet-500 hover:bg-violet-600 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            <span class="newsletter-text">Subscribe</span>
+            <span class="newsletter-loading hidden">
+                <i class="fas fa-spinner fa-spin"></i> Subscribing...
+            </span>
+        </button>
+    </form>
+    
+    <!-- Success/Error Messages -->
+    <div id="newsletter-message" class="mt-3 hidden">
+        <div id="newsletter-alert" class="p-3 rounded-lg text-sm"></div>
+    </div>
+</div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Bottom Purple Bar -->
+<div class="bg-violet-500 py-1">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p class="text-white text-sm">©2024 Furryfriends.com</p>
+            <div class="flex space-x-3">
+                <a href="#" class="text-white hover:text-violet-200 text-base transition-transform duration-300 hover:scale-105">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="#" class="text-white hover:text-violet-200 text-base transition-transform duration-300 hover:scale-105">
+                    <i class="fab fa-pinterest"></i>
+                </a>
+                <a href="#" class="text-white hover:text-violet-200 text-base transition-transform duration-300 hover:scale-105">
+                    <i class="fab fa-tumblr"></i>
+                </a>
+                <a href="#" class="text-white hover:text-violet-200 text-base transition-transform duration-300 hover:scale-105">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="text-white hover:text-violet-200 text-base transition-transform duration-300 hover:scale-105">
+                    <i class="fab fa-youtube"></i>
+                </a>
             </div>
         </div>
-        
-        <!-- Bottom Purple Bar -->
-        <div class="bg-violet-500 py-4">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p class="text-white text-sm">©2024 Furryfriends.com</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-white hover:text-violet-200 text-xl transition-transform duration-300 hover:scale-110">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="#" class="text-white hover:text-violet-200 text-xl transition-transform duration-300 hover:scale-110">
-                            <i class="fab fa-pinterest"></i>
-                        </a>
-                        <a href="#" class="text-white hover:text-violet-200 text-xl transition-transform duration-300 hover:scale-110">
-                            <i class="fab fa-tumblr"></i>
-                        </a>
-                        <a href="#" class="text-white hover:text-violet-200 text-xl transition-transform duration-300 hover:scale-110">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="text-white hover:text-violet-200 text-xl transition-transform duration-300 hover:scale-110">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    </div>
+</div>
+
+</footer>
+
 
     <script>
         // Mobile menu toggle
@@ -278,5 +332,113 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
+
+
+<!-- Add this JavaScript before closing </body> tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('newsletter-form');
+    const emailInput = document.getElementById('newsletter-email');
+    const submitButton = document.getElementById('newsletter-submit');
+    const messageDiv = document.getElementById('newsletter-message');
+    const alertDiv = document.getElementById('newsletter-alert');
+    const submitText = submitButton.querySelector('.newsletter-text');
+    const loadingText = submitButton.querySelector('.newsletter-loading');
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        if (!email) {
+            showMessage('Please enter your email address.', 'error');
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showMessage('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        // Show loading state
+        setLoadingState(true);
+        hideMessage();
+
+        // Prepare form data
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+
+        // Submit form
+        fetch('{{ route("newsletter.subscribe") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setLoadingState(false);
+            
+            if (data.success) {
+                showMessage(data.message, 'success');
+                emailInput.value = ''; // Clear the input
+            } else {
+                showMessage(data.message || 'An error occurred. Please try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Newsletter subscription error:', error);
+            setLoadingState(false);
+            showMessage('Sorry, something went wrong. Please try again later.', 'error');
+        });
+    });
+
+    function setLoadingState(loading) {
+        if (loading) {
+            submitButton.disabled = true;
+            submitText.classList.add('hidden');
+            loadingText.classList.remove('hidden');
+        } else {
+            submitButton.disabled = false;
+            submitText.classList.remove('hidden');
+            loadingText.classList.add('hidden');
+        }
+    }
+
+    function showMessage(message, type) {
+        messageDiv.classList.remove('hidden');
+        alertDiv.textContent = message;
+        
+        // Remove existing classes
+        alertDiv.classList.remove('bg-green-100', 'text-green-700', 'border-green-300', 'bg-red-100', 'text-red-700', 'border-red-300');
+        
+        if (type === 'success') {
+            alertDiv.classList.add('bg-green-100', 'text-green-700', 'border', 'border-green-300');
+        } else {
+            alertDiv.classList.add('bg-red-100', 'text-red-700', 'border', 'border-red-300');
+        }
+
+        // Auto-hide success messages after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                hideMessage();
+            }, 5000);
+        }
+    }
+
+    function hideMessage() {
+        messageDiv.classList.add('hidden');
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+});
+</script>
+
+
 </body>
 </html>
